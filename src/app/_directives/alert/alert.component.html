@@ -1,0 +1,36 @@
+<div *ngFor="let alert of alerts" class="{{ cssClass(alert) }} alert-dismissable">
+  {{alert.message}}
+  <a class="close" (click)="removeAlert(alert)">&times;</a>
+</div>
+
+<!-- <div class="alert-message-popup" *ngIf="showNotificationStatus">
+  <div class="alert-info"><img src="assets/images/info.png">&nbsp;&nbsp;<span [ngStyle]="{'color': notification_color}" style="font-weight: 900" [innerHTML]="showNotificationMessage"></span></div>
+</div> -->
+
+<!-- Alert info in bottom left -->
+<!-- <div class="alert-bottom" id="alert_bottom" *ngIf="showAlertBottomNotificationStatus" style="display:block">
+  <strong [innerHTML]="showAlertBottomNotificationMessage"></strong>&nbsp; &nbsp;&nbsp;<i class="fa fa-times" (click)="closeAlertbottomNotifcation()" style="cursor:pointer;"></i>
+</div> -->
+
+
+<div class="alert-message-popup" *ngIf="showNotificationStatus">
+  <div class="alert-info">
+    <!-- <i class="fa fa-times-circle-o" aria-hidden="true"></i><br> -->
+    <span [ngStyle]="{'color': notification_color}" style="font-weight: 600;font-size: 17px;" [innerHTML]="showNotificationMessage"></span>
+  </div>
+</div>
+
+<!-- Alert info in bottom left -->
+<div class="alert-bottom" id="alert_bottom" *ngIf="showAlertBottomNotificationStatus" style="display:block">
+  <div class="alert-success">
+      <!-- <i class="fa fa-check-circle-o" aria-hidden="true"></i><br> -->
+    <span [innerHTML]="showAlertBottomNotificationMessage" style="font-weight: 600;font-size: 17px; color: rgb(102, 177, 83);"></span>
+  </div>
+</div>
+
+
+<div class="text-center loading" *ngIf="showLoader">
+  <div class="loader"></div>
+</div>
+
+

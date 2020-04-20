@@ -1,0 +1,24 @@
+<!-----------------------------------image rotate popup start-------------------------->
+<div class="edit-image-block">
+	<webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+	[allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+	(initError)="handleInitError($event)" [mirrorImage]="mirrorOptions"></webcam>
+</div>
+<div class="modal-footer">
+	<div class="flex-content">
+		<a class="btn" style="position: relative;" title="switch camera" (click)="showNextWebcam(true);">
+				<img src="assets/images/switch-camera.png" /><br>Turn camera
+		</a>
+		<a class="btn" style="position: relative;" title="Take picture" (click)="triggerSnapshot();">
+			<img src="assets/images/click-camera.png" /><br> Take picture
+		</a>
+		<a class="btn" style="position: relative;" title="Take Picture" (click)="closeOpenedCamera();">
+			<img src="assets/images/close-camera.png" /><br> Close camera
+		</a>
+	</div>
+</div>
+<!-----------------------------------image rotate popup end------------------------------->
+<!-- <h4 *ngIf="errors.length > 0">Messages:</h4>
+<ul *ngFor="let error of errors">
+	<li>{{error | json}}</li>
+</ul> -->

@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3> Events </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12" *ngFor="let class of teacher_class_handled_array" [routerLink]="['/member/organization/class-room/profile']" [queryParams]="{ id: class.id }">
+    <div class="col-sm-12 border-box">
+      <!------------------user image upload --------------------->
+      <span *ngIf="class.staticDpImg"><img [src]="class.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+      <!------------------user image upload end--------------------->
+      <!-----------------------user name text  ----------------------->
+      <div class="bc-bg" *ngIf="!class.staticDpImg">{{class.name | slice:0:1}}</div>
+      <!-----------------------user name text  end----------------------->
+      <div class="cont-right">
+        <div id="textbox">
+          <span class="header-name">{{class.name ? class.name : ''}}</span>
+            <br><br>
+        </div>
+        <span class="header-email"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------empty rooms ------------------>
+<div class="row" *ngIf="teacher_class_handled_array?.length==0">
+  <div class="col-sm-12">
+      <div style="text-align: center;">
+          <h3 style="color:#fe9200;">No Events </h3>
+      </div>
+  </div>
+</div>
+<!----------------------empty rooms end------------------>

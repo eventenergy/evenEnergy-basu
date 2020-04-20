@@ -1,0 +1,267 @@
+<div class="navdiv navbar-fixed-top" style="z-index:2">
+    <ul style="cursor: pointer;" >
+        <li *ngFor="let links of nav_links" (click)=this[links.click](links.click_params,links.click_params1)>
+            <a>{{links.text}}</a>
+        </li>
+    </ul>
+</div>
+<br>
+<div class="container" *ngFor="let story of story_array">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="image-responsive-events" *ngFor="let images of multiple_file_array;">
+              <ng-container *ngIf="images.type=='image_file' && images.image_number == 1">
+                <img  class="img-responsive center-block" [src]="images.image_src" />
+              </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="detail-events-fixed">
+                <div class="img-blow-content">
+                    <div class="event-content">
+                        <h4 *ngIf="story.caption" [innerHTML]="story.caption"></h4>
+                        <span *ngFor="let duration of story.duration;let i=index"> 
+                            <ng-container *ngIf="i == 0 && duration.utcStart && duration.utcEnd">
+                                <i class="fa fa-calendar"></i> {{duration.utcStart | date:"fullDate" }}  {{duration.utcStart | date:"shortTime" }} to {{duration.utcEnd | date:"fullDate" }}  {{duration.utcEnd | date:"shortTime" }} {{(duration.timeZone && duration.timeZone.name ? duration.timeZone.name : '')}}
+                            </ng-container>
+                        </span>
+                        <p *ngFor="let venue of story.veneus;let i=index">
+                            <ng-container *ngIf="i == 0">
+                                <i class="fa fa-map-marker"></i> {{(venue.name ? venue.name : '' ) + " " + (venue.address ? venue.address : '') + " " + (venue.addressSecondary ? venue.addressSecondary : '') + " "+ (venue.city ? venue.city : '') + " "+ (venue.state ? venue.state : '') + " "+ (venue.country ? venue.country : '') +  " "+ (venue.pincode ? venue.pincode : '')}} 
+                            </ng-container>
+                        </p>
+                    </div>
+                </div>
+                <div class="rlink" style="cursor: pointer;" (click)="routeToGoogleMaps()">
+                    <div class="route-box">
+                        <div class="icon-align">
+                            <i class="fa fa-map-marker fa-1x"></i>
+                        </div>
+                        Get Direction
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-8">
+            <div>
+                <ul class="ticket-design" style="padding: 0;">
+                    <li *ngFor="let capacity of story.capacities">
+                        <div class="border-top"></div>
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8 col-lg-8 col-xs-8">
+                                    <div class="event-details">
+                                        <h4> {{capacity.name}} </h4>
+                                        <small> Last Date :{{capacity.duration.utcEnd | date}} </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="border-right: 1px solid #ccc;">
+                                    <h4> INR </h4>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                                    <label>
+                                        <span style="font-size:18px;"> {{capacity.ticketPrice}} </span>&nbsp;&nbsp;
+                                        <select *ngIf="capacity.capacityRemains > 0" [(ngModel)]="capacity.ticketSelectedCount" (ngModelChange)="onChangeSelectTicketNumber($event,capacity)" name="ticket_count">
+                                            <option *ngFor="let ticket_count of ticket_count_number_array" [value]="ticket_count">{{ticket_count}}</option>
+                                        </select>
+                                        <br>
+                                        <span *ngIf="!capacity.capacityRemains" style="color:orange">SOLD OUT</span>
+                                    </label>
+                                </div>
+                            </div>
+                        <div class="border-bottom"></div> 
+                    </li>
+                </ul>
+            </div>
+            <br>
+            <div class="tickent-payment" *ngIf="ticket_information_details?.length > 0">
+                <table class="table table-border" *ngFor="let ticket_information of ticket_information_details;">
+                    <thead style="font-size:18px;">
+                        <tr>
+                            <th width="80%"> Description </th>
+                            <th width="20%"> Total </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> Amount[INR] </td>
+                            <td> {{ticket_information.total_amount}} </td>
+                        </tr>
+                        <tr *ngIf="ticket_information.gst">
+                            <td> GST[INR] </td>
+                            <td> {{ticket_information.gst}} </td>
+                        </tr>
+                        <tr *ngIf="ticket_information.payment_gateway_charges || ticket_information.service_tax">
+                            <td> Internet Handling Fees [INR] + </td>
+                            <td> {{ticket_information.internet_handling_fee_total}} </td>
+                        </tr>
+                        <tr class="table-success" *ngIf="ticket_information.payment_gateway_charges">
+                            <td> Payment Gateway fee[INR] </td>
+                            <td> {{ticket_information.payment_gateway_charges}} </td>
+                        </tr>
+                        <tr class="table-success" *ngIf="ticket_information.service_tax">
+                            <td> Service Charge [INR] </td>
+                            <td> {{ticket_information.service_tax}} </td>
+                        </tr>
+                        <tr class="table-success" *ngIf="ticket_information.GST_on_service_and_payment_charges">
+                            <td> GST 18% [INR] </td>
+                            <td> {{ticket_information.GST_on_service_and_payment_charges}}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td> Total Amount[INR] </td>
+                            <td> {{ticket_information.total_calculated_amount}} </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button type="button" class="btn btn-primary buy-button" (click)="bookTicketWithRequiredQuantity()">Book Now</button></td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+            <br><br>
+            <div class="description">
+                <h4> About the Events </h4>
+                <ng-container *ngFor="let text of multiple_file_array">
+                    <span *ngIf="text.type=='text_file'" [innerHTML]="text.title">
+                    </span>
+                    <span *ngIf="text.type=='text_file'" [innerHTML]="text.description">
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="event-id-border">
+                <a style="text-decoration: none;" *ngIf="story.id"> Event ID : {{story.id}} </a>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="Venue-map">
+                <agm-map 
+                    [latitude]="lat"
+                    [longitude]="lng"
+                    [zoom]="zoom"
+                    [disableDefaultUI]="false"
+                    [zoomControl]="false"
+                    (mapClick)="mapClicked($event)">
+                    
+                    <agm-marker 
+                        *ngFor="let m of markers; let i = index;" 
+                        (markerClick)="clickedMarker(m.label, i)" 
+                        [latitude]="m.lat" 
+                        [longitude]="m.lng" 
+                        [label]="m.label" 
+                        [markerDraggable]="m.draggable" 
+                        (dragEnd)="markerDragEnd(m, $event)" >
+                        
+                        <!-- <agm-info-window>
+                        <strong></strong>
+                        </agm-info-window> -->
+                    </agm-marker>
+                    
+                    <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+                        [radius]="5000"
+                        [fillColor]="'red'"
+                        [circleDraggable]="true"
+                        [editable]="true">
+                    </agm-circle>
+                    
+                </agm-map>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<br><br><br><br><br>
+
+<div #story_content id="story_content" style="display:none"></div>
+
+ <!----------------------------------- Create story Pop-up start ----------------------->
+ <div class="modal fade" id="create_story_popup" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Event details to be filled</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row" [ngClass]="{'disable-element': disable_select_school}" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <label class="heading"> Select Chapter </label>
+                    <div class="school-list-card">
+                      <ul class="people-list-grid" style="padding: 0;">
+                        <li *ngFor="let school of story_school_array" [ngStyle]="{'background-color': school.isChecked ? '#ccc' : ''}">
+                            <span class="media-left" style="float:left;">
+                                <span *ngIf="!school.staticSchoolDpImg" class="media-object" style="width:25px;height:25px;background-color:#eee;color:#FE9200;border-radius: 100%;font-size:18px;text-align: center;line-height:25px">{{school?.name | slice:0:1}}</span>
+                                <span *ngIf="school.staticSchoolDpImg"><img class="media-object" [src]="school.staticSchoolDpImg" style="width:25px;height:25px;border-radius: 100%;" (error)="updateDefaultImageUrl($event)"></span>
+                            </span>
+                            <span style="line-height:25px;" class="capitalize"> {{school.name}} </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <p class="error-mez" *ngIf="story_school_error_status"> Please select school </p>
+                </div>
+              </div>
+              <div class="row" *ngIf="story_type_admin_parent_status" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <label class="heading"> Type of Event </label>
+                    <br>
+                      <ul class="people-list-grid" style="padding: 0;">
+                        <li *ngFor="let story of story_type_array" (click)="storySelectStoryType(story.type)" [ngStyle]="{'background-color': story.isChecked ? '#337ab7' : '','color': story.isChecked ? '#ffffff' : ''}">
+                            <span style="padding:10px;font-weight: 600;">{{story.display}}</span>
+                        </li>
+                      </ul>
+                      <div class="col-sm-12" style="padding: 0;">
+                          <p class="error-mez" *ngIf="story_type_error_status"> Please select type of story </p>
+                      </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="story_date_status">
+                    <div class="col-sm-6">
+                          <label class="heading"> Date </label>
+                          <input type="text" class="date-input" id="story_created_date" placement="top" readonly required [(ngModel)]="user_story_created_date" (bsValueChange)="onChangeDatePickerStart($event, 'created')" bsDatepicker  [bsConfig]="datepickerConfig" name="user_story_created_date"/>
+                          <p class="error-mez" *ngIf="story_created_date_error_status"> Please select created date </p>
+                    </div>
+                    <div class="col-sm-6" *ngIf="story_expiry_date_status">
+                        <label class="heading"> Last still </label>
+                        <input type="text" class="date-input" id="story_expiry_date"  placement="top" readonly required [(ngModel)]="user_story_expiry_date"(bsValueChange)="onChangeDatePickerStart($event, 'expiry')"  bsDatepicker [bsConfig]="datepickerConfig" name="user_story_expiry_date"/>
+                        <p class="error-mez" *ngIf="story_expiry_date_error_status"> Please select expiry date </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="error-mez" *ngIf="story_creation_popup_error"> Something went wrong </p>
+              <button type="button" class="btn custom-btn-close" data-dismiss="modal"> Close </button>
+              <button type="button" class="btn custom-btn" (click)="saveStoryPopupDetails()"> Start Event Write Up </button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!------------------------------------- create Story Pop-up end---------------------------->
+
+<!----------------------------------- Alert message edit story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_edit_story_popup">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p style="font-size:16px;color:#333"> Would you like to edit this Event Activity. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+                <input type="button" class="btn custom-btn" value="Yes" (click)="editStory()">
+            </div>
+        </div>
+    </div>
+</div>
+    <!----------------------------------- Alert message edit story popup end ------------------------------->

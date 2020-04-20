@@ -1,0 +1,397 @@
+
+<section *ngIf="logged_status">
+  <div class="dropdown-filter">
+      <a (click)="openFilterDropdown()"> Filters <i class="fa fa-filter"></i></a>
+  </div> 
+  <app-main-navbar></app-main-navbar>
+</section>
+
+<!----------------------  main navbar --------------------------->
+<nav class="filter-category" *ngIf="!logged_status">
+  <div class="container-fluid">
+    <div class="navbar-header" style="padding-top: 5px;">
+      <ul class="nav navbar-nav padding-adjust-filter" style="padding: 0;">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <li class="dropdown">
+            <i class="fa fa-filter" (click)="openFilterDropdown()"> </i>&nbsp;&nbsp;
+        </li> 
+        <li class="logo">
+          <span style="color:#fff;font-weight:600;font-size:17px;">
+            <a routerLink="/" title="Home" style="text-decoration: none;">
+            <img class="logo-home" src="assets/images/events/logo.png" /> 
+            <span style="font-weight:600;font-size:18px;"> EventEnergies </span>  </a>
+          </span>
+        </li>
+        <li class="location"> 
+            <i class="fa fa-map-marker fa-1x"></i> India 
+        </li>
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav" style="margin: 0 auto;display:table;">
+        <!-- <li  (click)="opensearchpopup()">
+          <a style="font-size:18px;cursor: pointer;color:#fff;margin:0 auto;display: table;" title="Search Events">
+              Search  &nbsp;&nbsp;<i class="fa fa-search fa-1x"></i> 
+          </a>
+        </li> -->
+        <li>
+          <a title="Register to EventEnergies" data-toggle="modal" data-target="#signUpTypeModal" ><input type="button" value="REGISTER" class="home-nav-register"/> </a>
+        </li>
+        <li>
+          <a title="Login to EventEnergies" [routerLink]="[ '/login']"> <input type="button" value="LOGIN" class="home-nav-register"/> </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br *ngIf="!logged_status"> 
+<div id="filter-stories" class="filter">
+  <div class="container-fluid">
+    <a style="border-bottom:1px solid #ccc;padding: 20px;">Filters <span class="btn btn-primary" (click)="closeFilterDropdown()" style="float:right;">Done</span></a>
+    <div class="filter-stories-content">
+      <div class="filter-content">
+          <app-filter-stories (filter)="applyFilter($event)"></app-filter-stories>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------- main nav bar end ----------------------->
+<!----------------------slider start -------------->
+<section class="white-background-content" style="padding-top:20px;padding-bottom:10px;">
+    <div class="slider-image">
+      <ngx-slick-carousel class="carousel container" #slickModal="slick-carousel" [config]="slideConfig">
+        <div ngxSlickItem *ngFor="let slide of slides;let x=index;" class="slide" style="background: rgb(238, 237, 237);">
+          <a [routerLink]="('/activity/preview/')+slide.id" title="{{ slide.title }}" style="text-decoration: none;outline: none;">
+            <img [src]="slide.image" alt="First slide" class="img-responsive">
+            <div class="image-counter">
+              <div class="title-slider">  {{ slide.title }} </div>
+              <div class="counter-slider" *ngIf="slide.started"> <span> Started </span> {{slide.time.toLocaleString() | timeAgo | async}}</div>  
+              <div class="counter-slider" *ngIf="!slide.started"> <span> Starts in </span> {{slide.countDown.day}} Days {{slide.countDown.hours}}:{{slide.countDown.min}}:{{slide.countDown.sec}}</div>
+            </div>
+          </a>
+        </div>
+      </ngx-slick-carousel>
+    </div>
+</section>
+<!----------------------- slider end ------------------------------->
+<section class="conference-screen-2" style="background: #efefef;">
+  <div class="container">
+    <div class="row filter-stories">
+      <div class="col-sm-12">
+        <app-filter-stories (filter)="applyFilter($event)"></app-filter-stories>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+         <h3 style="color: #000;font-family: geomanist_regularregular,sans-serif;"> 
+          {{eventListHeading}} 
+        </h3> 
+      </div>
+    </div>
+    <!-----------------------------recent story card start  --------------------------------->
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let stories of mutiple_stories_array">
+          <a [routerLink]="('/activity/preview/')+stories.id" title="{{ stories?.caption_plain }}" style="text-decoration: none;">
+          <div class="col-sm-12 well main-form draft-card-pending">
+            <!------------------------------------ image GALLERY start--------------------------------------->
+              
+              <div *ngFor="let images of stories.image_array;let x=index;">
+                  <!------------------------------------ SINGLE IMAGE GALLERY --------------------------------------->
+                  <div class="img-container-home" *ngIf="stories.image_array.length==1 && x==0">
+                      <img src="{{images.image_src}}">
+                  </div>
+                  <!------------------------------------ SINGLE IMAGE GALLERY END--------------------------------------->
+                  <!------------------------------------ TWO IMAGE GALLERY --------------------------------------->
+                  <div class="img-container2-home" *ngIf="stories.image_array.length==2 && x==1">
+                      <div class="leftcolumn-home">
+                          <img src="{{stories.image_array[x-1].image_src}}">
+                      </div>
+                      <div class="rightcolumn-home">
+                          <img src="{{stories.image_array[x].image_src}}">
+                      </div>
+                  </div>
+                  <!------------------------------------ TWO IMAGE GALLERY END--------------------------------------->
+                  <!------------------------------------ THREE IMAGE GALLERY --------------------------------------->
+                  <div class="img-container41-home" *ngIf="stories.image_array.length==3 && x==2">
+                      <div class="left-content-images1-home">
+                          <img src="{{stories.image_array[x-2].image_src}}">
+                      </div>
+                      <div class="right-content-images-home">
+                          <div class="rightcolumn1-home">
+                              <img src="{{stories.image_array[x-1].image_src}}">
+                          </div>
+                          <div class="rightcolumn2-home">
+                              <img src="{{stories.image_array[x].image_src}}">
+                          </div>
+                      </div>
+                  </div>
+                  <!------------------------------------ THREE IMAGE GALLERY END--------------------------------------->
+                  <!------------------------------------ FOUR IMAGE GALLERY --------------------------------------->
+                  <div class="img-container41-home" *ngIf="stories.image_array.length>=4 && x==3">
+                      <div class="left-content-images-home">
+                          <div class="leftcolumn1-home">
+                              <img src="{{stories.image_array[x-3].image_src}}">
+                          </div>
+                          <div class="leftcolumn2-home">
+                              <img src="{{stories.image_array[x-1].image_src}}">
+                          </div>
+                      </div>
+                      <div class="right-content-images-home">
+                          <div class="rightcolumn1-home">
+                              <img src="{{stories.image_array[x-2].image_src}}">
+                          </div>
+                          <div class="rightcolumn2-home">
+                              <img src="{{stories.image_array[x].image_src}}">
+                          </div>
+                      </div>
+                  </div>
+                  <!------------------------------------ FOUR IMAGE GALLERY END--------------------------------------->
+                </div>
+              <!------------------------------------ image GALLERY end --------------------------------------->
+              
+              <!------------------------------------ video GALLERY start--------------------------------------->
+              <div *ngIf="stories.image_array?.length==0">
+                  <div *ngFor="let video of stories.video_array;let x=index;">
+                      <div class="img-container-home" *ngIf="x==0">
+                          <video controls><source src="{{video.video_src}}" type="video/mp4"></video>
+                      </div>
+                  </div>
+              </div>
+              <!------------------------------------ video GALLERY END--------------------------------------->
+              <!------------------------------------ pdf GALLERY start--------------------------------------->
+              <div *ngIf="stories.image_array?.length==0 && stories.video_array?.length==0">
+                  <div *ngFor="let pdf of stories.pdf_array;let x=index;">
+                      <div class="img-container-home" *ngIf="x==0">
+                          <h1 style="text-align: center;">PDF DOCUMENT</h1>
+                      </div>
+                  </div>
+              </div>
+              <!------------------------------------ pdf GALLERY END--------------------------------------->
+              <div class="form-padding-title">
+                  <h4>
+                  <span class="story-header-home" [innerHTML]="stories?.caption_plain" style="word-break: break-all;"> </span>
+                  </h4>
+                  <div class="info">
+                      <i class="fa fa-calendar-o"></i>
+                      {{stories?.durations[0].utcStart | date:'fullDate'}}
+                  </div>
+              </div>
+              <div class="footer-padding-bottom">
+                <em class="capitalize" *ngIf="stories?.category?.name" style="float:left;font-size:16px;font-weight: bold;"> {{stories?.category.name | slice:0:70}} </em>
+                <span class="capitalize" class="capitalize" *ngIf="stories?.veneus?.length >0" style="float:right;"> {{ stories?.veneus[0].city| slice:0:70}} </span>
+              </div>
+          </div>
+          </a>
+      </div>
+      <!-- <div class="no-events-found" *ngIf="mutiple_stories_array?.length==0">
+        <h3>No events found for this location</h3>
+      </div> -->
+    </div>
+    <div class="row" *ngIf="hasMoreStories">
+      <div class="col-sm-12 text-center" style="margin-bottom:10px;">
+        <input type="button" class="more-button" (click)="loadMoreStories()" value="More Events" />
+        <br>
+      </div>
+    </div>
+    <div *ngIf="!hasMoreStories" class="no-more-stories-msg text-center" style="margin-bottom:10px;">
+      <div> - - - </div>
+      {{mutiple_stories_array.length? "There are no more events" : "You do not have any" + " events"}}
+    </div>
+    <!-----------------------------recent story card end --------------------------------->
+  </div>
+  <div #story_content style="display:none" aria-hidden="true"></div>
+</section>
+
+<section class="white-background-content" style="display:none;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h2 style="color:rgba(49,50,51,1);line-height: 1.5;"> Connect, Share, Showcase and even get Funded </h2>
+        <br>
+        <p><span class="patteren-1">
+            Participate in the largest startup event of the year. Every year the great startup conference has grown in numbers and this is our biggest event yet. We have got the CEO of the world’s most valued company to give the keynote speech. Can’t get bigger than this.
+        </span></p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-4 text-center image-corn">
+        <img src="assets/images/events/lightbulb.png" />
+        <h3 style="color:rgba(49,50,51,1);"> Learn from experts </h3>
+        <p> Get started swiftly & easily by importing a demo of your choice in a single click. </p>
+      </div>
+      <div class="col-sm-4 text-center image-corn">
+        <img src="assets/images/events/share.png" />
+        <h3 style="color:rgba(49,50,51,1);"> Network with Influencers </h3>
+        <p> Over 30 quality professionally designed pre-built website concepts to choose from. </p>
+      </div>
+      <div class="col-sm-4 text-center image-corn">
+        <img src="assets/images/events/wifi-signal.png" />
+        <h3 style="color:rgba(49,50,51,1);"> Share your Ideas </h3>
+        <p> Build your website using a fully visual interface, using our revolutionary page builder. </p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-6">
+        <img src="assets/images/events/conf-waiting-for.jpg" class="img-responsive"/>
+      </div>
+      <div class="col-sm-6">
+          <h1 style="color:rgba(49,50,51,1);line-height: 1.5;">
+              The conference that everyone is waiting for 
+          </h1>
+          <p><span class="patteren-1">
+              Exponent WordPress theme is insanely flexible and amazingly easy to use. This alone would be enough for a 5 star rating. On top of a great tool is even better customer support. Get started swiftly & easily by importing a demo of your choice in a single click. 
+          </span></p>
+          <br>
+          <span class="register-button"> RESERVE YOUR SEAT </span>
+      </div>
+    </div>
+  </div>
+  <br><br>
+</section>
+<section class="conference-screen-speaker" *ngIf="!logged_status">
+  <div class="col-sm-6 col-md-5 col-lg-6 col-xs-12" style="padding: 0;">
+    <div class="transparent-background" style="background:url('assets/images/banner/Conference-Seminar.jpeg') no-repeat;background-position: center center;background-repeat: repeat;background-attachment: scroll;background-size: cover;">
+      <!--  -->
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-7 col-lg-6 col-xs-12" style="padding: 0;">
+    <div class="blue-background-screve">
+     <div class="quote-content">
+       <h2> <i class="fa fa-quote-right" aria-hidden="true"></i> </h2>
+       <p style="text-indent: 50px;text-align: justify;">
+        <span class="patteren-1" style="color:#fff;">
+          <section>
+            <div class="slider-text-home">
+              <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div ngxSlickItem *ngFor="let slidecomment of commentSlider;" class="slide">
+                    <div style="background: transparent;">
+                     {{ slidecomment }}  
+                    </div>
+                </div>
+              </ngx-slick-carousel>
+            </div>
+          </section>        
+      </span>
+    </p>
+        <!-- <ul class="user-list">
+          <li style="margin-bottom:10px;">
+              <span class="media-left">
+                  <span><img class="media-object pic-image-default" src="assets/images/writer.jpg"> </span>
+              </span>
+              <span style="line-height:30px;font-size:20px;font-weight: 600;"> Dr. Aravind Mallik (Hons)<br>
+                TEDx Speaker, Eduventor, Award Winning Management Academician </span>
+          </li>
+      </ul> -->
+     </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="white-background-content" *ngIf="!logged_status">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <br><br>
+        <h2 style="color:rgba(49,50,51,1);line-height: 1.5;"> Sponsors </h2>
+        <p><span class="patteren-1">
+            The generosity of these companies that have made this event happen. A big round of applause
+        </span></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/glogo.svg" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/hooli.svg" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/firefit.png" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/exp-logo-dark.svg" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+    </div>
+    <br>
+    <div class="row"> 
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/envato-small.png" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/hexa-small.png" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/connect-logo.png" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+      <div class="col-sm-3 text-center image-corn">
+        <img src="assets/images/events/drop-logo.png" class="img-responsive" width="150px" style="margin: 0 auto;"/>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+          <span class="register-button"> BECOME A SPONSOR</span>
+      </div>
+    </div>
+  </div>
+  <br><br>
+</section> -->
+<!------------------------------------- CONFERENCE SCREEN ------------------------------------->
+<!-- footer -->
+<app-footer></app-footer>
+<!-- footer end -->
+  <!----------------------------------pop up add  Modal ------------------------------>
+<div class="modal fade" id="signUpTypeModal" role="dialog">
+    <div class="modal-dialog">
+        <!-------------- Modal content start -------------------->
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h2 style="text-align:center;font-weight:500;"> Which best describes you? </h2>
+          </div>
+          <div class="modal-body" style="padding:0px 40px 20px 40px">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="box-part text-center" [routerLink]="[ '/signup']" [queryParams]="{type: 'Organizer'}" data-dismiss="modal" style="cursor:pointer;">
+                  <img src="assets/images/events/society.jpg"  class="popup-blog-image">
+                  <div class="title">
+                    <h2 style="color:#DB5A3C"> Event Organizer </h2>
+                  </div>
+                  <p> Signup as a Event Organizer Head. 
+                      You will have all the Privileges to Create, 
+                      Organize, Schedule, track and to do Write Up on Events. </p>
+                </div>
+              </div>	 
+              <div class="col-sm-6">
+                <div class="box-part text-center" [routerLink]="[ '/signup']" [queryParams]="{type: 'user'}" data-dismiss="modal" style="cursor:pointer;">
+                  <img src="assets/images/events/user1.jpg"  class="popup-blog-image" >
+                  <div class="title">
+                      <h2 style="color:#0084A5"> Event Attendee </h2>
+                  </div>
+                  <p> You can search hosted events, Purchase tickets for paid events.
+                      Intimate the organize for limited free events.  </p>
+                </div>
+              </div>
+            </div>   
+            <div style="text-align:center;">Choose Event Organizer if you are both of the above.</div> 
+          </div>  
+        </div>
+        <!-------------- Modal content end ---------------------->
+    </div>
+  </div>
+    <!---------------------------------------pop up  Modal end -------------------------------------->
+    <div #story_header_content id="story_header_content" style="display:none"></div>
+
+
+<!--------------------------   search categories popup start ------------------------>
+<div class="search-category-popup" id="search_popup" style="display:none;">
+  <app-search (close)="pophoverfunction()"></app-search>
+</div>
+<!--------------------------   search categories popup end ------------------------>

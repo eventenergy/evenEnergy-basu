@@ -1,0 +1,34 @@
+<div class="row" style="margin-bottom:15px;">
+  <div class="col-sm-12">
+      <h3> Event </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngIf="student_class_array?.length==0">
+    <a title="No Class Found">
+      <div class="col-sm-12 create-card">
+        <div class="invite-box"> 
+            +
+        </div>
+        No Event
+      </div>
+    </a>
+  </div>
+  <ng-container *ngFor="let classroom of student_class_array">
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+      <div class="col-sm-12 border-box">
+        <span style="cursor:pointer" title="class">
+        <div *ngIf="classroom.staticDpImg"><img [src]="classroom.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></div>
+        <div *ngIf="!classroom.staticDpImg && classroom.imgName" class="bc-bg">{{classroom.imgName}}</div>
+        </span>
+        <div class="cont-right">
+          <div id="textbox">
+            <span class="header-name" *ngIf="classroom.name">{{classroom.name}}</span>
+              <br><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

@@ -1,0 +1,281 @@
+<!-- <div class="navdiv navbar-fixed-top" style="z-index:2">
+    <ul style="cursor: pointer;">
+        <li *ngFor="let links of nav_links" (click)=this[links.click](links.click_params,links.click_params1)>
+            <a>{{links.text}}</a>
+        </li>
+    </ul>
+</div> -->
+<!-- <div class="flex-content top-navbar navbar-fixed-top">
+    <div class="demo-class">
+        <a routerLink="/" style="text-decoration: none;" title="Home"> <span class="logo-menu-preview"> EventEnergies </span> </a>
+    </div>
+    <ul>
+        <li *ngFor="let links of nav_links" (click)=this[links.click](links.click_params,links.click_params1)>
+            <a style="cursor: pointer;">{{links.text}}</a>
+        </li>
+    </ul>
+</div> -->
+
+<app-main-navbar></app-main-navbar>
+<div class="container" *ngFor="let story of story_array">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="slider-image" *ngFor="let images of multiple_file_array;" style="background:#efefef;">
+              <ng-container *ngIf="images.type=='image_file' && images.image_number == 1">
+                <img  class="img-responsive center-block" [src]="images.image_src" />
+              </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="detail-events-fixed">
+                <div class="event-content">
+                    <h3 *ngIf="story.caption" [innerHTML]="story.caption" style="white-space: normal;"></h3>
+                    <span *ngFor="let duration of story.duration;let i=index">
+                        <ng-container *ngIf="i == 0 && duration.utcStart && duration.utcEnd">
+                            <!-- <i class="fa fa-calendar"></i> {{duration.utcStart | date:"fullDate" }}
+                            {{duration.utcStart | date:"shortTime" }} to {{duration.utcEnd | date:"fullDate" }}
+                            {{duration.utcEnd | date:"shortTime" }}
+                            {{(duration.timeZone && duration.timeZone.name ? duration.timeZone.name : '')}} -->
+                            <table class="address-class-venue">
+                                <tr>
+                                    <td style="width:20px;" valign="top"> <i class="fa fa-calendar-o"></i> </td>
+                                    <td> {{duration.utcStart | date:"fullDate" }}  {{duration.utcStart | date:"shortTime" }} to {{duration.utcEnd | date:"fullDate" }}  {{duration.utcEnd | date:"shortTime" }} {{(duration.timeZone && duration.timeZone.name ? duration.timeZone.name : '')}} </td>
+                                </tr>
+                            </table>
+                        </ng-container>
+                    </span>
+                    <p *ngFor="let venue of story.veneus;let i=index">
+                        <ng-container *ngIf="i == 0">
+                            <!-- <i class="fa fa-map-marker"></i> {{(venue.name ? venue.name : '' ) + " " + (venue.address ? venue.address : '') + " " + (venue.addressSecondary ? venue.addressSecondary : '') + " "+ (venue.city ? venue.city : '') + " "+ (venue.state
+                            ? venue.state : '') + " "+ (venue.country ? venue.country : '') + " "+ (venue.pincode ? venue.pincode : '')}}
+                         -->
+                        <table class="address-class-venue" >
+                            <tr>
+                                <td style="width:20px;" valign="top"> <i class="fa fa-map-marker"></i> </td>
+                                <td> {{(venue.name ? venue.name : '' ) + " " + (venue.address ? venue.address : '') + " " + (venue.addressSecondary ? venue.addressSecondary : '') + " "+ (venue.city ? venue.city : '') + " "+ (venue.state ? venue.state : '') + " "+ (venue.country ? venue.country : '') +  " "+ (venue.pincode ? venue.pincode : '')}} </td>
+                            </tr>
+                        </table>
+                    </ng-container>
+                    </p>
+                    <span (click)="routeToGoogleMaps()" title="Direction" class="direction-border">Get Direction  <img src="assets/images/direction.png"> </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div #initScrollDest class="col-sm-12">
+            <h3> Registration Information </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-sm-12">
+            <div  class="attendee-forms-container">
+                <form #registrationForm>
+                    <ng-container *ngIf="currentOrderDetails">
+                        <ng-container *ngFor="let form of registrationFormArray.controls, let i = index">
+                            <div (click)="formDisplayArray[i]=!formDisplayArray[i]" class="ticket-name">
+                                <h4>Attendee ({{formNumberingArray[i]}}) [{{form.value.capacityName}}] </h4>
+                                <i [ngClass]="formDisplayArray[i]? 'fa fa-minus' : 'fa fa-plus'"></i>
+                            </div>
+                            <div [style.display]="formDisplayArray[i]? 'block': 'none'" class="form-contents">
+                                <div class="attendee-form" [formGroup]="form">
+                                    <label class="no-margin"> Full Name </label>
+                                    <input type="text" formControlName="fullName" class="popup-input-text" [ngClass]="{
+                                            'input-error': form.controls.fullName.touched && form.controls.fullName.invalid,
+                                            'input-success': form.controls.fullName.touched && form.controls.fullName.valid
+                                        }" />
+                                    <div *ngIf="form.controls.fullName.touched && form.controls.fullName.invalid"><small class="error-text">Name is required</small></div>
+
+                                    <label> Email </label>
+                                    <input type="text" formControlName="email" class="popup-input-text" [ngClass]="{
+                                            'input-error': form.controls.email.touched && form.controls.email.invalid,
+                                            'input-success': form.controls.email.touched && form.controls.email.valid
+                                        }" />
+
+                                    <div *ngIf="form.controls.email.touched && form.controls.email.errors?.required">
+                                        <small class="error-text">Email
+                                            is required</small>
+                                    </div>
+                                    <div *ngIf="form.controls.email.touched && form.controls.email.invalid && !(form.controls.email.errors?.required)">
+                                        <small class="error-text">
+                                            Email not valid</small>
+                                    </div>
+
+                                    <label> Mobile </label>
+                                    <input type="tel" class="popup-input-text" formControlName="mobile" name="mobile_number" appCreationEvent (countryCode)="mobileNos[i]=$event" [formControl]='form.get("mobile")' [ngClass]="{
+                                                'input-error': form.controls.mobile.touched && form.controls.mobile.invalid,
+                                                'input-success': form.controls.mobile.touched && form.controls.mobile.valid
+                                            }" >
+
+                                    <!-- <ngx-intl-tel-input [cssClass]="'popup-input-text'" [onlyCountries]="['in', 'us', 'gb', 'es']"
+                                            [enableAutoCountrySelect]="true" [enablePlaceholder]="true" formControlName="mobile"
+                                            name="mobile_number"></ngx-intl-tel-input> -->
+                                    <!-- <div *ngIf="form.controls.mobile.touched && form.controls.mobile.errors.required"><small
+                                                class="error-text">Mobile is required</small></div> -->
+                                    <div *ngIf="form.controls.mobile.touched && form.controls.mobile.errors?.required"><small class="error-text">Mobile number is required</small></div>
+                                    <div *ngIf="form.controls.mobile.touched && form.controls.mobile.errors?.InvalidNumber && !form.controls.mobile.errors?.required"><small class="error-text">Mobile number is not valid</small></div>
+
+                                    <!-- <label> City </label>
+                                        <input type="text" class="popup-input-text" formControlName="city" />
+                                        <label> Company Name </label>
+                                        <input type="text" formControlName="cmpName" class="popup-input-text" />
+                                        <label> Designation </label>
+                                        <input type="text" formControlName="designation" class="popup-input-text" /> -->
+                                    <div class="form-ending-icons">
+                                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </ng-container>
+
+                    </ng-container>
+                </form>
+            </div>
+            <div *ngIf="currentOrderDetails.amount !== 0" class="row">
+                <div class="col-sm-12">
+                    <h3> Proceed to pay using </h3>
+                    <div class="attendee-forms-container">
+                        <label>
+                            <input type="radio" name='dutch' checked="checked" class="rd">
+                            <span> 
+                                <img src="assets/images/events/razor.png"> &nbsp;&nbsp; 
+                                <span> Debit / Credit / Netbanking / Wallet / Amex India / GPay </span>
+                            </span>
+                        </label><br>
+                        <!-- <label>
+                            <input type="radio" name='dutch' class="rd">
+                            <span> <img src="assets/images/events/ebc.png"> &nbsp;&nbsp; Debit / Credit / Netbanking /
+                                EMI </span>
+                        </label><br>
+                        <label>
+                            <input type="radio" name='dutch' class="rd">
+                            <span> <img src="assets/images/events/pay.png"> &nbsp;&nbsp; For Indian Payments only
+                            </span>
+                        </label><br>
+                        <label>
+                            <input type="radio" name='dutch' class="rd">
+                            <span> <img src="assets/images/events/strip.png"> &nbsp;&nbsp; International Payments
+                            </span>
+                        </label><br> -->
+                        <!-- <label>
+                            <input type="radio" name='dutch' class="rd">
+                            <span> <img src="assets/images/events/phone.png"> &nbsp;&nbsp; BHIM UPI / Debit / Credit /
+                                Wallet </span>
+                        </label><br>
+                        <label>
+                            <input type="radio" name='dutch' class="rd">
+                            <span> <img src="assets/images/events/amz.png"> &nbsp;&nbsp; Amazon Pay </span>
+                        </label> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <section *ngIf="registrationFormArray.length" class="no-padding submit-btn-holder">
+                        <button  title="Book ticket" (click)="submitForm()" type="button" class="btn btn-primary buy-button">Book Tickets</button>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="ticket-summary">
+                <!-- <div class="image-responsive-events" *ngFor="let images of multiple_file_array;">
+                        <ng-container *ngIf="images.type=='image_file' && images.image_number == 1">
+                            <img  class="img-responsive center-block" [src]="images.image_src" />
+                        </ng-container>
+                    </div> -->
+                <h3>Payment summay</h3>
+                <div class="ticket-summary-content" *ngIf="story_id">
+                    <div class="ticket-summary-line">
+                        <h5 class="no-margin">Event ID: {{story_id}}</h5> <button #editButton class="no-margin btn btn-primary" (click)="editOrderDetails(story_id); editButton.disabled = true"><i class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="ticket-summary-line" *ngIf="total_ticket_count">
+                        <h4 class="no-margin">No of tickets: </h4>
+                        <h2 class="no-margin">{{total_ticket_count}}</h2>
+                    </div>
+
+                    <ng-container *ngIf="ticket_information_details?.length > 0">
+                        <ng-container *ngFor="let ticket_information of ticket_information_details;">
+                            <div class="ticket-summary-line top-border">
+                                <h4 class="no-margin">Amount: </h4>
+                                <h4 class="no-margin">INR {{ticket_information.total_amount}}</h4>
+                            </div>
+                            <div class="ticket-summary-line top-border" *ngIf="ticket_information.gst">
+                                <h4 class="no-margin">GST: </h4>
+                                <h4 class="no-margin">INR {{ticket_information.gst}}</h4>
+                            </div>
+                            <div class="summary-border-bottom" *ngIf="ticket_information.internet_handling_fee_total">
+                                <div class="ticket-summary-line">
+                                    <h4 class="no-margin">Internet Handling Fees: 
+                                        <span (click)="showTaxBreakup=!showTaxBreakup" style="cursor:pointer">
+                                            &nbsp;&nbsp;<i [ngClass]="showTaxBreakup ? 'fa fa-minus' : 'fa fa-plus'"></i>
+                                                </span></h4>
+                                    <h4 class="no-margin">INR {{ticket_information.internet_handling_fee_total}}</h4>
+                                </div>
+                                <ng-container *ngIf="showTaxBreakup">
+                                    <div class="ticket-summary-line" *ngIf="ticket_information.payment_gateway_charges">
+                                        <h5 class="no-margin">Payment Gateway fee: </h5>
+                                        <h5 class="no-margin">INR {{ticket_information.payment_gateway_charges}}</h5>
+                                    </div>
+                                    <div class="ticket-summary-line" *ngIf="ticket_information.service_tax">
+                                        <h5 class="no-margin">Service Charge: </h5>
+                                        <h5 class="no-margin">INR {{ticket_information.service_tax}}</h5>
+                                    </div>
+                                    <div class="ticket-summary-line" *ngIf="ticket_information.GST_on_service_and_payment_charges">
+                                        <h5 class="no-margin">GST 18%: </h5>
+                                        <h5 class="no-margin">INR {{ticket_information.GST_on_service_and_payment_charges}}
+                                        </h5>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="ticket-summary-line">
+                                <h4 class="no-margin">Total Amount: </h4>
+                                <h4 class="no-margin">INR {{ticket_information.total_calculated_amount}} </h4>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                     Order will expires in
+                    <p style="color:#fe9200;font-size:18px;"> {{timeLeftMin}} Minutes : {{timeLeftSec}} Seconds </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+
+<br><br><br>
+
+
+<!-- <div class="modal fade" role="dialog" style="display:block;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p style="font-size:16px;color:#333"> You have unsaved changes! If you leave, your changes will
+                            be lost.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn custom-btn-close" value="Cancel" (click)="cancelstoryalert()">
+                <input type="button" class="btn custom-btn" value="Yes" (click)="canceleditstory()">
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div #story_content id="story_content" style="display:none"></div>
+
+<div #story_header_content id="story_header_content" style="display:none"></div>

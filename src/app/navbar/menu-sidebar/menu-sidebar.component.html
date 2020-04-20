@@ -1,0 +1,49 @@
+
+<div id="showMenu" style="color:#fff;font-weight:bold;font-size:16px;">
+    &#9776;&nbsp;Menu
+</div>
+  <!-- <div id="navigation-hover"></div> -->
+  <br>
+    <div id="navigation-menu" style="max-height: 100%;overflow-y:auto;" >
+      <!-- <div class="menu-selection">
+        <input type="text" placeholder="Search Event Activities"/>
+        <a routerLink="/" style="text-decoration: none;color:#fff;font-weight:bold;padding-left:5px;font-size:16px;"> EventEnergies </a> 
+      </div> -->
+      <!-------------------------Menu sidebar dynamic links start--------------------------->
+      <div style="border-bottom:1px solid #ccc;" *ngFor="let menu of menuLinks;let x=index;">
+        <div class="menu-selection-div" [id]="menu.real_id" (click)="openSubMenu($event, menu.id+'_'+x)" [routerLink]="menu.path ? [menu.path] : []" [routerLinkActive]="" [ngClass]="rla.isActive &&  menu.path ? 'active-class' : '' "  #rla="routerLinkActive" [routerLinkActiveOptions]="{exact: true}" style="padding-left:10px;padding-right:10px;outline: none;">
+          <div id="flex-content">
+            <table>
+              <tr>
+                <td class="profile-image-hide-mobile" valign="top" style="text-align:center;width:30px;">
+                  <!-- <div class="profile-text-name uppercase" *ngIf="!menu.staticDpImg && !menu.font_icon">{{menu.image_text}}</div> -->
+                  <!-- <div *ngIf="menu.staticDpImg"><img [src]="menu.staticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)"/></div> -->
+                  <div *ngIf="!menu.staticDpImg && menu.font_icon" [innerHTML]="menu.font_icon"></div>
+                </td>
+                <td style="font-size:15px;padding-left:10px;" class="capitalize">
+                  {{menu.text}}
+                </td>
+              </tr>
+            </table>
+            <div style="padding-right:10px;">
+                <i [ngClass]="menu.sub_menu?.length>0 ? 'fa fa-chevron-down' : 'fa fa-chevron-right'" class="icons-custom"></i>
+            </div>
+          </div>
+        </div>
+        <ul *ngIf="menu.sub_menu?.length>0" class="sub-menu collapse" [id]="menu.id+'_'+x" style="padding: 0;">
+            <li class="sub-menu-list" *ngFor="let submenu of menu.sub_menu;let y=index;" [routerLinkActive]="" [ngClass]="smrla.isActive &&  submenu.path ? 'active-class' : '' "  #smrla="routerLinkActive" [routerLinkActiveOptions]="{exact: true}" style="outline: none;">
+              <div class="flex-content" style="padding:5px 15px 5px 40px;outline: none;cursor: pointer;" (click)="openSubMenu($event, submenu.id+'_'+y)"  [routerLink]="submenu.path ? [submenu.path] : []" [queryParams]="{id: submenu.query_id}">
+                <span class="capitalize">{{submenu.text}}</span><span><i [ngClass]="submenu.sub_menu_1?.length>0 ? 'fa fa-chevron-down' : 'fa fa-chevron-right'"></i></span>
+              </div>
+              <ul *ngIf="submenu.sub_menu_1?.length>0" class="list-submenu-toggle collapse" [id]="submenu.id+'_'+y">
+                <li class="sub-menu-list-dropdown sub-menu-hover" *ngFor="let submenu1 of submenu.sub_menu_1;let y=index;" [routerLinkActive]="" [ngClass]="smrla.isActive && submenu1.path ? 'active-class' : '' "  #smrla="routerLinkActive" [routerLinkActiveOptions]="{exact: true}" style="outline: none;">
+                  <div class="flex-content" style="padding:5px 15px 5px 40px;outline: none;cursor: pointer;" (click)=this[submenu1.click](submenu1.user_id,submenu1.schoolId,submenu1.role_name,submenu1.action_type); [routerLink]="submenu1.path ? [submenu1.path] : []" >
+                    <span class="capitalize">{{submenu1.text}}</span><span><i class="fa fa-chevron-right"></i></span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+      </div>
+      <!-------------------------Menu sidebar dynamic links end--------------------------->
+    </div>

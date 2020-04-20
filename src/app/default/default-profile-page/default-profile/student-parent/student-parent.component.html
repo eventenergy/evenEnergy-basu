@@ -1,0 +1,41 @@
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Parent </h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngIf="parent_details_array?.length==0">
+      <a title="No Teacher Found">
+        <div class="col-sm-12 create-card">
+          <div class="invite-box"> 
+              +
+          </div>
+          No Parent Found
+        </div>
+      </a>
+    </div>
+    <ng-container *ngFor="let parent of parent_details_array">
+      <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+        <div class="col-sm-12 border-box">
+          <a style="cursor:pointer" title="parent" >
+          <!------------------user image upload --------------------->
+          <div *ngIf="parent.staticDpImg"><img [src]="parent.staticDpImg" (error)="updateDefaultImageUrl($event)" class="card-profile-image" alt=""></div>
+          <!------------------user image upload end--------------------->
+          <!-----------------------user name text  ----------------------->
+          <div *ngIf="!parent.staticDpImg && parent.imgName" class="bc-bg">{{parent.imgName}}</div>
+          <!-----------------------user name text  end----------------------->
+          </a>
+          <div class="cont-right">
+            <div id="textbox">
+              <span class="header-name">{{parent.firstName}} {{parent.lastName}}</span>
+                <br><br>
+            </div>
+            <span class="header-email">{{parent.email}}</span>
+            <br>
+            <span>{{parent.mobile}}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  
+  </div>

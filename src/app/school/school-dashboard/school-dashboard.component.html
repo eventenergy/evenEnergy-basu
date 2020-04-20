@@ -1,0 +1,68 @@
+<div class="dashboard-box dashboard-school-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row"> 
+                    <div class="col-sm-12 col-md-8 col-lg-9">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 col-lg-3 school-profile-image">
+                                <div class="school-profile-text">
+                                    <span class="text-name" *ngIf="school_details && !school_details.schoolStaticDpImg">{{school_details.school_name |  slice:0:1}}</span>
+                                </div>
+                                <!----------------- profile image --------------------->
+                                <div *ngIf="school_details && school_details.schoolStaticDpImg"><img [src]="school_details.schoolStaticDpImg" class="school-dashboard-profile-image" (error)="updateDefaultImageUrl($event)"/></div>
+                                <!----------------- profile image --------------------->
+                            </div>
+                            <div class="col-sm-12 col-md-8 col-lg-9">
+                                <div class="school-name-edit-right" *ngIf="school_details">
+                                    <h2 class="school-name-header"> {{ school_details.school_name ? school_details.school_name : '' }} <span *ngIf="school_details.school_id"  class="edit-button-school" [routerLink]="['/admin/organization/profile/edit']" [queryParams]="{ id: school_details.school_id }" > Edit </span></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="flex-content-navbar">
+                    <div class="flex-menu" title="Events"  #activity_rla="routerLinkActive" routerLinkActive="active-color" [routerLink]="['/admin/organization/activity']" >
+                        <span> Events </span>
+                        <div *ngIf="activity_rla.isActive" class="sp-active-bar"></div>
+                    </div>
+                    <!-- <div class="flex-menu" title="Class" #class_rla="routerLinkActive" routerLinkActive="active-color" [routerLink]="['/admin/organization/class']" [routerLinkActiveOptions]="{exact: true}" >
+                        <span> Events </span>
+                        <div *ngIf="class_rla.isActive" class="sp-active-bar"></div>
+                    </div> -->
+                    <div class="flex-menu" title="Members" #teacher_rla="routerLinkActive" routerLinkActive="active-color" [routerLink]="['/admin/organization/member']">
+                        <span> Members </span>
+                        <div *ngIf="teacher_rla.isActive" class="sp-active-bar"></div>
+                    </div>
+                    <!-- <div class="flex-menu" title="Student" #student_rla="routerLinkActive" routerLinkActive="active-color" [routerLink]="['/admin/organization/student']" [routerLinkActiveOptions]="{exact: true}"  >
+                        <span> Members </span>
+                        <div *ngIf="student_rla.isActive" class="sp-active-bar"></div>
+                    </div> -->
+                    <div class="flex-menu" title="Admin" #admin_rla="routerLinkActive" routerLinkActive="active-color" [routerLink]="['/admin/organization/admin']">
+                        <span> Admins </span>
+                        <div *ngIf="admin_rla.isActive" class="sp-active-bar"></div>
+                    </div>
+                    <!-- <div class="flex-menu" title="Sales Report" #learning_dmin_rla="routerLinkActive" routerLinkActive="active-color">
+                        <span> Sales Report </span>
+                            <div *ngIf="learning_dmin_rla.isActive" class="sp-active-bar"></div>
+                    </div>
+                    <div class="flex-menu" title="Stories" #stories_dmin_rla="routerLinkActive" routerLinkActive="active-color">
+                        <span> Stories </span>
+                            <div *ngIf="stories_dmin_rla.isActive" class="sp-active-bar"></div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dashboard-box-response">
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<br><br><br>

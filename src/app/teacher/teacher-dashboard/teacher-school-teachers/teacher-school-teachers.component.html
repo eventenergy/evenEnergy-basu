@@ -1,0 +1,39 @@
+<!-------------------------------------------approved teacher------------------------------->
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Subscribers </h3>
+        <!-- <h6>Total: {{school_teacher_array?.length}}</h6> -->
+    </div>
+</div>
+<!----------------------empty teacher ------------------>
+<div class="row" *ngIf="school_teacher_array?.length==0">
+    <div class="col-sm-12">
+        <div style="text-align: center;">
+            <h3 style="color:#fe9200;"> No Subscribers </h3>
+        </div>
+    </div>
+</div>
+<!----------------------empty teacher end------------------>
+
+<div class="row">
+    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12" *ngFor="let teacher_list of school_teacher_array;let x=index;">
+        <div class="col-sm-12 border-box">
+            <a [routerLink]="['/member/organization/member-profile']" [queryParams]="{ t_req_id: teacher_list.id, id: teacher_list.user.id }" title="click here to view teacher profile">
+                <!------------------user image upload --------------------->
+                <span *ngIf="teacher_list.user.userProfile.staticDpImg"><img [src]="teacher_list.user.userProfile.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+                <!------------------user image upload end--------------------->
+                <!-----------------------user name text  ----------------------->
+                <div class="bc-bg" *ngIf="!teacher_list.user.userProfile.staticDpImg">{{teacher_list.user.userProfile.firstName | slice:0:1 }}{{ teacher_list.user.userProfile.lastName | slice:0:1}}</div>
+                <!-----------------------user name text  end----------------------->
+            </a>
+            <div class="cont-right">
+                <div id="textbox">
+                <span class="header-name capitalize" >{{teacher_list.user.userProfile.firstName ? teacher_list.user.userProfile.firstName : ''}}&nbsp;{{ teacher_list.user.userProfile.lastName ? teacher_list.user.userProfile.lastName : ''}}</span>
+                    <br><br>
+                </div>
+                <span class="header-email">{{teacher_list.user.email ? teacher_list.user.email : '' }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------------------------------approved teacher------------------------------->

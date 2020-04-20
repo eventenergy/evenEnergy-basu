@@ -1,0 +1,116 @@
+<div class="dashboard-responsive">
+    <div class="container">
+        <div class="col-lg-8 col-sm-12 col-xs-12 col-md-8">
+            <form id="child_form" #childAddForm="ngForm">
+            <div class="contnts">
+                <h3> Add a Speaker, Performer</h3>
+                <hr style="border:1px solid #ccc;">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-6">
+                            <label class="heading">First Name</label>
+                            <input type="text" #firstName="ngModel" required class="form-control" [class.is-invalid]="firstName.invalid && firstName.touched" name="firstName" [(ngModel)]="childModel.firstName" >
+                            <p class="text-danger" *ngIf="(firstName.invalid && firstName.touched) || first_name_error">First Name is required</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="heading">Last Name</label>
+                                <input type="text" #lastName="ngModel" required class="form-control" [class.is-invalid]="lastName.invalid && lastName.touched" name="lastName" [(ngModel)]="childModel.lastName" >
+                                <p class="text-danger" *ngIf="(lastName.invalid && lastName.touched) || last_name_error">Last Name is required</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                    <label class="heading">Birth Date*</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" name="birthDate" #birthDate="ngModel" readonly required [(ngModel)]="childModel.dob" (bsValueChange)="onChangeDatePickerStart($event)"  bsDatepicker [bsConfig]="datepickerConfig" />
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="text-danger" *ngIf="(birthDate.invalid && birthDate.touched) || dob_error">Birth Date is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="heading">Gender*</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <span class="radio-custom">
+                        <input type="radio" id="test1" name="gender" value="male" required  [(ngModel)]="childModel.male" #male="ngModel"  [checked]="childModel.male=='male'">
+                        <label for="test1">Boy</label>
+                        </span>
+                        <span class="radio-custom" style="padding-left:20px;">
+                        <input type="radio" id="test2" name="gender" value="female" required  [(ngModel)]="childModel.male" #female="ngModel" [checked]="childModel.male=='female'" >
+                        <label for="test2">Girl</label>
+                        </span>
+                        <p class="text-danger" *ngIf="gender_error">Gender is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="heading">Profile Image</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="profile-image-edit">
+                            <div class="block-controls">
+                                <a class="text-danger pull-right js-delete-block" *ngIf="dpImg_reader_status"  title="Remove" (click)="deleteProfileImage()"><i class="fa fa-close"></i></a>
+                                <!-- <a class="text-info pull-right js-edit-block" >Edit</a> -->
+                            </div>
+                            <!----------------- profile name --------------------->
+                            <div class="profile-text" style="float:left;text-transform: uppercase;" *ngIf="!dpImg_reader_status">{{childModel.firstName |  slice:0:1}}{{childModel.lastName |  slice:0:1}}</div>
+                            <!----------------- profile name end--------------------->
+
+                            <!---------------------- null profile image ----------->
+                            <!-- <img src="assets/images/null.png" style="border-radius:4px;width:140px;height:140px;float:left" /> -->
+                            <!------------------------null profile image end --------->
+                            <div *ngIf="dpImg_reader_status"><img [src]="dpImg_reader" (error)="updateDefaultImageUrl($event)"/></div>
+                            <!----------------- profile image --------------------->
+                            <!-- <div *ngIf="staticDpImg"><img [src]="staticDpImg"/></div> -->
+                            <!----------------- profile image --------------------->
+                        </div>
+                        <br>
+                        <span (click)="fileInput.click()"  class="profile-upload-image"> Add profile pic </span>
+                        <br><br>
+                        <span style="margin-left:20px;">Only jpg, png format</span>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="heading"> Email </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9" style="margin-bottom:10px;">
+                        <input [(ngModel)]="childModel.email" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  placeholder="Enter Performer's Email Address" type="email" required id="email" name="email" #useremail="ngModel" />
+                    </div>
+                    <!-- <div class="col-sm-3">
+                        <input type="button" class="btn btn-success verify-btn" value="verify email" />
+                    </div> -->
+                </div>
+                <div class="text-danger"  *ngIf="useremail.touched && useremail.invalid || email_error">
+                    <div *ngIf="useremail?.errors?.required">
+                        Email is required
+                    </div>
+                    <div *ngIf="useremail?.errors?.pattern">
+                    Email is invalid
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="btn-block pull-right">
+                            <a><input (click)="addChildDetails()"   type="button" class="btn pull-right custom-btn" value="Add & Invite Performer"></a>
+                            <input (click)="goBack()" type="button" class="btn pull-right custom-btn-close" value="CANCEL" style="margin-right:20px">
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+</div>
+<br><br><br>
+<input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".jpg,.png,.jpeg">

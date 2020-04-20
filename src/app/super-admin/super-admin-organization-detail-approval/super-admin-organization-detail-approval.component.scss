@@ -1,0 +1,28 @@
+.approval-details{
+    margin-left: -20px;
+}
+
+.approval-buttons{
+    margin-top: 30px;
+}
+
+.approval-details{
+    margin-left: -20px;
+}
+
+.detail-item{
+    display: inline-block;
+    margin: 0px 20px;
+    vertical-align: top;
+
+    &__heading{
+        margin: 0px;
+        font-size: 120%;
+        color: rgb(184, 184, 184);
+    }
+
+    &__detail{
+        margin: -5px 0 0 0;
+        font-size: 140%;
+    }
+}

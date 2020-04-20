@@ -1,0 +1,22 @@
+<div class="modal fade" role="dialog" id="cropper_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="crop-image-block" *ngIf="true">
+          <image-cropper
+            [imageChangedEvent]="imageFileEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1 / 1"
+            format="png"
+            (imageLoaded)="imageLoaded()"
+            (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel" (click)="cropperClosed.emit(true)">
+        <input type="button" class="btn custom-btn" value="Crop" (click)="cropImage()">
+      </div>      
+    </div>
+  </div>
+</div>

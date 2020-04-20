@@ -1,0 +1,38 @@
+<app-main-navbar></app-main-navbar>
+<section class="container">
+  <div class="row">
+    <h1>Past Approvals</h1>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Past Approvals List</h3>
+    </div>
+    <table class="table table-hover text-center table-bordered">
+      <thead>
+        <tr>
+          <th>Sl.No</th>
+          <th>Event Id</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Set Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events; let i = index">
+          <td>{{i+1}}</td>
+          <td>{{event.id}}</td>
+          <td>{{event.name}}</td>
+          <td>{{event.publishedStatus}}</td>
+          <td>
+            <select #sel name="priority" style="padding: 7px; border-radius: 5px">
+              <option [selected]="event.priorityStatus==priority" *ngFor="let priority of eventPriorities" [value]="priority" >{{priority}}</option>
+            </select>
+            <button class="btn btn-default" type="button" (click)="updatePriority(event, sel.value)" [disabled]="sel.value==event.priorityStatus">Change</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="text-align: center;">
+    <input type="button" class="more-button" (click)="getEvents()" value="Load More" />
+  </div>
+</section>

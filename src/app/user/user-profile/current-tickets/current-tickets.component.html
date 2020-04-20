@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="type-selection-container">
+      <a class="type-selection-link" [routerLink]="['../current']" routerLinkActive="type-selection-link-active">Current</a>
+      <a class="type-selection-link" [routerLink]="['../past']" routerLinkActive="type-selection-link-active">Past</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="row" style="overflow: hidden;">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin-bottom:20px;" *ngFor="let ticket of tickets">
+    <div class="ticket-card">
+      <div routerLink="/asset/order/{{ticket.id}}/payment/status" class="heading">
+        <div class="names">
+          <div class="event-name">{{ticket.eventName}}</div>
+          <div class="capacity-name">{{ticket.capName}}
+            <span class="more-capacities" *ngIf="ticket.totalCapacities>1">(+{{ticket.totalCapacities-1}} more)</span>
+          </div>
+
+        </div>
+        <div class="tick-id">
+          Order<span>#{{ticket.id}}</span>
+        </div>
+
+      </div>
+      <div class="location">
+        <i class="fa fa-map-marker"></i>
+        <span>{{ticket.venue}}</span>
+      </div>
+      <div class="content">
+        <div class="time">
+          <span>Starts On</span>
+          <span>{{ticket.utcStart | date:'mediumDate'}}</span>
+          <span>{{ticket.utcStart | date:'shortTime'}}</span>
+        </div>
+        <div class="qty">
+          <span>Quantity</span>
+          <span>{{ticket.totalTickets}}</span>
+        </div>
+        <div class="amount">
+          <span>Amount</span>
+          <span>{{ticket.amount}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 text-center" style="margin-bottom:10px;">
+      <div *ngIf="loadingTickets" class="simple-loader"></div>
+    </div>
+  </div>
+  <div *ngIf="!loadingTickets" class="row right-box-padding">
+    <div class="col-sm-12 text-center">
+      <input *ngIf="hasMoreTickets" type="button" class="more-button-preview" (click)="loadTickets()"
+        value="More Tickets"/>
+        <div *ngIf="!hasMoreTickets" class="no-more-tickets-msg">
+          <div> - - - </div>
+          {{tickets.length? "There are no more tickets" : "You do not have any" + " tickets"}}
+        </div>
+      <br>
+    </div>
+  </div>
+</div>

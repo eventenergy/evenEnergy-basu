@@ -1,0 +1,175 @@
+<!----------------------------------------------pending teacher approval------------------------------->
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Members </h3>
+    </div>
+</div>
+<!----------------------empty teacher ------------------>
+<!-- <div class="row" *ngIf="pending_teacher_array?.length==0">
+    <div class="col-sm-12">
+        <div style="text-align: center;">
+            <h3 style="color:#fe9200;">No teachers request found</h3>
+        </div>
+    </div>
+</div> -->
+<!----------------------empty teacher end------------------>
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+        <span  title="Invite teacher" style="cursor: pointer;" (click)="openTeacherInviteModal()">
+            <div class="col-sm-12 create-card">
+                <div class="invite-box">
+                    +
+                </div>
+                    Invite to be Members
+            </div>
+        </span>
+    </div>    
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let pending_list of pending_teacher_array;let x=index;">
+        <div class="col-sm-12 border-box">
+            <!------------------user image upload --------------------->
+            <span *ngIf="pending_list.user.userProfile.staticDpImg"><img [src]="pending_list.user.userProfile.staticDpImg" (error)="updateDefaultImageUrl($event)" class="card-profile-image" ></span>
+            <!------------------user image upload end--------------------->
+            <!-----------------------user name text  ----------------------->
+            <div class="bc-bg uppercase" *ngIf="!pending_list.user.userProfile.staticDpImg"> {{pending_list.user.userProfile.firstName | slice:0:1 }} </div>
+            <!-----------------------user name text  end----------------------->
+            <div class="cont-right">
+                <h4 class="header-name">{{pending_list.user.userProfile.firstName ? pending_list.user.userProfile.firstName : ''}}&nbsp;{{ pending_list.user.userProfile.lastName ? pending_list.user.userProfile.lastName : ''}}</h4>
+                <span class="header-email">{{pending_list.user.email ? pending_list.user.email : '' }}</span>
+            </div>
+            <div class="accept-buttons">
+                <input type="button" class="btn btn-primary pull-left" (click)="approveTeacherRequest(pending_list.user.id,pending_list.school.id,x)" value="Accept" />
+                <input type="button" class="btn btn-danger pull-right" (click)="rejectTeacherRequest(pending_list.user.id,pending_list.school.id,x)" value="Reject" />
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let teacher_list of school_teacher_array;let x=index;">
+        <div class="col-sm-12 border-box">
+            <a [routerLink]="['/admin/organization/member-profile']" [queryParams]="{ t_req_id: teacher_list.id, id: teacher_list.user.id }" style="cursor: pointer;" title="click here to view member profile">
+                <!------------------user image upload --------------------->
+                <span *ngIf="teacher_list.user.userProfile.staticDpImg"><img [src]="teacher_list.user.userProfile.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+                <!------------------user image upload end--------------------->
+                <!-----------------------user name text  ----------------------->
+                <div class="bc-bg uppercase" *ngIf="!teacher_list.user.userProfile.staticDpImg"> {{teacher_list.user.userProfile.firstName | slice:0:1 }} </div>
+                <!-----------------------user name text  end----------------------->
+            </a>
+            <div class="cont-right">
+                <h4 class="header-name">
+                    {{teacher_list.user.userProfile.firstName ? teacher_list.user.userProfile.firstName : ''}}&nbsp;{{ teacher_list.user.userProfile.lastName ? teacher_list.user.userProfile.lastName : ''}}</h4>
+                <span class="header-email">{{teacher_list.user.email ? teacher_list.user.email : '' }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!----------------------------------------------pending teacher approval end------------------------------->
+<div class="row" *ngIf="pending_teacher_array?.length == 0">
+    <div class="col-sm-12 text-center">
+        <h3> No Members </h3>
+    </div>
+</div>
+<!-------------------------------------------approved teacher------------------------------->
+<!-- <div class="user-request-school">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3> All Teachers </h3>
+            <h6>Total: {{school_teacher_array?.length}}</h6>
+        </div>
+    </div>
+    <div class="row" *ngIf="school_teacher_array?.length==0">
+        <div class="col-sm-12">
+            <div style="text-align: center;">
+                <h3 style="color:#fe9200;">No teachers found</h3>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-------------------------------------------approved teacher------------------------------->
+
+<!----------------------------------pop up add teacher Modal ------------------------------>
+<div class="modal fade" id="teacher_invite_modal" role="dialog" #teacherInviteModal>
+    <form id="teacher_invite_form" #teacherInviteForm="ngForm">
+    <div class="modal-dialog">
+        <!-------------- Modal content start -------------------->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Membership Invite </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row control-group">
+                    <div class="col-sm-4">
+                        <label class="control-label">Email*</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input [(ngModel)]="teacherInviteEmail" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  placeholder="Enter Email Address" type="email" required id="teacher_invite_email" name="teacher_invite_email" #teacher_invite_email="ngModel">
+                        <div class="error-mez" *ngIf="teacher_invite_email.touched && teacher_invite_email.invalid">
+                            <div *ngIf="teacher_invite_email?.errors?.required">
+                            Email is required
+                            </div>
+                            <div *ngIf="teacher_invite_email?.errors?.pattern">
+                            Email is invalid
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row control-group">
+                    <div class="col-sm-4">
+                        <label class="control-label">Message (optional)</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <textarea class="text-area-mez-teacher" placeholder="Include an optional message in your question"  [(ngModel)]="teacherInviteRegistrationMessage" name="teacher_invite_registration_msg"></textarea>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="modal-footer">
+                <div class="btn-block pull-right">
+                    <input type="submit" class="btn pull-right custom-btn" value="SEND INVITE" (click)="sendTeacherInvite()" style="margin-right:10px">
+                    <input type="button" class="btn pull-right custom-btn-close" data-dismiss="modal"  value="CANCEL" style="margin-right:20px">
+                </div>
+            </div>
+        </div>
+        <!-------------- Modal content end ---------------------->
+    </div>
+    <!---------------------------------------pop up add teacher Modal end -------------------------------------->
+    </form>
+</div>
+<div class="row" style="display:none;">
+        <div class="col-lg-4 col-sm-12 col-md-6">
+            <div class="col-sm-12 border-box">
+            <!------------------usetr image upload --------------------->
+            <!-- <img src="assets/images/ffa.jpg" style="width:170px;height:170px;float:left" alt="basavakumar sg"> -->
+            <!------------------user image upload end--------------------->
+            <!-----------------------user name text  ----------------------->
+            <div class="bc-bg">BS</div>
+            <!-----------------------user name text  end----------------------->
+            <div class="cont-right">
+            <div id="textbox">
+                <span class="header-name">basavakumar sg</span>
+                <br><br>
+                <span class="dropdown">
+                <a style="cursor:pointer;" data-toggle="dropdown" class="dropdown-toggle"><b class="caret" style="border-width:8px;"></b></a>
+                <ul class="dropdown-menu dropdown-menu-right" style="margin-top:-10px;cursor:pointer;">
+                    <li><a>Make admin</a></li>
+                    <li><a>Turn on story approval</a></li>
+                    <li><a>Remove</a></li>
+                </ul>   
+                </span>
+            </div>
+            <span class="header-email">basavakumar.sg@sanradiance.com</span>
+            </div>
+            <!-----------------email pending -------------------------->
+            <div class="pending-email-verify">
+                <div id="textbox">
+                    <div class="hover-color">
+                        Pending...
+                    </div>
+                    <div class="hover-color" style="cursor:pointer;float:right">
+                        <span>Resend</span>
+                    </div> 
+                </div>
+            </div>
+            <!-----------------email pending -------------------------->
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,39 @@
+<div class="row" style="margin-bottom:15px;">
+  <div class="col-sm-12">
+      <h3> Subscribers </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngIf="class_teacher_array?.length==0">
+    <a title="No Teacher Found">
+      <div class="col-sm-12 create-card">
+        <div class="invite-box"> 
+            +
+        </div>
+        Add Subscribers
+      </div>
+    </a>
+  </div>
+  <ng-container *ngFor="let teacher of class_teacher_array">
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+      <div class="col-sm-12 border-box">
+        <span style="cursor:pointer" title="teacher">
+        <!------------------user image upload --------------------->
+        <div *ngIf="teacher.staticDpImg"><img [src]="teacher.staticDpImg" (error)="updateDefaultImageUrl($event)" class="card-profile-image" alt="class"></div>
+        <!------------------user image upload end--------------------->
+        <!-----------------------user name text  ----------------------->
+        <div *ngIf="!teacher.staticDpImg && teacher.imgName" class="bc-bg">{{teacher.imgName}}</div>
+        <!-----------------------user name text  end----------------------->
+        </span>
+        <div class="cont-right">
+          <div id="textbox">
+            <span class="header-name">{{teacher.firstName}} {{teacher.lastName}}</span>
+              <br><br>
+          </div>
+          <span class="header-email">{{teacher.email}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

@@ -1,0 +1,27 @@
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> About </h3>
+    </div>
+  </div>
+  
+  <div *ngIf="school_details && school_details.mobile">
+    Mobile: {{school_details.mobile}}
+  </div>
+  
+  <div *ngIf="school_details && school_details.email">
+    Email: {{school_details.email}}
+  </div>
+
+  <div *ngIf="school_details && school_details.website">
+    Website: {{school_details.website}}
+  </div>
+
+  <div *ngIf="school_details && school_details.address">
+    Address: {{school_details.address}}
+  </div>
+
+  <div *ngIf="school_details && school_details.about">
+    About: {{school_details.about}}
+  </div>
+
+  

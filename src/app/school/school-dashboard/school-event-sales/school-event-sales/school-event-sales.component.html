@@ -1,0 +1,21 @@
+<div class="row" style="margin-bottom:15px;">
+  <div class="col-sm-12">
+      <!-- <h3> Event#&nbsp;{{eventId}} &nbsp; <strong>>></strong> &nbsp; Sales </h3> -->
+      <h3>Sales Figures for event# {{this.eventId}}</h3>
+
+      <div *ngIf="!errorMessage">
+        <p>
+          Event Name: {{eventName}}
+        </p>
+
+        <div class="download-card">
+          <h4 class="download-card__heading">Download Invoice for the event</h4>
+          <button (click)="downlaodFile()" class="btn btn-success">Click Here</button>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-card">
+        {{errorMessage}}
+      </div>
+  </div>
+</div>

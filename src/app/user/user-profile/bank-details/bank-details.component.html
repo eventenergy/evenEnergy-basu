@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3> Bank Details </h3>
+  </div>
+  <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" *ngIf="register_bank_details.length == 0">
+    <a [routerLink]="['/user/profile/account']" title="Add bank details">
+      <div class="col-sm-12 create-card">
+          <div class="invite-box"> 
+              +
+          </div>
+          Add Bank Details
+        </div>
+      </a>
+  </div>
+  <div class="col-sm-12" *ngFor="let bankdetails of register_bank_details">
+    <div class="bank-details">
+      <input class="btn pull-right custom-btn" style="width: 60px;" [routerLink]="['/user/profile/account']" value="EDIT"><br>
+      <strong>Account Holder Name -</strong>  {{bankdetails.accountHolderName}} <br>
+      <strong>Account Number -</strong> {{bankdetails.accountNumber}} <br>
+      <strong>Bank Name -</strong> {{bankdetails.bankName}} <br>
+      <strong>Branch -</strong> {{bankdetails.branchName}} <br>
+      <strong>IFSC Code -</strong> {{bankdetails.ifscCode}} <br>
+      <strong>GST Number -</strong> {{bankdetails.gstNumber}} <br>
+      <strong>PAN Number -</strong>   {{bankdetails.panNumber}} <br>
+
+      <h3>Uploaded Documents</h3>
+      <div style="display: inline-block; max-width: 600px; vertical-align: top; margin-right: 5%;" *ngFor="let bankSnap of bankdetails.snaps">
+        <strong style="text-transform: capitalize">{{bankSnap.caption}}</strong>
+        <img style="width: 100%;" [src]="bankSnap.imgPath" alt="" srcset="">
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-lg-6" *ngFor="let snaps of register_bank_details.snaps">
+    <span *ngIf="snap.type=='IMAGE'"><img class="media-object " [src]="snap.imgPath"></span>
+    <span *ngIf="snap.type=='PDF'"><embed  [src]="snap.imgPath" type="application/pdf" width="100%" height="500px" /></span>
+  </div> -->
+</div>

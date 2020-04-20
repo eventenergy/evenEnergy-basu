@@ -1,0 +1,260 @@
+<app-main-navbar></app-main-navbar>
+<div class="dashboard-responsive-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="dashboard-header-name">{{this.draft_pending == 'draft' ? 'Draft Events':(this.draft_pending == 'pending'? ' Pending Events' : ' Approved Events')}} </h3>
+            </div>
+        </div>
+        <div class="row">
+            <!--------------------------- Draft card start ------------------------------------>
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let stories of mutiple_stories_array">
+                <a [routerLink]="('/activity/preview/')+stories.id" title="Event Preview" style="text-decoration: none;" >
+                <div class="col-sm-12 well main-form draft-card-pending">
+                    <!-- <a *ngIf="stories.delete_permission" (click)="deleteStoryPopup(stories.id,stories.text)" class="delete-darft-story-card" title="Delete story"><i class="fa fa-times fa-2x" style="color:red;" aria-hidden="true"></i></a> -->
+                    <!-- <a (click)="showEditStoryPopup(stories.id,stories.schoolId, stories.type, stories.userCreatedAt, stories.expireAt)" class="cursor-pointer" title="{{stories.status=='DRAFTED' ? 'Edit story' : 'Story'}}" style="text-decoration: none;"> -->
+                    <div *ngFor="let images of stories.image_array;let x=index;">
+                        <!------------------------------------ SINGLE IMAGE GALLERY --------------------------------------->
+                        <div class="img-container-draft" *ngIf="stories.image_array.length==1 && x==0">
+                            <img src="{{images.image_src}}">
+                        </div>
+                        <!------------------------------------ SINGLE IMAGE GALLERY END--------------------------------------->
+                        <!------------------------------------ TWO IMAGE GALLERY --------------------------------------->
+                        <div class="img-container2-draft" *ngIf="stories.image_array.length==2 && x==1">
+                            <div class="leftcolumn-draft">
+                                <img src="{{stories.image_array[x-1].image_src}}">
+                            </div>
+                            <div class="rightcolumn-draft">
+                                <img src="{{stories.image_array[x].image_src}}">
+                            </div>
+                        </div>
+                        <!------------------------------------ TWO IMAGE GALLERY END--------------------------------------->
+                        <!------------------------------------ THREE IMAGE GALLERY --------------------------------------->
+                        <div class="img-container41-draft" *ngIf="stories.image_array.length==3 && x==2">
+                            <div class="left-content-images1-draft">
+                                <img src="{{stories.image_array[x-2].image_src}}">
+                            </div>
+                            <div class="right-content-images-draft">
+                                <div class="rightcolumn1-draft">
+                                    <img src="{{stories.image_array[x-1].image_src}}">
+                                </div>
+                                <div class="rightcolumn2-draft">
+                                    <img src="{{stories.image_array[x].image_src}}">
+                                </div>
+                            </div>
+                        </div>
+                            <!------------------------------------ THREE IMAGE GALLERY END--------------------------------------->
+                            <!------------------------------------ FOUR IMAGE GALLERY --------------------------------------->
+                            <div class="img-container41-draft" *ngIf="stories.image_array.length>=4 && x==3">
+                                <div class="left-content-images-draft">
+                                    <div class="leftcolumn1-draft">
+                                        <img src="{{stories.image_array[x-3].image_src}}">
+                                    </div>
+                                    <div class="leftcolumn2-draft">
+                                        <img src="{{stories.image_array[x-1].image_src}}">
+                                    </div>
+                                </div>
+                                <div class="right-content-images-draft">
+                                    <div class="rightcolumn1-draft">
+                                        <img src="{{stories.image_array[x-2].image_src}}">
+                                    </div>
+                                    <div class="rightcolumn2-draft">
+                                        <img src="{{stories.image_array[x].image_src}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <!------------------------------------ FOUR IMAGE GALLERY END--------------------------------------->
+                        </div>
+                            <!------------------------------------ video GALLERY --------------------------------------->
+                            <div *ngIf="stories.image_array?.length==0">
+                                <div *ngFor="let video of stories.video_array;let x=index;">
+                                    <div class="img-container-draft" *ngIf="x==0">
+                                        <video controls><source src="{{video.video_src}}" type="video/mp4"></video>
+                                    </div>
+                                </div>
+                            </div>
+                            <!------------------------------------ video GALLERY END--------------------------------------->
+                            <!------------------------------------ video GALLERY --------------------------------------->
+                            <div *ngIf="stories.image_array?.length==0 && stories.video_array?.length==0">
+                                <div *ngFor="let pdf of stories.pdf_array;let x=index;">
+                                    <div class="img-container-draft" *ngIf="x==0">
+                                        <h1 style="text-align: center;">PDF DOCUMENT</h1>
+                                    </div>
+                                </div>
+                            </div>
+                                <!------------------------------------ video GALLERY END--------------------------------------->
+                            <div class="pending-tag"*ngIf="this.draft_pending== 'pending'">
+                                <span class="pending-tag-text">Pending</span>
+                            </div>
+                        <div class="form-padding">
+                           
+                            <h4>
+                            <span class="story-header" [innerHTML]="stories?.caption" style="word-break: break-all;"></span>
+                         </h4>
+                            <!-- <span class="story-header" [innerHTML]="stories?.caption_plain | slice:0:32" style="word-break: break-all;"> </span> -->
+                            <!-- <div *ngFor="let text of stories.text_array;let x=index;">
+                                <p style="word-break: break-all;" *ngIf="x==0" [innerHTML]="text?.text_data"></p>
+                            </div> -->
+                            <div class="info">
+                                <i class="fa fa-calendar-o"></i>
+                                {{stories?.durations[0]?.utcStart | date:'fullDate'}}
+                            </div>
+                        </div>
+                        <div class="footer-padding">
+                            <em class="capitalize" *ngIf="stories?.category?.name" style="float:left;font-size:16px;font-weight: bold;"> {{stories?.category.name | slice:0:70}} </em>
+                            <span class="capitalize" class="capitalize" *ngIf="stories?.veneus?.length >0" style="float:right;"> {{ stories?.veneus[0].city| slice:0:70}} </span>
+                        </div>
+                    <!-- <div class="time-date-content pull-right">
+                        <em> Saved 1 hour ago </em>
+                    </div> -->
+                    <!-- <div *ngIf="stories.status == 'DRAFTED'" class="draft-story-alert alert-pending">Draft Activites</div>
+                    <div *ngIf="stories.status == 'SUBMITTED'" class="pending-story-alert alert-pending">Pending Activites</div>
+                    <div *ngIf="stories.status == 'APPROVED'" class="approved-story-alert alert-pending">Approved Activites</div> -->
+                    <!-- </a> -->
+                </div>
+                </a>
+            </div>
+            <!--------------------------- Draft card end ------------------------------------>
+            <!------------------------------------- default draft card -------------------------------------------->
+            <!-- <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" >
+                <div class="col-sm-12 well main-form">
+                    <div class="img-container">
+                        <img src="assets/images/slide4.jpeg">
+                    </div>
+                    <div class="form-padding" style="margin-bottom: 10px;">
+                        <h3> Storytwinkle new story </h3>
+                    </div>
+                    <div class="draft-story-alert alert-pending">
+                        Storytwinkle story
+                    </div>
+                </div>
+            </div> -->
+            <!------------------------------------- default draft card end-------------------------------------------->
+        </div>
+        <div class="row" *ngIf="hasMoreStories">
+            <div class="col-sm-12 text-center" style="margin-bottom:10px;">
+                <input type="button" class="more-button" (click)="loadMoreStories()" value="More Events" />
+                <br>
+            </div>
+        </div>
+        <div *ngIf="!hasMoreStories" class="no-more-stories-msg text-center">
+            <div> - - - </div>
+            {{mutiple_stories_array.length? "There are no more events" : "You do not have any" + " events"}}
+        </div>
+
+        <!----------------------------- page loader gif image -------------------------->
+        <!-- <div class="row">
+            <div class="col-sm-12" style="text-align: center;font-size:16px;">
+                <span class="loading-more"><img src="assets/images/small-loader.gif"><i> loading more... </i></span>
+            </div>
+        </div> -->
+        <!----------------------------- page loader gif image end-------------------------->
+
+    </div>
+</div>
+
+<div #story_content style="display:none" aria-hidden="true"></div>
+
+
+
+  <!----------------------------------- Create story Pop-up start ----------------------->
+  <div class="modal fade" id="create_story_draft_popup" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Event Details </h4>
+            </div>
+            <div class="modal-body">
+              <div class="row" [ngClass]="{'disable-element': disable_select_school}">
+                <div class="col-sm-12">
+                    <label class="heading"> Select Chapter </label>
+                    <div class="school-list-card">
+                      <ul class="people-list-grid" style="padding: 0;">
+                        <li *ngFor="let school of story_school_array" [ngStyle]="{'background-color': school.isChecked ? '#ccc' : ''}">
+                            <span class="media-left" style="float:left;">
+                                <span *ngIf="!school.staticSchoolDpImg" class="media-object" style="width:25px;height:25px;background-color:#eee;color:#FE9200;border-radius: 100%;font-size:18px;text-align: center;line-height:25px">{{school?.name | slice:0:1}}</span>
+                                <span *ngIf="school.staticSchoolDpImg"><img class="media-object" [src]="school.staticSchoolDpImg" (error)="updateDefaultImageUrl($event)" style="width:25px;height:25px;border-radius: 100%;"></span>
+                            </span>
+                            <span style="line-height:25px;"> {{school.name}} </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <p class="error-mez" *ngIf="story_school_error_status"> Please select Chapter </p>
+                </div>
+              </div>
+              <div class="row" *ngIf="story_type_admin_parent_status">
+                <div class="col-sm-12">
+                    <label class="heading"> Type of Event </label>
+                    <br>
+                      <ul class="people-list-grid" style="padding: 0;">
+                        <li *ngFor="let story of story_type_array" (click)="storySelectStoryType(story.type)" [ngStyle]="{'background-color': story.isChecked ? '#337ab7' : ''}">
+                            <span style="padding:10px;">{{story.display}}</span>
+                        </li>
+                      </ul>
+                      <div class="col-sm-12" style="padding: 0;">
+                          <p class="error-mez" *ngIf="story_type_error_status"> Please select type of Event </p>
+                      </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row" *ngIf="story_date_status">
+                    <!-- <div class="col-sm-6">
+                    <label class="heading">Story Created Date</label>
+                    <input type="text" class="custom-input" id="story_created_date" placement="top" readonly required [(ngModel)]="user_story_created_date" (bsValueChange)="onChangeDatePickerStart($event, 'created')" bsDatepicker  [bsConfig]="datepickerConfig" name="user_story_created_date"/>
+                    <p class="error-mez" *ngIf="story_created_date_error_status"> Please select created date </p>
+                    </div> -->
+                    <div class="col-sm-6" *ngIf="story_expiry_date_status">
+                        <label class="heading">Event Date</label>
+                        <input type="text" class="custom-input" id="story_expiry_date"  placement="top" readonly required [(ngModel)]="user_story_expiry_date" (bsValueChange)="onChangeDatePickerStart($event, 'expiry')" bsDatepicker [bsConfig]="datepickerConfig" name="user_story_expiry_date"/>
+                        <p class="error-mez" *ngIf="story_expiry_date_error_status"> Please select expiry date </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="error-mez" *ngIf="story_creation_popup_error"> Something went wrong </p>
+              <button type="button" class="btn custom-btn-close" data-dismiss="modal"> Close </button>
+              <button type="button" class="btn custom-btn" (click)="saveStoryPopupDetails()"> Start Event Write Up </button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!------------------------------------- create Story Pop-up end---------------------------->
+<!----------------------------------- Alert message edit story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_edit_story_popup">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p style="font-size:16px;color:#333"> Would to like to edit the Event. </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+          <input type="button" class="btn custom-btn" value="Yes" (click)="editStory()">
+        </div>
+      </div>
+    </div>
+</div>
+<!----------------------------------- Alert message edit story popup end ------------------------------->
+<!----------------------------------- Alert message delete story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_story_popup">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p style="font-size:16px;color:#333"> Are you sure to delete the Event. </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+          <input type="button" class="btn custom-btn" value="Yes" (click)="deleteStory()">
+        </div>
+      </div>
+    </div>
+</div>
+<!----------------------------------- Alert message delete story popup end ------------------------------->

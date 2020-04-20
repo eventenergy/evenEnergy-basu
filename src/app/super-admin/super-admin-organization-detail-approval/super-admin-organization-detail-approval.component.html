@@ -1,0 +1,102 @@
+<app-main-navbar></app-main-navbar>
+<div class="container">
+  <div class="row">
+    <div class="col-12 detail-container">
+      <h2 class="detail-container__heading">Organization Detail</h2>
+      <div *ngIf="organization" class="approval-details">
+        <div class="detail-item">
+          <p class="detail-item__heading">Id</p>
+          <p class="detail-item__detail">{{organization.id}}</p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__heading">Name</p>
+          <p class="detail-item__detail">{{organization.name}}</p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__heading">Email</p>
+          <p class="detail-item__detail">{{organization.emailAddress}}</p>
+        </div>
+        <div class="detail-item">
+          <p class="detail-item__heading">Phone</p>
+          <p class="detail-item__detail">{{organization.mobNo}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 detail-container">
+      <h2 class="detail-container__heading">Organizers</h2>
+      <div *ngFor="let organizer of organizers; let x = index">
+        <div>{{x+1}})</div>
+        <div class="approval-details" style="margin-left:-10px">
+          <div class="detail-item">
+            <p class="detail-item__heading">Id</p>
+            <p class="detail-item__detail">{{organizer.id}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Name</p>
+            <p class="detail-item__detail">{{organizer.name}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Email</p>
+            <p class="detail-item__detail">{{organizer.email}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Mobile</p>
+            <p class="detail-item__detail">{{organizer.mobile}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 detail-container">
+      <h2 class="detail-container__heading">Organizer Bank Details</h2>
+      
+        <div *ngIf="bankDetails" class="approval-details">
+          <div class="detail-item">
+            <p class="detail-item__heading">Id</p>
+            <p class="detail-item__detail">{{bankDetails.id}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Account number</p>
+            <p class="detail-item__detail">{{bankDetails.accountNumber}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Account Holder Name</p>
+            <p class="detail-item__detail">{{bankDetails.accountHolderName}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Branch Name</p>
+            <p class="detail-item__detail">{{bankDetails.branchName}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">IFSC Code</p>
+            <p class="detail-item__detail">{{bankDetails.ifscCode}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">GST Number</p>
+            <p class="detail-item__detail">{{bankDetails.gstNumber}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">PAN Number</p>
+            <p class="detail-item__detail">{{bankDetails.panNumber}}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-item__heading">Account Type</p>
+            <p class="detail-item__detail">{{bankDetails.accountType}}</p>
+          </div>
+        </div>
+        <div *ngIf="bankDetails" class="col-12 detail-container">
+          <h2 class="detail-container__heading">Uploaded Bank Details</h2>
+          <div *ngFor="let snap of bankDetails.snaps" class="detail-item">
+            <p class="detail-item__heading">{{snap.caption}}</p>
+            <img style="max-width: 100%;" [src]="snap.imgPath">
+          </div>
+        </div>
+    </div>
+    <div class="col-12">
+      <div class="approval-buttons">
+        <button class="btn btn-success" (click)="markApprovedStats(organization, true)">Approve</button>
+        <button class="btn btn-danger" (click)="markApprovedStats(organization, false)"
+          style="margin-left: 20px;">Disapprove</button>
+      </div>
+    </div>
+  </div>
+</div>

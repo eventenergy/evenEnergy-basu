@@ -1,0 +1,122 @@
+.create-card {
+    border-radius:4px;
+    cursor:pointer;
+    border: 2px dashed #d1d8df;
+    margin-bottom: 30px;
+    height:170px;
+    text-align: center;
+    padding: 30px;
+}
+.create-card:hover{
+    background: #efefef;
+}
+.invite-box{
+    color: #d1d8df;
+    font-size: 140px;
+    line-height: 66px;
+    margin: 0 0 10px;
+}
+.border-box{
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.5);
+    height:170px;
+    border-radius:5px;
+    padding: 0;
+    margin-bottom:30px;
+    background: #ffffff;
+}
+.bc-bg{
+    background:#ffb6c1;
+    height:170px;
+    font-size:80px;
+    font-weight:500;
+    line-height: 170px;
+    color:#fff;
+    width:170px;
+    text-align: center;
+    float:left;
+    margin:0;
+    border-radius:5px 0 0 5px;
+}
+.cont-right{
+    margin-left:172px;
+    padding:5px 10px;
+}
+.header-name{
+    font-size:20px;
+    font-weight:500;
+    width: 100%;
+}
+.header-email{
+    font-size:15px;
+    font-weight: 500;
+    color:#337ab7;
+    word-wrap: break-word;
+}
+.hover-color{
+    color:#337ab7;
+    font-size:18px;
+    font-weight:500;
+}
+.border-box .pending-email-verify{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    background: #fffad6;
+    font-size: 14px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #687381;
+    width:100%;
+    padding: 7px 20px;
+}
+
+input[type="email"],textarea {
+    width:100%;
+    font-size:1em;
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    background:#FFFFFF;
+    height:40px;
+    padding:3px;
+    color: #495C69;
+    padding-left:10px;
+    box-shadow: none;
+  }
+  input[type="email"]:hover,textarea:hover {
+    border:1px solid #337ab7;
+  }
+  input[type="email"]:focus,textarea:focus {
+    border:1px solid #337ab7;
+  }
+  .error-mez{
+    color:#a94442;
+    font-size:14px;
+  }
+.control-label{
+    padding-top:10px;
+    font-size:16px;
+    font-weight:500;
+}
+.control-group{
+    margin-bottom: 25px;
+}
+.text-area-mez-teacher{
+    width:100%;
+    padding: 10px;
+    border-radius:4px;
+    resize: none;
+    resize: vertical;
+    min-height: 120px;
+    font-size: 16px;
+    font-weight: normal;
+}
+.accept-buttons {
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    bottom: 0;
+    line-height: 1.4;
+    padding: 8px 14px 8px 14px;
+    position: absolute;
+    text-shadow: none;
+    width: 100%;
+}

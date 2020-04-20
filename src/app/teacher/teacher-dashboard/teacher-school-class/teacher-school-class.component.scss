@@ -1,0 +1,69 @@
+// .create-card {
+//     border-radius:4px;
+//     cursor:pointer;
+//     border: 2px dashed #d1d8df;
+//     margin-bottom: 10px;
+//     height:170px;
+//     text-align: center;
+//     padding: 30px;
+// }
+// .create-card:hover{
+//     background: #efefef;
+// }
+// .invite-box{
+//     color: #d1d8df;
+//     font-size: 140px;
+//     line-height: 66px;
+//     margin: 0 0 10px;
+// }
+.border-box{
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.5);
+    height:170px;
+    border-radius:5px;
+    padding: 0;
+    margin-bottom:30px;
+    background: #ffffff;
+}
+.bc-bg{
+    background:#ffb6c1;
+    height:170px;
+    font-size:80px;
+    font-weight:500;
+    line-height: 150px;
+    color:#fff;
+    width:170px;
+    text-align: center;
+    float:left;
+    margin:0;
+}
+.cont-right{
+    margin-left:172px;
+    padding:5px 10px;
+}
+.header-name{
+    font-size:20px;
+    font-weight:500;
+}
+.header-email{
+    font-size:16px;
+    font-weight: 500;
+    color:#337ab7;
+    word-wrap: break-word;
+}
+.hover-color{
+    color:#337ab7;
+    font-size:18px;
+    font-weight:500;
+}
+.border-box .pending-email-verify{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    background: #fffad6;
+    font-size: 14px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #687381;
+    width:100%;
+    padding: 7px 20px;
+}

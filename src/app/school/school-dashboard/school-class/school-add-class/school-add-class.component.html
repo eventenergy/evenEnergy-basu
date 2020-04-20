@@ -1,0 +1,117 @@
+<!--------------------------- body ------------------------------------->
+<div class="dashboard-responsive">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12" style="padding-bottom: 20px;cursor: pointer;">
+        <a (click)="goBack()" class="back-href" style="text-decoration:none;"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+        &nbsp;&nbsp; Go Back</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="contnts">
+          <h3>Add a Event</h3>
+            <hr style="border:1px solid #ccc;">
+            <form id="">
+              <div class="row">
+                <div class="col-sm-8">
+                  <label class="heading">Event Name*</label>
+                  <input type="text"  #roomName="ngModel" required [class.is-invalid]="roomName.invalid && roomName.touched" name="roomName" [(ngModel)]="classModel.name" >
+                  <p class="text-danger" *ngIf="(roomName.invalid && roomName.touched) || room_name_error">Room Name field is required</p>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading">Event Image</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="profile-image-edit">
+                      <div class="block-controls">
+                          <a class="text-danger pull-right js-delete-block" *ngIf="dpImg_reader_status || classModel.defaultSnapId"  title="Remove" (click)="deleteProfileImage()"><i class="fa fa-close"></i></a>
+                          <!-- <a class="text-info pull-right js-edit-block" >Edit</a> -->
+                      </div>
+                      <!----------------- profile name --------------------->
+                      <div class="profile-text" style="float:left;text-transform: uppercase;" *ngIf="!staticDpImg && !dpImg_reader_status">{{ classModel.name |  slice:0:1}}</div>
+                      <!----------------- profile name end--------------------->
+                      
+                      <!---------------------- null profile image ----------->
+                      <div *ngIf="!staticDpImg && dpImg_reader_status"><img [src]="dpImg_reader" /></div>
+                      <!------------------------null profile image end --------->
+
+                      <!----------------- profile image --------------------->
+                      <div *ngIf="staticDpImg"><img [src]="staticDpImg" (error)="updateDefaultImageUrl($event)"/></div>
+                      <!----------------- profile image --------------------->
+                    </div>
+                  <br>
+                  <span (click)="fileInput.click()" class="profile-upload-image"> Add Event pic </span>
+                  <br><br>
+                  <span style="margin-left:20px;">Only jpg, png format</span>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading">Organizers, Sponsorers</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm-12 scroll-checkbox">
+                    <div class="over-scroll">
+                      <ul class="ler_tab" style="padding: 0;">
+                        <li *ngFor="let school_child_list of school_child_array;" (click)="selectChild(school_child_list.id)" [ngStyle]="{'background-color': school_child_list.isChecked ? '#bbcfe2' : '','color': school_child_list.isChecked ? '#ffffff' : ''}" title="{{school_child_list.isChecked ? 'Remove student' : 'Select student'}}">
+                            <span class="media-left" style="float:left;">
+                                <span class="media-object media-text" *ngIf="!school_child_list.staticDpImg">{{ school_child_list.firstName |  slice:0:1}}{{ school_child_list.lastName |  slice:0:1}}</span>
+                                <span *ngIf="school_child_list.staticDpImg"><img class="media-object media-image" [src]="school_child_list.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+                            </span>
+                            <span style="line-height: 30px;">{{school_child_list.firstName ? school_child_list.firstName : '' }} {{school_child_list.lastName ? school_child_list.lastName : '' }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading">Performers, Speakers</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm-12 scroll-checkbox">
+                    <div class="over-scroll">
+                      <ul class="ler_tab" style="padding: 0;">
+                        <li  *ngFor="let school_teacher_list of school_teacher_array;" (click)="selectTeacher(school_teacher_list.id)" [ngStyle]="{'background-color': school_teacher_list.isChecked ? '#bbcfe2' : '','color': school_teacher_list.isChecked ? '#ffffff' : ''}" title="{{school_teacher_list.isChecked ? 'Remove teacher' : 'Select teacher'}}">
+                          <span class="media-left" style="float:left;">
+                              <span class="media-object media-text" *ngIf="!school_teacher_list.staticDpImg">{{school_teacher_list.firstName | slice:0:1}}{{school_teacher_list.lastName | slice:0:1}}</span>
+                              <span *ngIf="school_teacher_list.staticDpImg"><img class="media-object media-image" [src]="school_teacher_list.staticDpImg" (error)="updateDefaultImageUrl($event)" ></span>
+                          </span>
+                          <span style="line-height: 30px;">{{school_teacher_list.firstName ? school_teacher_list.firstName : '' }} {{school_teacher_list.lastName ? school_teacher_list.lastName : '' }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br><br>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="btn-block pull-right">
+                      <input type="button" class="btn pull-right custom-btn" (click)="addClass()" value="SAVE">
+                      <input type="button" class="btn pull-right custom-btn-close" (click)="goBack()" value="CANCEL" style="margin-right:20px">
+                  </div>
+                </div>
+              </div>
+              <br>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".jpg,.png,.jpeg">

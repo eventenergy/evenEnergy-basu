@@ -1,0 +1,22 @@
+.animated-pop{
+    animation: highlight 1s linear, pop .2s;
+  }
+  
+  @keyframes pop{
+    from{
+      transform: scale(0);
+    }
+    to{
+      transform: scale(1);
+    }
+  }
+
+  @keyframes highlight{
+    0%{
+        outline: 1px solid red;
+    }
+    
+    100%{
+      outline: transparent; 
+    }
+  }

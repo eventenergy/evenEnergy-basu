@@ -1,0 +1,197 @@
+<!-- top nav bar  -->
+<nav class="navbar-fixed-top" style="background:#337ab7;padding: 7px;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a  routerLink="/" style="color:#fff;text-decoration: none;" title="Home"> 
+        <span style="color:#fff;font-weight:600;font-size:18px;">
+          <img class="logo-home" src="assets/images/events/logo.png" /> 
+          EventEnergies 
+        </span> 
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="signup-container-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2 class="signup-header"> Create your free EventEnergies account </h2>
+        <!-- <button (click)="createUsers()">Create 100users</button> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+      <form #signupForm="ngForm" (ngSubmit)="signUp(signupForm.form,type)">
+        <div class="col-sm-7 register-background">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading"> Name </label>
+                </div>
+                <div class="col-sm-6 mg-btm">
+                  <input type="text" [class.is-invalid]="firstname.invalid && firstname.touched" [(ngModel)]="first_name" placeholder="First Name" required name="first_name" #firstname="ngModel">
+                  <p class="error-mez" *ngIf="firstname.touched && firstname.invalid">First name is required</p>
+                </div>
+                <div class="col-sm-6 mg-btm">
+                  <input type="text" [class.is-invalid]="lastname.invalid && lastname.touched" [(ngModel)]="last_name" placeholder="Last Name" required name="last_name" #lastname="ngModel">
+                  <p class="error-mez" *ngIf="lastname.touched && lastname.invalid">Last name is required</p>
+                </div>
+              </div>
+              <!---------------------school register ------------------->
+              <div class="row" *ngIf="type=='Organizer'">
+                <div class="col-sm-12">
+                    <label class="heading"> Event organization name </label>
+                </div>
+                <div class="col-sm-12 mg-btm">
+                  <input type="text"  [class.is-invalid]="schoolName.invalid && schoolName.touched" [(ngModel)]="school_name" placeholder="Event Organization Name" required name="school_name" #schoolName="ngModel">
+                  <p class="error-mez" *ngIf="schoolName.touched && schoolName.invalid">Event organization name is required</p>
+                </div>
+              </div>
+              <!---------------------school register end------------------->
+              <!--------------------- User register ------------------------->
+              <div class="row">
+                <div class="col-sm-12">
+                  <label class="heading"> Contact phone number </label>
+                </div>
+                <div class="col-sm-12 mg-btm">
+                  <!-- [enablePlaceholder]="true" -->
+                  <ngx-intl-tel-input  [onlyCountries]="['au', 'us']" [preferredCountries]="['in']" [enableAutoCountrySelect]="true" [(ngModel)]="mobile_number" required name="mobile_number" #mobileNumber="ngModel"></ngx-intl-tel-input>
+                  <!-- [preferredCountries]="['in', 'au', 'us']" -->
+                 <div class="error-mez" *ngIf="mobileNumber.touched && mobileNumber.invalid">
+                    <div *ngIf="mobileNumber.errors.required">
+                      Mobile number is required
+                    </div>
+                    <div *ngIf="mobileNumber.invalid && !mobileNumber.errors.required">
+                      Mobile number is invalid
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--------------------- User register end---------------------->
+              <div class="row">
+                <div class="col-sm-12">
+                  <label class="heading"> Email </label>
+                </div>
+                <div class="col-sm-12 mg-btm">
+                  <input type="email" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [disabled]="disable_email_field" required class="form-control" [class.is-invalid]="email_address.invalid && email_address.touched" [(ngModel)]="email" placeholder="Email"  name="email" #email_address="ngModel">
+                  <div class="error-mez" *ngIf="email_address.touched && email_address.invalid">
+                      <div *ngIf="email_address?.errors?.required">
+                          Email is required
+                        </div>
+                        <div *ngIf="email_address?.errors?.pattern">
+                          Email is invalid
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                   <label class="heading"> Choose a password </label>
+                </div>
+                <div class="col-sm-12 mg-btm">
+                  <input id="password" type="password"  minlength="6" [class.is-invalid]="signup_password.invalid && signup_password.touched" [(ngModel)]="password" placeholder="Password" required name="password" #signup_password="ngModel">
+                  <span toggle="#password" class="fa fa-eye-slash field-icon toggle-password"></span>
+                  <div class="error-mez" *ngIf="signup_password.touched && signup_password.invalid">
+                      <div *ngIf="signup_password?.errors?.required">
+                          Password is required
+                      </div>
+                      <div *ngIf="signup_password?.errors?.minlength">
+                          Password must be minimum 6 character
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" required [(ngModel)]="agree" name="agree" #agree_terms="ngModel">
+                      I have read and agree to the terms and conditions* 
+                    </label>
+                  </div>
+                  <div class="error-mez" *ngIf="agree_terms.touched && agree_terms.invalid">
+                      checkbox is required
+                  </div>
+                </div>
+              </div>
+              <!--------------------- error message ----------------->
+              
+              <!--------------------- error message end----------------->
+              <br>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="pull-right">
+                    <input type="submit" class="btn btn-blue-color" [disabled]="signupForm.form.invalid"  value="START" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <a [routerLink]="['/login']">Already have an Account? Sign in here</a>
+        </div>
+        </form>
+        <!---------------right side content --------------------->
+        <div class="col-sm-5">
+          <!-- <div class="col-sm-12"> -->
+            <div class="row">
+              <div class="col-sm-12">
+                <h2 class="help-content-signup" style="font-weight: 500;"> Services Offered </h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <table style="border-bottom-style: none;margin-bottom:5px;">
+                  <tr>
+                    <td style="border-bottom-style: none;padding-top:3px;" valign="top">
+                        <i class="fa fa-gift" aria-hidden="true"></i>
+                    </td>
+                    <td class="story-info">
+                        No obligations, payments or downloads
+                    </td>
+                  </tr>
+                </table>
+                <table style="border-bottom-style: none;margin-bottom:5px;">
+                  <tr>
+                    <td style="border-bottom-style: none;padding-top:3px;" valign="top">
+                        <i class="fa fa-globe" aria-hidden="true"></i>
+                    </td>
+                    <td class="story-info">
+                        Create events in minutes and publish
+                    </td>
+                  </tr>
+                </table>
+                <table style="border-bottom-style: none;margin-bottom:5px;">
+                  <tr>
+                    <td style="border-bottom-style: none;padding-top:3px;" valign="top">
+                        <i class="fa fa-life-ring" aria-hidden="true"></i>
+                    </td>
+                    <td class="story-info">
+                        Help on every page
+                    </td>
+                  </tr>
+                </table>
+                <table style="border-bottom-style: none;margin-bottom:5px;">
+                  <tr>
+                    <td style="border-bottom-style: none;padding-top:3px;" valign="top">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </td>
+                    <td class="story-info">
+                        Upgrade to continue where you left off
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          <!-- </div> -->
+        </div>
+        <!---------------right side content end--------------------->
+      </div>
+    </div>
+    <br><br>
+  </div>
+</div>
+<!-- footer -->
+<app-footer></app-footer>
+<!-- footer end -->

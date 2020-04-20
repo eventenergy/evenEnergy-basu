@@ -1,0 +1,289 @@
+<div class="flex-content navbar-top-alignment navbar-fixed-top">
+    <ul class="demo-class">
+        <li class="logo">
+            <a routerLink="/" style="text-decoration: none;" title="Home"><img src="assets/images/events/logo.png" width="100px" /> <span class="logo-text"> EventEnergies </span></a>
+        </li>
+    </ul>
+    <!-- <div class="m1"><img src="assets/images/ico_notifications_on.png" /> <label class="mark-no" > 2 </label></div> -->
+    <ul style="padding: 0;">
+        <li *ngFor="let link of links" class="hide-navbar-mobile">
+            <a style="cursor:pointer" *ngIf="link.path" [routerLink]="link.path ? link.path : []" routerLinkActive="active-class" [routerLinkActiveOptions]="{exact: true}">{{ link.text }}</a>
+            <a class="create-event-btn" *ngIf="!link.path"> 
+                <span class="buttons-sh" (click)=this[link.click]() > {{ link.text }}  </span>
+            </a>
+        </li>
+        <li class="hide-navbar-mobile" [routerLink]="['/user/profile']"  style="cursor:pointer;outline: none;" title="profile">
+            <a><img *ngIf="loggedUserStaticDpImg" [src]="loggedUserStaticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)" />
+            <label class="profile-name-navbar uppercase" *ngIf="!loggedUserStaticDpImg" style="font-size:18px">{{loggedUserName ? (loggedUserName | slice:0:1) : ''}}</label>&nbsp;&nbsp;{{loggedUserName}} </a>
+        </li>
+        <li class="dropdown" style="display:none;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell" aria-hidden="true"></i></a>
+            <ul class="dropdown-menu notify-drop">
+                <div class="notify-drop-title">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6"><h4>Request</h4></div>
+                    </div>
+                </div>
+                <div class="drop-content">
+                    <li>
+                        <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img *ngIf="loggedUserStaticDpImg" [src]="loggedUserStaticDpImg" alt=""></div></div>
+                        <div class="col-md-9 col-sm-9 col-xs-9">
+                            <div class="notify-content">
+                                <h4>Lokesh Babu</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img *ngIf="loggedUserStaticDpImg" [src]="loggedUserStaticDpImg" alt=""></div></div>
+                        <div class="col-md-9 col-sm-9 col-xs-9">
+                            <div class="notify-content">
+                                <h4>Lokesh Babu</h4>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </ul>
+        </li>
+        <li (click)="sidebar_dropdown_show = !sidebar_dropdown_show" style="cursor:pointer" clickOutside (clickOutside)="sidebar_dropdown_show = false" id="navbar_drop_down_button">
+            <a><i class="fa fa-cog" aria-hidden="true"></i></a> 
+        </li>
+    </ul>
+</div>
+<div class="login-form" style="padding-top:5px;" *ngIf="sidebar_dropdown_show">
+  <ul style="padding: 0;">
+    <li class="show-navbar-mobile" title="profile" [routerLink]="['/user/profile']"  style="cursor:pointer;outline: none;">
+        <a> <img *ngIf="loggedUserStaticDpImg" [src]="loggedUserStaticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)" />
+        <label class="profile-name-navbar uppercase" *ngIf="!loggedUserStaticDpImg">{{loggedUserName ? (loggedUserName | slice:0:1) : ''}}</label>&nbsp;&nbsp;{{loggedUserName}} </a>
+    </li>
+    <li *ngFor="let link of links" class="show-navbar-mobile" style="cursor:pointer">
+        <a *ngIf="link.path" [routerLink]="link.path ? link.path : []" routerLinkActive="active-class" [routerLinkActiveOptions]="{exact: true}">{{ link.text }}</a>
+        <a *ngIf="!link.path" (click)=this[link.click]()>{{ link.text }}</a>
+    </li>
+    <li *ngFor="let sidebar_link of sidebar_links" [routerLink]="sidebar_link.path ? sidebar_link.path : []">
+        {{ sidebar_link.text }}
+    </li>
+    <li (click)="logOut()" style="border-bottom:none;"> Logout </li>
+  </ul>
+</div>
+<div class="side-bar" style="position:absolute;">
+    <app-menu-sidebar></app-menu-sidebar>
+</div>
+<!----------------------------------pop up add teacher Modal ------------------------------>
+<div class="modal fade" role="dialog" #registerModal id="registerModal" style="display:none;">
+    <div class="modal-dialog">
+        <!-------------- Modal content start -------------------->
+        <div class="modal-content">
+            <div role="tabpanel" >
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="padding-top:5px;">
+                    <li style="width:120px;padding-top:10px;padding-left:15px;">
+                        <span style="font-weight:600;font-size:18px;"> Register : </span> 
+                    </li>
+                    <li style="font-weight:600;"><a href="#teacherAdminReqTab" aria-controls="teacherAdminReqTab" role="tab" data-toggle="tab"> Member Registration </a></li> 
+                    <li style="font-weight:600;"><a href="#childReqTab" aria-controls="childReqTab" role="tab" data-toggle="tab"> Create Organization </a></li>
+                </ul>
+                <!-- Nav tabs end-->
+                <br>
+                <!-- Tab panes -->
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="childReqTab">
+                            <form #createOrganizationForm="ngForm">
+                                <div class="row control-group">
+                                    <div class="col-sm-4">
+                                        <label class="heading"> Organization Name* </label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input [(ngModel)]="createOrganizationForm.organization_name" type="text" placeholder="Organization name" required id="organization_name" name="organization_name" #organizationname="ngModel"/>
+                                    </div>
+                                </div><br>
+                                <div class="row control-group">
+                                    <div class="col-sm-4">
+                                        <label class="heading"> Email* </label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input [(ngModel)]="createOrganizationForm.organization_email" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="text" placeholder="Organization email" required id="organization_email" name="organization_email" #organizationemail="ngModel"/>
+                                        <div class="error-mez"  *ngIf="organizationemail.touched && organizationemail.invalid || email_error">
+                                            <div *ngIf="organizationemail?.errors?.required">
+                                                Email is required
+                                            </div>
+                                            <div *ngIf="organizationemail?.errors?.pattern">
+                                                Email is invalid
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><br>
+                                <div class="row control-group">
+                                    <div class="col-sm-4">
+                                        <label class="heading"> Mobile Number* </label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input [(ngModel)]="createOrganizationForm.organization_mobile_number" minlength = '10' maxlength="10" pattern="^[0-9()\-+\s]+$" type="text" placeholder="Organization mobile number" required id="organization_mobile_number" name="organization_mobile_number" #organizationmobilenumber="ngModel"/>
+                                        <div class="error-mez"  *ngIf="organizationmobilenumber.touched && organizationmobilenumber.invalid || mobilenumber_error">
+                                            <div *ngIf="organizationmobilenumber?.errors?.required">
+                                                Mobile number is required
+                                            </div>
+                                            <div *ngIf="organizationmobilenumber?.errors?.pattern">
+                                                Mobile number is not valid
+                                            </div>
+                                        </div>
+
+                                        <!-- <input type="tel" class="popup-input-text" formControlName="mobile" name="mobile_number" appCreationEvent (countryCode)="mobileNos[i]=$event" [formControl]='form.get("mobile")' [ngClass]="{
+                                            'input-error': form.controls.mobile.touched && form.controls.mobile.invalid,
+                                            'input-success': form.controls.mobile.touched && form.controls.mobile.valid
+                                        }" > -->
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row" style="border-top:1px solid #ccc;padding-top:10px;">
+                                    <div class="col-sm-12">
+                                        <div class="btn-block pull-right">
+                                            <button  class="btn pull-right custom-btn" [disabled]="createOrganizationForm.form.invalid" (click)="createNewOrganization(organizationname.value, organizationemail.value, organizationmobilenumber.value)"> Create New </button>
+                                            <input type="button" class="btn pull-right custom-btn-close" data-dismiss="modal"  value="CANCEL" style="margin-right:20px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="teacherAdminReqTab">
+                            <div class="row control-group">
+                                <div class="col-sm-4">
+                                    <label class="heading">Organization Name*</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <ng-select
+                                        bindValue="id"
+                                        bindLabel="name"
+                                        placeholder="Please select or search organization"
+                                        [hideSelected]="false"
+                                        [(ngModel)]="selectedSchool"
+                                        (ngModelChange)="onChangeSelectSchool($event,'teacher_admin')"
+                                        [loading]="schoolListLoading">
+                                        <ng-option [value]="item.id" [disabled]="item.disabled" *ngFor="let item of all_school_array">
+                                            {{item.name}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row control-group">
+                                <div class="col-sm-4">
+                                    <label class="heading">Message</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <textarea class="text-area-mez" placeholder="Include an optional message in your question" style="height:100px;" [(ngModel)]="teacher_admin_registration_message" name="teacher_admin_registration_message">{{teacher_admin_registration_message}}</textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <label style="cursor:pointer;"><input type="checkbox" [(ngModel)]="admin_select" id="select_admin_checkbox"  class="check-fv" (change)="selectTeacherAdmin($event, 'admin')" [checked]="admin_select"/><span> Admin </span></label>
+                                    <label style="cursor:pointer;margin-left:20px;"><input type="checkbox" [(ngModel)]="teacher_select" id="select_teacher_checkbox"  class="check-fv" (change)="selectTeacherAdmin($event, 'teacher')" [checked]="teacher_select" /><span> Member </span></label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" style="border-top:1px solid #ccc;padding-top:10px;">
+                                <div class="col-sm-12">
+                                    <div class="btn-block pull-right">
+                                        <button (click)="requestAsTeacherOrAdmin()" [disabled]="!selectedSchool || (!admin_select && !teacher_select)" class="btn pull-right custom-btn"> Send Request </button>
+                                        <input type="button" class="btn pull-right custom-btn-close" data-dismiss="modal"  value="Cancel" style="margin-right:20px">
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-------------- Modal content end ---------------------->
+    </div>
+</div>
+<!---------------------------------------pop up add teacher Modal end -------------------------------------->
+
+<!-- User Popup to restrict to create story start -->
+<div class="modal fade bd-example-modal-sm" id="user_create_story_popup_to_restrict" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span aria-hidden="true">INFO</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please select Organization Name and register.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn custom-btn-close" data-dismiss="modal">Close</button>
+            <button (click)="registerRequest()" type="button" class="btn custom-btn"> Register </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- User Popup to restrict to create story end -->
+
+<!----------------------------------- Create story Pop-up start ----------------------->
+<div class="modal fade" id="create_story_popup" role="dialog">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button class="close" data-dismiss="modal" title="Close" style="background: none !important;color: #337ab7 !important;"> &times; </button>
+                <h4 class="modal-title"> Event Details </h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading"> Select Organization </label>
+                    <div class="school-list-card">
+                      <ul class="people-list-grid" style="padding: 0;">
+                        <li *ngFor="let school of story_school_array" (click)="storySelectSchool(school.id)" [ngStyle]="{'background-color': school.isChecked ? '#337ab7' : '','color': school.isChecked ? '#ffffff' : ''}" title="{{school.isChecked ? 'Remove school' : 'Select school'}}">
+                            <span class="media-left" style="float:left;">
+                                <span *ngIf="!school.staticSchoolDpImg" class="media-object media-text uppercase">{{school?.name | slice:0:1}}</span>
+                                <span *ngIf="school.staticSchoolDpImg"><img class="media-object media-image" [src]="school.staticSchoolDpImg" (error)="updateDefaultImageUrl($event)"></span>
+                            </span>
+                            <span style="line-height:30px;"> {{school.name}} </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <p class="error-mez" *ngIf="story_school_error_status"> Please select Organization </p>
+                </div>
+              </div>
+              <br>
+              <!-- lines relating to creation of specific types of events(stories), not needed in event management -->
+              <!-- <div class="row" *ngIf="story_type_admin_parent_status">
+                    <div class="col-sm-12">
+                        <label class="heading"> Type of Event </label>
+                        <br>
+                        <ul class="people-list-grid" style="padding: 0;">
+                            <li *ngFor="let story of story_type_array" (click)="storySelectStoryType(story.type)" [ngStyle]="{'background-color': story.isChecked ? '#337ab7' : '','color': story.isChecked ? '#ffffff' : '' }" title="{{story.isChecked ? 'Remove type' : 'Select type'}}">
+                                <span style="padding:10px;">{{story.display}}</span>
+                            </li>
+                        </ul>
+                        <div class="col-sm-12 pull-left" style="padding: 0;">
+                            <p class="error-mez" *ngIf="story_type_error_status"> Please select type of event </p>
+                        </div>
+                    </div>
+                </div> -->
+                <br>
+                <!-- <div class="row" *ngIf="story_date_status"> -->
+                    <!-- <div class="col-sm-6">
+                    <label class="heading"> Date </label>
+                    <input type="text" id="story_created_date" placement="top" readonly required [(ngModel)]="user_story_created_date" bsDatepicker  [bsConfig]="datepickerConfig" name="user_story_created_date"/>
+                    <p class="error-mez" *ngIf="story_created_date_error_status"> Please select created date </p>
+                    </div> -->
+                    <!-- <div class="col-sm-6" *ngIf="story_expiry_date_status">
+                        <label class="heading"> Event Date </label>
+                        <input type="text" id="story_expiry_date"  placement="top" readonly required [(ngModel)]="user_story_expiry_date" bsDatepicker [bsConfig]="datepickerConfig" name="user_story_expiry_date"/>
+                        <p class="error-mez" *ngIf="story_expiry_date_error_status"> Please select expiry date </p>
+                    </div> -->
+                <!-- </div> -->
+            </div>
+            <div class="modal-footer">
+              <button class="btn custom-btn-close" data-dismiss="modal"> Close </button>
+              <button class="btn custom-btn" (click)="saveStoryPopupDetails()"> Create an event </button>
+            </div>
+          </div>
+        </div>
+      </div>
+<!------------------------------------- create Story Pop-up end---------------------------->

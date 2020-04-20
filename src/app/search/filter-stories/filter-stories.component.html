@@ -1,0 +1,66 @@
+<div class="simple-loader" style="display: none;"></div>
+<br>
+<div class="row filter-stories">
+  <div class="col-sm-12">
+      <div class="search-subcategory-list">
+          <div class="subtitles-popups"> You are in &nbsp;&nbsp;
+            <span class="sub1-select" (click)="showFilter('location')">
+              {{ locationFilterValue? locationFilterValue : 'All Locations'}}
+              <i class="fa fa-angle-down"></i>
+            </span>&nbsp;&nbsp;Looking for &nbsp;&nbsp;
+            <span class="sub1-select" (click)="showFilter('category')">
+              {{categoryFilterValue? categoryFilterValue : 'All Categories'}}
+              <i class="fa fa-angle-down"></i>
+            </span>&nbsp;&nbsp;
+            <!-- &nbsp;&nbsp; Events happening &nbsp;&nbsp; -->
+            <!-- <span class="sub1-select" > All <i class="fa fa-angle-down"></i></span> -->
+            <span class="sub1-select" (click)="resetFilters()"><i class="fa fa-close"></i>Reset All</span>
+          </div>
+          <hr style="border: 1px solid #b8e4ec;" *ngIf="filterVisible"> 
+          <div class="select-list" *ngIf="filterVisible">
+            <p style="font-size:18px;"> {{currentFilter}} </p>
+            <ul class="list-order-left" style="padding:0;">
+              <li class="filter-item" *ngFor="let option of filterOptions" (click)="selectFilterItem(currentFilter, option)">
+                {{option}}</li>
+            </ul>
+          </div>
+        </div>
+  </div>
+</div>
+
+
+<div class="row filter-stories-mobile">
+  <ul>
+      <li>
+        <span class="sub2-select" (click)="showFilter('location')">
+          <i class="fa fa-map-marker"></i>&nbsp;
+          {{ locationFilterValue? locationFilterValue : 'All Locations'}}
+          <i class="fa fa-angle-down"></i>
+        </span>
+      </li>
+      <li>
+        <span class="sub2-select" (click)="showFilter('category')">
+          <i class="fa fa-list-ul"></i>
+          {{categoryFilterValue? categoryFilterValue : 'All Categories'}}
+          <i class="fa fa-angle-down"></i>
+        </span>
+      </li>
+      <li>
+        <span class="sub2-select" (click)="resetFilters()">
+          <i class="fa fa-close"></i>&nbsp;
+          Reset All
+        </span>
+      </li>
+      <div class="sub-list">
+        <hr style="border: 1px solid #b8e4ec;" *ngIf="filterVisible"> 
+        <div class="select-list" *ngIf="filterVisible">
+          <p style="font-size:18px;"> {{currentFilter}} </p>
+          <ul class="list-order-left" style="padding:0;">
+            <li class="filter-item" *ngFor="let option of filterOptions" (click)="selectFilterItem(currentFilter, option)">
+              {{option}}
+            </li>
+          </ul>
+        </div>
+      </div> 
+    </ul>
+</div>

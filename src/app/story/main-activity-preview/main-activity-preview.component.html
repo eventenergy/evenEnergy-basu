@@ -1,0 +1,1014 @@
+<div class="flex-content top-navbar navbar-fixed-top">
+    <div class="demo-class">
+        <a routerLink="/" style="text-decoration: none;color:#fff;font-weight: 600;" title="Home"><img src="assets/images/events/logo.png" width="60px" height="60px"/> <span class="logo-text">EventEnergies</span> </a>
+    </div>
+    <ul>
+        <li style="cursor: pointer;" *ngFor="let links of nav_links" (click)=this[links.click](links.click_params,links.click_params1)>
+            <a>
+                <span class="font-icon" *ngIf="links.font_icon" [innerHTML]="links.font_icon"></span>
+                {{links.text}} <span class="additional-text">{{links.additional_text}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="none-dashboard" *ngFor="let story of story_array">
+      <!-------------------------------Left Side content start---------------------------> 
+      <div class="col-sm-7 col-md-6 col-lg-6 col-xs-12 left-edit-box" [ngStyle]="{'background': story_background_color ? story_background_color : '#ffffff'}">
+            <div class="row">
+                <div class="background-class">
+                    <div class="address-line">
+                        <div [innerHTML]="story?.caption" style="margin-bottom:-5px;color:#fff;font-weight:600;font-size: 24px;white-space: normal;"></div>
+                        <span *ngFor="let duration of story.duration;let i=index"> 
+                            <ng-container *ngIf="i == 0 && duration.utcStart && duration.utcEnd">
+                                <table class="address-class-venue">
+                                    <tr>
+                                        <td style="width:20px;" valign="top"> <i class="fa fa-calendar-o"></i> </td>
+                                        <td> {{duration.utcStart | date:"fullDate" }}  {{duration.utcStart | date:"shortTime" }} to {{duration.utcEnd | date:"fullDate" }}  {{duration.utcEnd | date:"shortTime" }} {{(duration.timeZone && duration.timeZone.name ? duration.timeZone.name : '')}} </td>
+                                    </tr>
+                                </table>   
+                            </ng-container>
+                        </span>
+                        <p *ngFor="let venue of story.veneus;let i=index">
+                            <ng-container *ngIf="i == 0"> 
+                                <table class="address-class-venue" >
+                                    <tr>
+                                        <td style="width:20px;" valign="top"> <i class="fa fa-map-marker"></i> </td>
+                                        <td> {{(venue.name ? venue.name : '' ) + " " + (venue.address ? venue.address : '') + " " + (venue.addressSecondary ? venue.addressSecondary : '') + " "+ (venue.city ? venue.city : '') + " "+ (venue.state ? venue.state : '') + " "+ (venue.country ? venue.country : '') +  " "+ (venue.pincode ? venue.pincode : '')}} </td>
+                                    </tr>
+                                </table>
+                            </ng-container>
+                        </p><span (click)="routeToGoogleMaps()" title="Direction" class="direction-border">Get Direction<img src="assets/images/direction.png"> </span>
+                    </div>
+                </div>
+            </div>  
+
+            <!-------------------------- ticket responsive ------------------->
+            <div class="visible-xs">
+            <div class="row right-box-padding">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <span *ngIf="story.id && story.status == 'PUBLISHED'">
+                        <h3 class="header-tab"> Booking User: </h3>
+                        <div *ngIf="!isLoggedSession">
+                            <input  class="booking-email" [(ngModel)]="bookedBy" [disabled] = 'isLoggedSession' [style.background-color]="isLoggedSession? '#d9d9d9' : 'white'" [style.cursor]="isLoggedSession? 'not-allowed' : 'text'" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  placeholder="Enter your Email Address" type="email" id="email" name="email" #bookedemail="ngModel">
+                            <div class="error-mez"  *ngIf="bookedemail.touched && bookedemail.invalid || email_error">
+                                <div style="color:red" *ngIf="bookedemail?.errors?.pattern">
+                                    Email is invalid
+                                </div>
+                                <div class="error-mez" id="email_error_required" ></div>
+                            </div>
+                        </div>
+                        <div *ngIf="isLoggedSession" style="font-size:22px;font-weight:500;line-height: 1.5;color:#FE9200;"> {{ loggedUserName }} </div>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="event-id-border" style="margin-top:12px;">
+                        <a style="text-decoration: none;" *ngIf="story.id"> Event ID : {{story.id}} </a>
+                    </div>
+                 </div>
+             </div>
+            <div class="row right-box-padding" >
+                <div class="col-sm-12">
+                    <h3 class="header-tab"> Book Your Tickets </h3>
+                    <ul class="ticket-design" style="padding: 0;background: #fff;">
+                        <li *ngFor="let capacity of story.capacities; let x=index" style="margin-bottom:10px;">
+                            <div class="border-top"></div>
+                                <div class="row" style="padding:10px;">
+                                    <div class="col-md-6 col-sm-8 col-lg-6 col-xs-8">
+                                        <!-- <div class="event-details"> -->
+                                            <div style="font-size: 16px;font-weight: 500;line-height: 1.5;color:#1889a3" class="text-uppercase ticket-names-fnt" > {{capacity.name}}</div>
+                                            <em> Last Date :{{capacity.duration.bookingEnd | date }} </em> 
+                                        <!-- </div> -->
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-4" style="margin-bottom:20px;">
+                                        <span style="font-size:16px;font-weight: 500;color:#1889a3" class="ticket-names-fnt"> INR {{capacity.ticketPrice}} </span> 
+                                    </div>
+                                    <div class="col-md-3 col-sm-12 col-lg-3 col-xs-12 text-center">
+                                        <label style="width:100%;">
+                                            <select  class="form-control" *ngIf="!checkIfSoldOut(capacity)" [(ngModel)]="capacity.ticketSelectedCount" (ngModelChange)="onChangeSelectTicketNumber($event,capacity, true)" name="ticket_count">
+                                                <option *ngFor="let ticket_count of [].constructor(((capacity.capacityRemains<capacity.maxPurchase? capacity.capacityRemains: capacity.maxPurchase) > 10? 10: (capacity.capacityRemains<capacity.maxPurchase? capacity.capacityRemains: capacity.maxPurchase)) + 1); let i=index" [value]="i"> {{i}} </option>
+                                            </select>
+                                            <span *ngIf="checkIfSoldOut(capacity)" style="color:orange;font-size:16px;font-weight: 500;" class="text-uppercase"> {{checkIfSoldOut(capacity)}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            <div class="border-bottom"></div> 
+                        </li>
+                    </ul>
+                 
+                   <div class="tickent-payment" *ngIf="ticket_information_details[0]?.total_ticket_count > 0" >
+                       <table class="table table-border" *ngFor="let ticket_information of ticket_information_details;">
+                           <thead style="font-size:18px;">
+                               <tr>
+                                   <th width="80%"> Description </th>
+                                   <th width="20%"> Total </th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                               <tr>
+                                   <td> Amount[INR] </td>
+                                   <td> {{ticket_information.total_amount}} </td>
+                               </tr>
+                               <tr *ngIf="ticket_information.gst">
+                                   <td> GST[INR] </td>
+                                   <td> {{ticket_information.gst}} </td>
+                               </tr>
+                               <tr *ngIf="ticket_information.payment_gateway_charges || ticket_information.service_tax">
+                                   <td style="cursor:pointer" (click)="showBreakDown = !showBreakDown"> Internet Handling Fees [INR] + </td>
+                                   <td> {{ticket_information.internet_handling_fee_total}} </td>
+                               </tr>
+                               <tr style="font-size: 90%;" *ngIf="ticket_information.payment_gateway_charges && showBreakDown">
+                                   <td style="padding-left: 20px;"> Payment Gateway fee[INR] </td>
+                                   <td> {{ticket_information.payment_gateway_charges}} </td>
+                               </tr>
+                               <tr style="font-size: 90%;" *ngIf="ticket_information.service_tax && showBreakDown">
+                                   <td style="padding-left: 20px;"> Service Charge [INR] </td>
+                                   <td> {{ticket_information.service_tax}} </td>
+                               </tr>
+                               <tr style="font-size: 90%;" 
+                                   *ngIf="ticket_information.GST_on_service_and_payment_charges && showBreakDown">
+                                   <td style="padding-left: 20px;"> GST 18% [INR] </td>
+                                   <td> {{ticket_information.GST_on_service_and_payment_charges}}</td>
+                               </tr>
+                               <tr class="table-success">
+                                   <td> Total Amount[INR] </td>
+                                   <td> {{ticket_information.total_calculated_amount}} </td>
+                               </tr>
+                               <tr *ngIf="story.status == 'PUBLISHED'">
+                                   <td></td>
+                                   <td><button type="button" class="btn btn-primary buy-button" (click)="bookTicketWithRequiredQuantity()" >Book Now</button></td>
+                               </tr>
+                           </tbody>
+                           
+                       </table>
+                   </div>
+                </div>
+            </div>
+        </div>
+            <!------------------------------ ticket responsive end --------------------------> 
+            
+            <div class="row" style="padding-top:20px;padding-bottom: 20px;">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- <h2 style="font-size: 24px;word-break: break-all;"> About the Event </h2> -->
+                            <div class="preview-list" *ngFor="let element of multiple_file_array" style="padding: 0;">
+                                <li *ngIf="element.type=='text_file'" class="event-description-item">
+                                    <div [innerHTML]="element.title" class="event-description-item__title"></div>
+                                    <div [innerHTML]="element.description" class="event-description-item__content"></div>
+                                </li>
+                                <li style="list-style: none;" *ngIf="element.type=='image_file'">
+                                    <div class="js-img-block1" title="preview slide">
+                                        <img class="img-responsive center-block" (click)="openImageModal(multiple_file_array,element.image_src,'preview')" src="{{element.image_src}}"/>
+                                    </div>
+                                </li>
+                                <li style="list-style: none;" *ngIf="element.type=='video_file'">
+                                    <div class="js-img-block1">
+                                        <video class="img-responsive" style="height:300px; margin: 0 auto;"  controls>
+                                            <source src="{{element.video_src}}" type="video/mp4" >
+                                        </video>
+                                    </div>
+                                </li>
+                                <li style="list-style: none;" *ngIf="element.type=='audio_file'">
+                                    <audio *ngIf="element.type=='audio_file'" controls [src]="element.audio_src"></audio>
+                                </li>
+                                <li style="list-style: none;" *ngIf="element.type=='pdf_file'">
+                                    <embed [src]="element.pdf_src" type="application/pdf" width="100%" height="500px">
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- map  -->
+            <div class="hidden-xs">
+            <div class="row">
+                <div class="col-sm-12 Venue-map">
+                    <h3 class="header-tab"> Venue Map </h3>
+                    <div style="border:1px solid #FE9200">
+                    <agm-map 
+                        [latitude]="lat"
+                        [longitude]="lng"
+                        [zoom]="zoom"
+                        [disableDefaultUI]="false"
+                        [zoomControl]="false"
+                        (mapClick)="mapClicked($event)">
+                        <agm-marker 
+                            *ngFor="let m of marker; let i = index;" 
+                            (markerClick)="clickedMarker(m.label, i)" 
+                            [latitude]="m.lat" 
+                            [longitude]="m.lng" 
+                            [label]="m.label" 
+                            [markerDraggable]="m.draggable" 
+                            (dragEnd)="markerDragEnd(m, $event)" >
+
+                            <agm-info-window>
+                                <strong>{{m.name}} {{m.address}} {{m.addressSecondary}} {{m.city}}</strong>
+                            </agm-info-window>
+                        </agm-marker>
+                        <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+                            [radius]="5000"
+                            [fillColor]="'red'"
+                            [circleDraggable]="true"
+                            [editable]="true">
+                        </agm-circle>
+                    </agm-map>
+                </div>
+                </div>
+            </div>
+        </div>
+        <br>
+      </div> 
+      <div class="col-sm-5 col-md-6 col-lg-6 col-xs-12 right-edit-box">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="hidden-xs">
+                    <div class="row right-box-padding" style="margin-top: 5px;">
+                        <div class="col-sm-12" *ngIf="story.id && story.status == 'PUBLISHED'">
+                            <h3 class="header-tab"> Booking User: </h3>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" style="margin-bottom: 10px;">
+                            <span *ngIf="story.id && story.status == 'PUBLISHED'">
+                                <div *ngIf="!isLoggedSession">
+                                    <input  class="booking-email" [(ngModel)]="bookedBy" [disabled] = 'isLoggedSession' [style.background-color]="isLoggedSession? '#d9d9d9' : 'white'" [style.cursor]="isLoggedSession? 'not-allowed' : 'text'" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  placeholder="Enter your Email" type="email" id="email" name="email" #bookedemail="ngModel">
+                                    <div class="error-mez"  *ngIf="bookedemail.touched && bookedemail.invalid || email_error">
+                                        <div style="color:red" *ngIf="bookedemail?.errors?.pattern">
+                                            Email is invalid
+                                        </div>
+                                        <div class="error-mez" id="email_error_required" ></div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isLoggedSession" style="font-size:22px;font-weight:500;line-height: 1.5;color:#FE9200;"> {{ loggedUserName }} </div>
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div class="event-id-border">
+                                <a style="text-decoration: none;" *ngIf="story.id"> Event ID : {{story.id}} </a>
+                            </div>
+                        </div>
+                 </div> 
+                 <!-------------------------- ticket responsive ------------------->
+                 <div class="row right-box-padding" >
+                     <div class="col-sm-12">
+                            <h3 class="header-tab"> Book Your Tickets </h3>
+                            <ul class="ticket-design" style="padding: 0;background: #fff;">
+                                <li *ngFor="let capacity of story.capacities;let x=index" style="margin-bottom:10px;">
+                                    <div class="border-top"></div>
+                                        <div class="row" style="padding:10px;">
+                                            <div class="col-md-6 col-sm-8 col-lg-6 col-xs-8">
+                                                <!-- <div class="event-details"> -->
+                                                    <div style="font-size: 18px;font-weight: 500;line-height: 1.5;color:#1889a3" class="text-uppercase" > {{capacity.name}}</div>
+                                                    <em> Last Date :{{capacity.duration.bookingEnd | date }} </em> 
+                                                <!-- </div> -->
+                                            </div>
+                                            <div class="col-md-3 col-sm-4 col-lg-3 col-xs-4" style="margin-bottom:20px;">
+                                                <span style="font-size:18px;font-weight: 500;color:#1889a3"> INR {{capacity.ticketPrice}} </span> 
+                                            </div>
+                                            <div class="col-md-3 col-sm-12 col-lg-3 col-xs-12 text-center">
+                                                <label style="width:100%;">
+                                                    <select  class="form-control" *ngIf="!checkIfSoldOut(capacity)" [(ngModel)]="capacity.ticketSelectedCount" (ngModelChange)="onChangeSelectTicketNumber($event,capacity, true)" name="ticket_count">
+                                                        <option *ngFor="let ticket_count of [].constructor(((capacity.capacityRemains<capacity.maxPurchase? capacity.capacityRemains: capacity.maxPurchase) > 10? 10: (capacity.capacityRemains<capacity.maxPurchase? capacity.capacityRemains: capacity.maxPurchase)) + 1); let i=index" [value]="i"> {{i}} </option>
+                                                    </select>
+                                                    <span *ngIf="checkIfSoldOut(capacity)" style="color:orange;font-size:18px;font-weight: 500;" class="text-uppercase"> {{checkIfSoldOut(capacity)}}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <div class="border-bottom"></div> 
+                                </li>
+                            </ul>
+                      
+                        <div class="tickent-payment" *ngIf="ticket_information_details[0]?.total_ticket_count > 0" >
+                            <table class="table table-border" *ngFor="let ticket_information of ticket_information_details;">
+                                <thead style="font-size:18px;">
+                                    <tr>
+                                        <th width="80%"> Description </th>
+                                        <th width="20%"> Total </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td> Amount[INR] </td>
+                                        <td> {{ticket_information.total_amount}} </td>
+                                    </tr>
+                                    <tr *ngIf="ticket_information.gst">
+                                        <td> GST [INR] </td>
+                                        <td> {{ticket_information.gst}} </td>
+                                    </tr>
+                                    <tr *ngIf="ticket_information.payment_gateway_charges || ticket_information.service_tax">
+                                        <td style="cursor:pointer" (click)="showBreakDown = !showBreakDown"> Internet Handling Fees [INR] &nbsp;&nbsp;&nbsp;&nbsp;<i [ngClass]="showBreakDown ? 'fa fa-minus' : 'fa fa-plus'"></i> </td>
+                                        <td> {{ticket_information.internet_handling_fee_total}} </td>
+                                    </tr>
+                                    <tr style="font-size: 90%;" *ngIf="ticket_information.payment_gateway_charges && showBreakDown">
+                                        <td style="padding-left: 20px;"> Payment Gateway fee [INR] </td>
+                                        <td> {{ticket_information.payment_gateway_charges}} </td>
+                                    </tr>
+                                    <tr style="font-size: 90%;" *ngIf="ticket_information.service_tax && showBreakDown">
+                                        <td style="padding-left: 20px;"> Service Charge [INR] </td>
+                                        <td> {{ticket_information.service_tax}} </td>
+                                    </tr>
+                                    <tr style="font-size: 90%;" 
+                                        *ngIf="ticket_information.GST_on_service_and_payment_charges && showBreakDown">
+                                        <td style="padding-left: 20px;"> GST 18% [INR] </td>
+                                        <td> {{ticket_information.GST_on_service_and_payment_charges}}</td>
+                                    </tr>
+                                    <tr class="table-success">
+                                        <td> Total Amount [INR] </td>
+                                        <td> {{ticket_information.total_calculated_amount}} </td>
+                                    </tr>
+                                    <tr *ngIf="story.status == 'PUBLISHED'">
+                                        <td></td>
+                                        <td><button type="button" class="btn btn-primary" (click)="bookTicketWithRequiredQuantity()" [disabled]="bookingInProgress">Book Now</button></td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                     </div>
+                    </div>
+                     
+                 </div>
+                 <!------------------------------ ticket responsive end --------------------------> 
+                <!---------------------- categories start ----------------------------------->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="header-tab"> Category: </h3>
+                        <div class="capitalize font-adjust"> <i class="{{ story_array[0].category.icon }}"></i>&nbsp;&nbsp; {{ story_array[0].category.name }} - {{ story_array[0].category.subName }} </div>
+                    </div>
+                </div>
+                <!--------------------------- categories end ---------------------------------->
+                <!---------------------- posted  user name start ----------------------------------->
+                <div class="row right-box-padding">
+                    <div class="col-sm-12">
+                        <h3 class="header-tab"> Hosted By: </h3>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table>
+                                    <tr>
+                                        <td valign="top">
+                                            <span class="media-left">
+                                                <span class="media-object pic-name uppercase"> {{ story_array[0].createdUnderSchool.name |  slice:0:1}} </span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="font-adjust" style="line-height:30px;"> {{ story_array[0].createdUnderSchool.name }}</span><br>
+                                            <span style="line-height:2;"><i class="fa fa-calendar"></i> &nbsp;&nbsp; {{story?.updatedAt | date:'fullDate'}} </span><br>
+                                            <span style="line-height:2;"><i class="fa fa-envelope"></i> &nbsp;&nbsp; {{ story_array[0].createdUser.email }} </span><br>
+                                            <span style="line-height:2;"><i class="fa fa-phone"></i> &nbsp;&nbsp; {{ story_array[0].createdUser.mobile }} </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <!--------------------------- posted  user name end ---------------------------------->
+  
+                  <div *ngIf="story.type!='ADVERTISEMENT'">
+                      <!-------------------------- participated child names --------------------------------> 
+                      <!-- <div class="row right-box-padding">
+                          <div class="col-sm-12">
+                              <div class="flex-content" style="margin-bottom:10px;">
+                                  <span class="right-header-content"> Event Performers: </span>
+                              </div>
+                              <ul class="user-list cursor-pointer">
+                                  <li *ngFor="let student of student_array;let x=index;" style="margin-bottom:10px;">
+                                      <span class="media-left">
+                                          <span class="media-object pic-name list-child-color uppercase" *ngIf="!student.staticDpImg"> {{student?.firstName | slice:0:1}}{{student?.lastName | slice:0:1}} </span>
+                                          <span *ngIf="student.staticDpImg"><img class="media-object pic-image" [src]="student.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+                                      </span>
+                                      <span style="line-height:30px;" title="Tagged children name" class="capitalize font-adjust"> {{student?.firstName+" "+student?.lastName}} </span>
+                                  </li>
+                              </ul>
+                              <div class="null-tags" *ngIf="student_array?.length==0"> <i> No performers tagged for this story </i></div>
+                          </div>
+                      </div> -->
+                      <!-------------------------- participated child names end----------------------------->
+                      <!-------------------------- Tagged User or teacher --------------------------------> 
+                      <div class="row right-box-padding" *ngIf="teacher_user_tagged_array?.length>0 && showNotified">
+                          <div class="col-sm-12">
+                            <h3 class="header-tab"> Notified to Organization Members: </h3>
+                            <ul class="user-list cursor-pointer">
+                                  <li *ngFor="let teacher_user of teacher_user_tagged_array; let x=index;" style="margin-bottom:10px;">
+                                      <span class="media-left">
+                                          <span class="media-object pic-name list-child-color uppercase" *ngIf="!teacher_user.staticDpImg"> {{ teacher_user?.firstName ? ( teacher_user?.firstName | slice:0:1) : '' ? teacher_user?.firstName : 'A' }}{{ teacher_user?.lastName ? ( teacher_user?.lastName | slice:0:1) : '' ? teacher_user?.lastName : '' }}</span>
+                                          <span *ngIf="teacher_user.staticDpImg"><img class="media-object pic-image" [src]="teacher_user.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+                                      </span>
+                                      <span style="line-height:30px;" title="Tagged user name" class="capitalize font-adjust"> {{ teacher_user?.firstName ? teacher_user?.firstName : 'Anonymous' }} {{ teacher_user?.lastName ? teacher_user?.lastName : '' }}</span>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <!-------------------------- Tagged user or teacher----------------------------->
+                      
+                        <!-------------------------------- Learning tags ------------------------------------->
+                        <div class="row right-box-padding" *ngIf="!story?.tags?.length==0">
+                            <div class="col-sm-12">
+                                <div class="flex-content" style="margin-bottom:10px;">
+                                    <span class="right-header-content"> Key tags: </span>
+                                </div>
+                                <div class="null-tags" *ngIf="story?.tags?.length==0">
+                                    <i> No key tags found for this event. </i>
+                                </div>
+                                <ul class="learning-tags-list cursor-pointer" style="padding: 0;">
+                                <li *ngFor="let tags of story.tags" class="capitalize"> {{tags.tag}} </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!------------------------------ Learning tags end ----------------------------------->
+                        <div class="visible-xs">
+                        <div class="row" >
+                            <div class="col-sm-12 Venue-map">
+                                <h3 class="header-tab"> Venue Map </h3>
+                                <div style="border:1px solid #FE9200">
+                                <agm-map 
+                                    [latitude]="lat"
+                                    [longitude]="lng"
+                                    [zoom]="zoom"
+                                    [disableDefaultUI]="false"
+                                    [zoomControl]="false"
+                                    (mapClick)="mapClicked($event)">
+                                    <agm-marker 
+                                        *ngFor="let m of marker; let i = index;" 
+                                        (markerClick)="clickedMarker(m.label, i)" 
+                                        [latitude]="m.lat" 
+                                        [longitude]="m.lng" 
+                                        [label]="m.label" 
+                                        [markerDraggable]="m.draggable" 
+                                        (dragEnd)="markerDragEnd(m, $event)" >
+            
+                                        <agm-info-window>
+                                            <strong>{{m.name}} {{m.address}} {{m.addressSecondary}} {{m.city}}</strong>
+                                        </agm-info-window>
+                                    </agm-marker>
+                                    
+                                    <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+                                        [radius]="5000"
+                                        [fillColor]="'red'"
+                                        [circleDraggable]="true"
+                                        [editable]="true">
+                                    </agm-circle>
+                                </agm-map>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!---------- same organization cards ---------->
+                        <div class="row right-box-padding" *ngIf = hasMoreStories >
+                            <!-- <div *ngIf="curretPage == 0 && !hasMoreStories" class="col-sm-12">
+                                <h2 > More Events From Same Organizer </h2>
+                            </div> -->
+                            <div class="col-sm-12">
+                                <h3 class="header-tab"> More Events From <span style="color:#fe9200;"> {{ story_array[0].createdUnderSchool.name }} </span></h3>
+                            </div>
+                        </div>
+                        <div class="row right-box-padding">
+                            <!-----------------------------recent story card start  --------------------------------->
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6" *ngFor="let stories of mutiple_stories_array">
+                            <a [routerLink]="('/activity/preview/')+stories.id" title="{{ stories?.caption_plain }}" style="text-decoration: none;">
+                            <div class="col-sm-12 well main-form-preview box-shade">
+                            <!------------------------------------ image GALLERY start--------------------------------------->
+                                
+                                <div *ngFor="let images of stories.image_array;let x=index;">
+                                    <!------------------------------------ SINGLE IMAGE GALLERY --------------------------------------->
+                                    <div class="img-container-organization" *ngIf="stories.image_array.length==1 && x==0">
+                                        <img src="{{images.image_src}}">
+                                    </div>
+                                    <!------------------------------------ SINGLE IMAGE GALLERY END--------------------------------------->
+                                    <!------------------------------------ TWO IMAGE GALLERY --------------------------------------->
+                                    <div class="img-container2-organization" *ngIf="stories.image_array.length==2 && x==1">
+                                        <div class="leftcolumn-organization">
+                                            <img src="{{stories.image_array[x-1].image_src}}">
+                                        </div>
+                                        <div class="rightcolumn-organization">
+                                            <img src="{{stories.image_array[x].image_src}}">
+                                        </div>
+                                    </div>
+                                    <!------------------------------------ TWO IMAGE GALLERY END--------------------------------------->
+                                    <!------------------------------------ THREE IMAGE GALLERY --------------------------------------->
+                                    <div class="img-container41-organization" *ngIf="stories.image_array.length==3 && x==2">
+                                        <div class="left-content-images1-organization">
+                                            <img src="{{stories.image_array[x-2].image_src}}">
+                                        </div>
+                                        <div class="right-content-images">
+                                            <div class="rightcolumn1-organization">
+                                                <img src="{{stories.image_array[x-1].image_src}}">
+                                            </div>
+                                            <div class="rightcolumn2-organization">
+                                                <img src="{{stories.image_array[x].image_src}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!------------------------------------ THREE IMAGE GALLERY END--------------------------------------->
+                                    <!------------------------------------ FOUR IMAGE GALLERY --------------------------------------->
+                                    <div class="img-container41-organization" *ngIf="stories.image_array.length>=4 && x==3">
+                                        <div class="left-content-images-organization">
+                                            <div class="leftcolumn1-organization">
+                                                <img src="{{stories.image_array[x-3].image_src}}">
+                                            </div>
+                                            <div class="leftcolumn2-organization">
+                                                <img src="{{stories.image_array[x-1].image_src}}">
+                                            </div>
+                                        </div>
+                                        <div class="right-content-images-organization">
+                                            <div class="rightcolumn1-organization">
+                                                <img src="{{stories.image_array[x-2].image_src}}">
+                                            </div>
+                                            <div class="rightcolumn2-organization">
+                                                <img src="{{stories.image_array[x].image_src}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!------------------------------------ FOUR IMAGE GALLERY END--------------------------------------->
+                                </div>
+                                <!------------------------------------ image GALLERY end --------------------------------------->
+                                
+                                <!------------------------------------ video GALLERY start--------------------------------------->
+                                <div *ngIf="stories.image_array?.length==0">
+                                    <div *ngFor="let video of stories.video_array;let x=index;">
+                                        <div class="img-container-organization" *ngIf="x==0">
+                                            <video controls><source src="{{video.video_src}}" type="video/mp4"></video>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!------------------------------------ video GALLERY END--------------------------------------->
+                                <!------------------------------------ pdf GALLERY start--------------------------------------->
+                                <div *ngIf="stories.image_array?.length==0 && stories.video_array?.length==0">
+                                    <div *ngFor="let pdf of stories.pdf_array;let x=index;">
+                                        <div class="img-container-organization" *ngIf="x==0">
+                                            <h1 style="text-align: center;">PDF DOCUMENT</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!------------------------------------ pdf GALLERY END--------------------------------------->
+                                <div class="form-padding">
+                                    <h4>
+                                    <span class="story-header" [innerHTML]="stories?.caption_plain | slice:0:25" style="word-break: break-all;"> </span>
+                                    </h4>
+                                    <div class="info">
+                                        <i class="fa fa-calendar-o"></i>
+                                        {{stories?.durations[0].utcStart | date:'fullDate'}}
+                                    </div>
+                                </div>
+
+                                <div class="footer-padding">
+                                <em class="capitalize" *ngIf="stories?.category?.name" style="float:left;font-size:16px;font-weight: bold;"> {{stories?.category.name | slice:0:70}} </em>
+                                <span class="capitalize" class="capitalize" *ngIf="stories?.veneus?.length >0" style="float:right;"> {{ stories?.veneus[0].city| slice:0:70}} </span>
+                                </div>
+
+                            </div>
+                            </a>
+                        </div>
+                    </div> 
+                    <div class="row right-box-padding">
+                        <div class="col-sm-12 text-center">
+                          <div *ngIf="loadingStories" class="simple-loader"></div>
+                        </div>
+                    </div>
+                    <div *ngIf="!loadingStories" class="row right-box-padding">
+                        <div class="col-sm-12 text-center" style="margin-bottom:10px;">
+                          <input *ngIf="hasMoreStories" type="button" class="more-button-preview" (click)="loadMoreStories()"
+                            value="More Events"/>
+                            <div *ngIf="!hasMoreStories" class="no-more-stories-msg">
+                              <!-- <div> - - - </div> -->
+                              {{mutiple_stories_array.length? "There are no more events" : " " + " "}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-sm-12 text-center">
+                          <div *ngIf="loadingStories" class="simple-loader"></div>
+                        </div>
+                    </div>
+                    <div class="row right-box-padding" *ngIf="hasMoreStories"> 
+                        <div class="col-sm-12 text-center" style="margin-bottom:10px;">
+                            <input type="button" class="more-button-preview" (click)="loadMoreStories()" value="More Events" />
+                        </div>
+                    </div> -->
+                    
+                    <!---------- same organization cards end---------->
+                    
+                    </div>
+                      <!------------------------------ comment section part ----------------------------------->
+                    <div class="row comment-section-preview right-box-padding" id="comment_section_div_+{{story?.id}}" *ngIf="logged_status && story.status != 'DRAFTED'" >
+                        <div class="col-sm-12">
+                            <!-- <Label style="font-size:18px;"> Select display comments </Label>  && story.status == 'PUBLISHED'           
+                            <div class="col-sm-12">
+                                <div style="border-bottom:1px solid #e58a25;padding-bottom: 5px;">
+                                    <label class="radio-inline" style="font-size: 16px; line-height: 1.6">
+                                        <input type="radio" #displayComments style="margin-top: 0.3em; width: 1em; height: 1em;" name="commentTypes"
+                                            value="public" [checked]="true"> Public
+                                    </label>
+                                    <label class="radio-inline" style="font-size: 16px; line-height: 1.6">
+                                        <input type="radio" style="margin-top: 0.3em; width: 1em; height: 1em;" name="commentTypes"
+                                            value="private" [checked]="false"> Private
+                                    </label> 
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12" >
+                                    <span style="float:right;cursor: pointer;" id="show_more_comments_parent_div_{{story.id}}" *ngIf="story.comment_array?.length>2" (click)="showHideComment('show',story.id,'parent')"><b><u>Show previous comments</u></b></span>
+                                </div>
+                            </div>
+                            <!-------------------- chat list routing  Preview ------------------------>
+                            <ng-container *ngFor="let comment of story.comment_array;let index_value=index;">
+                                <ng-container *ngIf="index_value >= story.comment_display_count">
+                                <!-------------------- chat list routing  Preview ------------------------>
+                                <div class="col-sm-12 chating-list" [id]="'comment_display_main_div_'+comment.result.id">
+                                    <div class="row">
+                                        <span *ngIf="comment.result.delete_status" class="pull-right remove-icon-chat" title="Delete" (click)="showDeleteCommentPopup(story.id,comment.result.id,'parent','',0,comment)"><i class="fa fa-remove"></i></span>
+                                        <div class="custom-profile-image-chat">
+                                            <span *ngIf="comment?.result?.staticDpImg"><img [src]="comment.result.staticDpImg" alt="" class="img-circle-chat" (error)="updateDefaultImageUrl($event)"/></span>
+                                            <div *ngIf="!comment?.result?.staticDpImg" class="custom-profile-image-text-chat uppercase">{{ comment.result.user.email ? ( comment.result.user.email | slice:0:1) : '' ? comment.result.user.email : ''}} </div>
+                                        </div>
+                                        <div class="stories-chat-list">
+                                            <div style="font-weight:600;margin-bottom:10px;">
+                                                {{ comment.result.user.userProfile.firstName ? comment.result.user.userProfile.firstName : '' }}  
+                                                <em class="small">{{ comment.result.updatedAt | timeAgo | async }}</em> <span *ngIf="!normalUser"> {{comment.result.public == true ? 'Public' : 'Private'}} </span>
+                                            </div>
+                                            <ng-container *ngFor="let comment_type of comment.comment_details">
+                                                <!---------------- text display ---------------------->
+                                                <p *ngIf="comment_type.type=='text_file'" [innerHTML]="comment_type.text_data"></p>
+                                                <!---------------- text display end---------------------->
+                                            </ng-container>
+                                            <!---------------------- images preview ------------------->
+                                            <ng-container *ngFor="let comment_type of comment.comment_details">
+                                                <span class="people-list-grid-comment" *ngIf="comment_type.type=='image_file'">
+                                                    <span class="landscape thumb-container">
+                                                        <img alt="" (click)="openImageModal(comment.comment_details,comment_type.image_src,'comment')" [src]="comment_type.image_src">
+                                                    </span>
+                                                </span>
+                                            </ng-container>
+                                            <!---------------------- images preview end ------------------->
+                                                
+                                            <!---------------------- Audio file ------------------->
+                                            <ng-container *ngFor="let comment_type of comment.comment_details">
+                                                <audio *ngIf="comment_type.type=='audio_file'" controls [src]="comment_type.audio_src"></audio>
+                                            </ng-container>
+                                            <!---------------------- Audio file end ------------------->
+                                            <div class="replay-text">
+                                                <label><a style="cursor: pointer;font-size:15px;color:#FE9200;" *ngIf="comment?.result?.replyButtonStatus" (click)="showReplyComment(story.id,comment.result.id)"> Reply </a></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-------------------- replay story chating child comments start---------------------->
+                                    <div class="row" style="padding-left: 40px;" id="child_reply_comment_div_{{comment.result.id}}">
+                                        <ng-container *ngIf="comment.child_comment_array?.length>2">
+                                                <span class="cursor-pointer" id="show_more_comments_child_div_{{story.id}}_{{comment.result.id}}" (click)="showHideComment('show',story.id,'child',comment.result.id)"><b>Show previous comments</b></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="comment.child_comment_array?.length>0">
+                                            <ng-container *ngFor="let child_comment of comment.child_comment_array;let child_index=index;">
+                                                <ng-container *ngIf="child_index >= comment.child_comment_display_count">
+                                                    <div [id]="'child_comment_display_main_div_'+child_comment.result.id">
+                                                        <span *ngIf="child_comment.result.delete_status" class="pull-right remove-icon-chat" title="delete" (click)="showDeleteCommentPopup(story.id,comment.result.id,'child',child_comment.result.id,child_comment)"><i class="fa fa-remove"></i></span>
+                                                        <div class="custom-profile-image-chat">
+                                                            <span *ngIf="child_comment?.result?.staticDpImg"><img [src]="child_comment.result.staticDpImg" (error)="updateDefaultImageUrl($event)" class="img-circle-chat" /></span>
+                                                            <div *ngIf="!child_comment?.result?.staticDpImg" class="custom-profile-image-text-chat uppercase"> {{ child_comment.result.user.email ? ( child_comment.result.user.email | slice:0:1) : '' ? child_comment.result.user.email : ''}} </div>
+                                                        </div>
+                                                        <div class="stories-chat-list">
+                                                            <div style="font-weight:600;margin-bottom:10px;">
+                                                                {{ comment.result.user.userProfile.firstName ? comment.result.user.userProfile.firstName : '' }}
+                                                                <em class="small">{{ child_comment.result.updatedAt | timeAgo | async }}</em> 
+                                                            </div>
+                                                            <ng-container *ngFor="let comment_type of child_comment.comment_details">
+                                                                <!---------------- text display ---------------------->
+                                                                <p *ngIf="comment_type.type=='text_file'" [innerHTML]="comment_type.text_data"></p>
+                                                                <!---------------- text display end---------------------->
+                                                            </ng-container>    
+                                                            <!---------------------- images preview ------------------->
+                                                            <ng-container *ngFor="let comment_type of child_comment.comment_details">
+                                                                <span class="people-list-grid-comment" *ngIf="comment_type.type=='image_file'">
+                                                                    <span class="landscape thumb-container">
+                                                                        <img alt="" (click)="openImageModal(child_comment.comment_details,comment_type.image_src,'comment')" [src]="comment_type.image_src">
+                                                                    </span>
+                                                                </span>
+                                                            </ng-container>
+                                                            <!---------------------- images preview end ------------------->
+                                                                
+                                                            <!---------------------- Audio file ------------------->
+                                                            <ng-container *ngFor="let comment_type of child_comment.comment_details">
+                                                                <audio *ngIf="comment_type.type=='audio_file'" controls [src]="comment_type.audio_src"></audio>
+                                                            </ng-container>
+                                                            <!---------------------- Audio file end ------------------->
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                            <!------------------- Reply type comment textarea end -------------------->
+                                        <div id="reply_comment_div_{{comment.id}}" *ngIf="!comment.result.replyButtonStatus">
+                                                <span  class="pull-right remove-icon-chat" title="Remove" (click)="closeChildReplyCommentBox(story.id,comment.id,'delete')"><i class="fa fa-remove"></i></span> 
+                                            <!------------------------------------ textarea ------------------------->
+                                            <div class="typecomment" id="child_comment_text_div_{{comment.id}}">
+                                                <textarea class="chating-textarea" (focus)="focusAdd('child_comment_text_'+comment.id)" (focusout)="focusRemove('child_comment_text_'+comment.id)" (keyup)="showPostButton(story.id,'child',comment.id)" rows="1" cols="10" placeholder="Write a comment..." id="child_comment_text_{{comment.id}}"></textarea>
+                                                <span class="error-mez" id="child_comment_text_{{comment.id}}_error"></span>
+                                            </div>
+                                            <!------------------------------------ textarea end------------------------->
+                                            <ng-container *ngFor="let comment_multiple_file of comment_multiple_file_array">
+                                                <!-------------------- audio file uploading ---------------------->
+                                                <div class="audio-file" *ngIf="comment_multiple_file.type=='audio_file' && comment_multiple_file.story_id==story.id && comment_multiple_file.comment_type=='child' && comment_multiple_file.comment_id==comment.id">
+                                                    <a class="pull-right remove-color" title="Delete" (click)="delDocType(comment_multiple_file.type,story.id,'child',comment.id,comment_multiple_file.relative_path)"><i class="fa fa fa-remove"></i></a>
+                                                    {{comment_multiple_file.file_name}}
+                                                </div>
+                                                <!--------------------- audio file uploading ------------------------------->
+                                            </ng-container>
+                                            <ng-container *ngFor="let comment_multiple_file of comment_multiple_file_array">
+                                                <!--------------------------------------upload images ------------------>
+                                                <div class="thumbnail-list" *ngIf="comment_multiple_file.type=='image_file' && comment_multiple_file.story_id==story.id && comment_multiple_file.comment_type=='child' && comment_multiple_file.comment_id==comment.id">
+                                                    <a class="remove-upload-icon" title="Delete" (click)="delDocType(comment_multiple_file.type,story.id,'child',comment.id,comment_multiple_file.relative_path)"><i class="fa fa fa-remove"></i></a>
+                                                    <img alt="" [src]="comment_multiple_file.image_src">
+                                                </div>
+                                                <!--------------------------------------upload images end------------------>
+                                            </ng-container>
+                                    
+                                            <!-------------------------------- post area ---------------------------------------->
+                                            <div class="btn-container" id="post_child_comment_div_{{comment.id}}">
+                                                <div class="upload-btn-container" style="position: relative;">
+                                                    <div class="btn chating-user">
+                                                        <a style="text-decoration: none;">
+                                                            <ng-container *ngFor="let user of user_child_detail_array">
+                                                                <ng-container *ngIf="user.isChecked">
+                                                                    <img *ngIf="user.staticDpImg" [src]="user.staticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)"/>
+                                                                    <label *ngIf="!user.staticDpImg" class="profile-name-navbar uppercase" > {{ userProfilename ? (userProfilename | slice:0:1) : ''}} </label>
+                                                                    <span class="comment-name-responsive"> &nbsp;&nbsp;{{ userProfilename }} </span>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </a>
+                                                    </div>
+                                                        <!---------------- child or user select ----------->
+                                                        <!-- <ul class="select-author" id="child_comment_behalf_child_user_dropdown_{{comment.id}}"  *ngIf="user_child_detail_array?.length>0" style="display:none">
+                                                            <li *ngFor="let user of user_child_detail_array" (click)="selectCommentByUser(user.id,user.user_type, 'child_comment_behalf_child_user_dropdown_'+comment.id)">
+                                                                <img *ngIf="user.staticDpImg" [src]="user.staticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)"/>
+                                                                <label *ngIf="!user.staticDpImg" class="profile-name-navbar uppercase" >{{ user.firstName ? ( user.firstName | slice:0:1) : '' ? user.firstName : 'A'}}</label>
+                                                                &nbsp;&nbsp;{{ user.firstName ? user.firstName : 'Anonymous' }}
+                                                            </li>
+                                                        </ul> -->
+                                                        <!---------------- child or user select end----------->
+                                                 
+                                                    <a class="btn gray-text" style="position: relative;" (click)="uploadDocType(story?.id,'image', 'child',comment.id)" title="Upload an image">
+                                                        <i class="fa fa-camera"></i>
+                                                    </a>
+                                                    <a class="btn gray-text" style="position: relative;" (click)="uploadDocType(story?.id,'audio', 'child',comment.id)"  title="Upload an audio file(Mp3,WAV)">
+                                                        <i class="fa fa-microphone"></i>
+                                                    </a>
+                                                    <!-- <a class="btn gray-text" style="position: relative;" (click)="showEmoji(story.id,'child',comment.id)" title="Add Emoji">
+                                                        <i class="fa fa-smile-o"></i>
+                                                    </a> -->                                         
+                                                    <button class="pull-right btn-blue-color" id="comment_post_button_{{story.id}}_{{comment.id}}" [attr.disabled] = "comment?.result?.disabledChildCommentReply ? 'disabled' : null" [ngStyle]="{'background': comment?.result?.disabledChildCommentReply ? '' : '#337ab7','color': comment?.result?.disabledChildCommentReply ? '' : '#ffffff'}" (click)="postChildComment(story.id,comment.id)" title="Reply"> <i class="fa fa-paper-plane-o"></i> </button>
+                                                </div>
+                                                <emoji-mart class="emoji-adjust" id="emoji_child_{{story.id}}_{{comment.id}}" *ngIf="comment?.result?.emojiStatus" (emojiClick)="addEmoji($event,story.id,'child',comment.id)"></emoji-mart>
+                                            </div>
+                                            <br>
+                                            <!-------------------------------- post area end---------------------------------------->
+                                        </div>
+                                            <!------------------- Reply type comment textarea end -------------------->
+                                    </div>
+                                    <!-------------------- reply story chating end---------------------->
+                                </div>
+                            </ng-container>
+                           </ng-container>
+                                <!-------------------- chat list routing Preview end ------------------------>
+                                <!------------------------------------ textarea ------------------------->
+                                <div class="typecomment" id="comment_text_div_{{story.id}}">
+                                    <textarea class="chating-textarea" (focus)="focusAdd('comment_text_'+story.id)" (focusout)="focusRemove('comment_text_'+story.id)" (keyup)="showPostButton(story.id,'parent',0)" rows="1" cols="10" placeholder="Write a comment..." id="comment_text_{{story.id}}"></textarea>
+                                    <span class="error-mez" id="comment_text_{{story.id}}_error"></span>
+                                </div>
+                                <!------------------------------------ textarea end------------------------->
+                                <ng-container *ngFor="let comment_multiple_file of comment_multiple_file_array">
+                                    <!-------------------- audio file uploading ---------------------->
+                                    <div class="audio-file" *ngIf="comment_multiple_file.type=='audio_file' && comment_multiple_file.story_id==story.id && comment_multiple_file.comment_type=='parent'">
+                                        <a class="pull-right remove-color" title="Delete" (click)="delDocType(comment_multiple_file.type,story.id,'parent',0,comment_multiple_file.relative_path)"><i class="fa fa fa-remove"></i></a>
+                                        {{comment_multiple_file.file_name}}
+                                    </div>
+                                    <!--------------------- audio file uploading ------------------------------->
+                                </ng-container>
+                                <ng-container  *ngFor="let comment_multiple_file of comment_multiple_file_array">
+                                    <!--------------------------------------upload images ------------------>
+                                    <div class="thumbnail-list" *ngIf="comment_multiple_file.type=='image_file' && comment_multiple_file.story_id==story.id && comment_multiple_file.comment_type=='parent'">
+                                        <a class="remove-upload-icon" title="Delete" (click)="delDocType(comment_multiple_file.type,story.id,'parent',0,comment_multiple_file.relative_path)"><i class="fa fa fa-remove"></i></a>
+                                        <img alt="" [src]="comment_multiple_file.image_src">
+                                    </div>
+                                    <!--------------------------------------upload images end------------------>
+                                </ng-container>
+                                <!-------------------------------- post area ---------------------------------------->
+                                <div class="btn-container" id="post_comment_div_{{story.id}}">
+                                    <div class="upload-btn-container" style="position: relative;">
+                                        <div class="btn chating-user">
+                                            <a style="text-decoration: none;">
+                                                <ng-container *ngFor="let user of user_child_detail_array">
+                                                    <ng-container *ngIf="user.isChecked">
+                                                        <img *ngIf="user.staticDpImg" [src]="user.staticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)"/>
+                                                        <label *ngIf="!user.staticDpImg" class="profile-name-navbar uppercase" > {{ userProfilename ? (userProfilename | slice:0:1) : ''}} </label>
+                                                        <span class="comment-name-responsive">&nbsp;&nbsp;{{ userProfilename }}</span>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </a>
+                                        </div>
+                                        <!---------------- child or user select ----------->
+                                        <!-- <ul class="select-author" *ngIf="user_child_detail_array?.length>0" id="comment_behalf_user_dropdown_{{story.id}}" style="display:none">
+                                            <li *ngFor="let user of user_child_detail_array" (click)="selectCommentByUser(user.id,user.user_type,'comment_behalf_user_dropdown_'+story.id)">
+                                                <img *ngIf="user.staticDpImg" [src]="user.staticDpImg" class="profile-image" (error)="updateDefaultImageUrl($event)"/>
+                                                <label *ngIf="!user.staticDpImg" class="profile-name-navbar uppercase" > {{ user.firstName ? ( user.firstName | slice:0:1) : '' ? user.firstName : 'A'}} </label>
+                                                &nbsp;&nbsp;{{user.firstName ? user.firstName : 'Anonymous' }}                                                
+                                            </li>
+                                        </ul> -->
+                                        <!---------------- child or user select end----------->
+                                        <a class="btn gray-text" style="position: relative;" (click)="uploadDocType(story?.id,'image', 'parent')" title="Upload an image">
+                                            <i class="fa fa-camera"></i>
+                                        </a>
+                                        <a class="btn gray-text" style="position: relative;" (click)="uploadDocType(story?.id,'audio','parent')"  title="Upload an audio file(Mp3,WAV)">
+                                            <i class="fa fa-microphone"></i>
+                                        </a>
+                                        <!-- <a class="btn gray-text" style="position: relative;" (click)="showEmoji(story.id,'parent')" title="Add Emoji">
+                                            <i class="fa fa-smile-o"></i>
+                                        </a> -->
+                                        <a style="position: relative;text-decoration: none;" *ngIf="!normalUser">
+                                            <label>
+                                                <input type="checkbox" class="toggle" [(ngModel)]="theCheckbox" (change)="toggleVisibility($event)">
+                                                <span *ngIf="marked"> Private </span><span *ngIf="!marked"> Public </span>
+                                            </label>
+                                        </a>
+                                        <button class="pull-right" id="comment_post_button_{{story.id}}" [attr.disabled] = "story?.disabledCommentPost ? 'disabled' : null" [ngStyle]="{'background': story?.disabledCommentPost ? '' : '#337ab7','color': story?.disabledCommentPost ? '' : '#ffffff'}" (click)="postComment(story.id)"  title="Post"> Post </button>
+                                    </div>
+                                    <emoji-mart class="emoji-adjust" id="emoji_parent_{{story.id}}" *ngIf="story.emojiStatus" (emojiClick)="addEmoji($event,story.id,'parent')" > </emoji-mart>
+                                </div>
+                                <!-------------------------------- post area end---------------------------------------->
+                            </div>
+                        </div>
+                    </div>
+                </div>          
+            <br>
+            <div class="row">
+                <div class="footer-design-signin text-center">
+                    <ul class="footer-list-content1">
+                        <li class="list-footer" > Need help ? </li>
+                        <li [routerLink]="['/privacy-policy']" style="cursor: pointer;" class="list-footer" > Privacy policy </li>
+                        <li class="list-footer" > Terms of use </li>
+                        <li class="list-footer"> 2020 EventEnergies. All rights reserved.</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- map end -->
+        </div>
+  </div>
+    <!---------------------Page required content start-------------------------->
+    <div #story_content id="story_content" style="display:none"></div>
+    <div #story_comment_content style="display:none" aria-hidden="true"></div>
+    <input type="file" style="display:none;" id="main_file" accept=".jpg,.png,.jpeg" />
+    
+    <!---------------------Page required content end---------------------------->
+    
+  
+        <!----------------------------------- Create story Pop-up start ----------------------->
+        <div class="modal fade" id="create_story_popup" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"> Event details to be filled</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row" [ngClass]="{'disable-element': disable_select_school}" style="margin-bottom:10px;">
+                  <div class="col-sm-12">
+                      <label class="heading"> Select Chapter </label>
+                      <div class="school-list-card">
+                        <ul class="people-list-grid" style="padding: 0;">
+                          <li *ngFor="let school of story_school_array" [ngStyle]="{'background-color': school.isChecked ? '#ccc' : ''}">
+                              <span class="media-left" style="float:left;">
+                                  <span *ngIf="!school.staticSchoolDpImg" class="media-object" style="width:25px;height:25px;background-color:#eee;color:#FE9200;border-radius: 100%;font-size:18px;text-align: center;line-height:25px">{{school?.name | slice:0:1}}</span>
+                                  <span *ngIf="school.staticSchoolDpImg"><img class="media-object" [src]="school.staticSchoolDpImg" style="width:25px;height:25px;border-radius: 100%;" (error)="updateDefaultImageUrl($event)"></span>
+                              </span>
+                              <span style="line-height:25px;" class="capitalize"> {{school.name}} </span>
+                          </li>
+                        </ul>
+                      </div>
+                      <p class="error-mez" *ngIf="story_school_error_status"> Please select school </p>
+                  </div>
+                </div>
+                <div class="row" *ngIf="story_type_admin_parent_status" style="margin-bottom:10px;">
+                  <div class="col-sm-12">
+                      <label class="heading"> Type of Event </label>
+                      <br>
+                        <ul class="people-list-grid" style="padding: 0;">
+                          <li *ngFor="let story of story_type_array" (click)="storySelectStoryType(story.type)" [ngStyle]="{'background-color': story.isChecked ? '#337ab7' : '','color': story.isChecked ? '#ffffff' : ''}">
+                              <span style="padding:10px;font-weight: 600;">{{story.display}}</span>
+                          </li>
+                        </ul>
+                        <div class="col-sm-12" style="padding: 0;">
+                            <p class="error-mez" *ngIf="story_type_error_status"> Please select type of story </p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="story_date_status">
+                      <div class="col-sm-6">
+                            <label class="heading"> Date </label>
+                            <input type="text" id="story_created_date" placement="top" readonly required [(ngModel)]="user_story_created_date" (bsValueChange)="onChangeDatePickerStart($event, 'created')" bsDatepicker  [bsConfig]="datepickerConfig" name="user_story_created_date"/>
+                            <p class="error-mez" *ngIf="story_created_date_error_status"> Please select created date </p>
+                      </div>
+                      <div class="col-sm-6" *ngIf="story_expiry_date_status">
+                          <label class="heading"> Last still </label>
+                          <input type="text" id="story_expiry_date"  placement="top" readonly required [(ngModel)]="user_story_expiry_date"(bsValueChange)="onChangeDatePickerStart($event, 'expiry')"  bsDatepicker [bsConfig]="datepickerConfig" name="user_story_expiry_date"/>
+                          <p class="error-mez" *ngIf="story_expiry_date_error_status"> Please select expiry date </p>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <p class="error-mez" *ngIf="story_creation_popup_error"> Something went wrong </p>
+                <button type="button" class="btn custom-btn-close" data-dismiss="modal"> Close </button>
+                <button type="button" class="btn custom-btn" (click)="saveStoryPopupDetails()"> Start Event Write Up </button>
+              </div>
+            </div>
+          </div>
+        </div>
+<!------------------------------------- create Story Pop-up end---------------------------->
+
+<!-----------------------------------Delete Confirmation popup start-------------------------->
+<div class="modal fade" role="dialog" id="delete_comment_modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        <div class="modal-body">
+            <div class="row">
+            <div class="col-sm-12">
+                <p style="font-size:16px;color:#333"> Are you sure you want to delete this comment? This action cannot be undone. </p>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="No" >
+            <input type="button" value="post" class="btn custom-btn" (click)="deleteComment()" value="Yes">
+        </div>
+        </div>
+    </div>
+
+</div>
+<!-----------------------------------Delete Confirmation popup end------------------------------->
+<!----------------------------------- Alert message edit story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_edit_story_popup">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p style="font-size:16px;color:#333"> Would you like to edit this Event Activity. </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+          <input type="button" class="btn custom-btn" value="Yes" (click)="saveStoryPopupDetails()">
+        </div>
+
+      </div>
+    </div>
+
+</div>
+<!----------------------------------- Alert message edit story popup end ------------------------------->
+<!----------------------------------- Alert message submit story popup start ------------------------------->
+<div class="modal fade" role="dialog" id="alert_submit_story_popup">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p style="font-size:16px;color:#333"> Would you like to submit this Event. </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+          <input type="button" class="btn custom-btn" value="Yes" (click)="submitEvent()">
+        </div>
+
+      </div>
+    </div>
+</div>
+<!----------------------------------- Alert message submit story popup end ------------------------------->
+<!----------------------------------- Alert message delete story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_story_popup">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p style="font-size:16px;color:#333"> Are you sure to delete the Event. </p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+          <input type="button" class="btn custom-btn" value="Yes" (click)="deleteStory()">
+        </div>
+      </div>
+    </div>
+</div>
+<!----------------------------------- Alert message delete story popup end ------------------------------->
+
+
+<ks-modal-gallery [id]="1" [modalImages]="modal_images" [currentImageConfig]="{downloadable: true}" [buttonsConfig]="buttonsConfigSimple"></ks-modal-gallery>
+
+
+
+<div #story_content_filter style="display:none" aria-hidden="true"></div>
+<div #story_header_content id="story_header_content" style="display:none"></div>

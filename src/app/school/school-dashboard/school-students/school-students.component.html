@@ -1,0 +1,61 @@
+<!----------------------empty student ------------------>
+<!-- <div class="row" *ngIf="pending_child_array?.length==0">
+    <div class="col-sm-12">
+        <div style="text-align: center;">
+            <h3 style="color:#fe9200;">No request found</h3>
+        </div>
+    </div>
+</div> -->
+<!----------------------empty student end------------------>
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Members </h3>
+    </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+    <a [routerLink]="['/admin/organization/student/add' ]" title="Add student">
+      <div class="col-sm-12 create-card">
+        <div class="invite-box"> 
+            +
+        </div>
+        Add Members
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let pending_child_list of pending_child_array;let x=index;">
+    <div class="col-sm-12 border-box">
+      <span >
+        <!------------------usetr image upload --------------------->
+        <span *ngIf="pending_child_list.child.staticDpImg"><img [src]="pending_child_list.child.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+        <!------------------user image upload end--------------------->
+        <!-----------------------user name text  ----------------------->
+        <div class="bc-bg uppercase" *ngIf="!pending_child_list.child.staticDpImg">{{pending_child_list.child.firstName | slice:0:1 }}{{ pending_child_list.child.lastName | slice:0:1}}</div>
+        <!-----------------------user name text  end----------------------->
+      </span>
+      <div class="cont-right">
+        <h4 class="header-name">{{pending_child_list.child.firstName ? pending_child_list.child.firstName : '' }} {{pending_child_list.child.lastName ? pending_child_list.child.lastName : '' }}</h4>
+      </div>
+      <div class="accept-buttons">
+        <input type="button" (click)="approveChildRequest(pending_child_list.child.id,pending_child_list.school.id,x)" class="btn btn-primary pull-left" value="Accept" />
+        <input type="button" (click)="rejectChildRequest(pending_child_list.child.id,pending_child_list.school.id,x)" class="btn btn-danger pull-right" value="Reject" />
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let school_child_list of school_child_array;let x=index;">
+      <div class="col-sm-12 border-box" >
+        <a style="cursor: pointer;" title="click here to view student profile" [routerLink]="['/admin/organization/student-profile']" [queryParams]="{id: school_child_list.child.id, c_req_id: school_child_list.id}">
+          <!------------------usetr image upload --------------------->
+          <span *ngIf="school_child_list.child.staticDpImg"><img [src]="school_child_list.child.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+          <!------------------user image upload end--------------------->
+          <!-----------------------user name text  ----------------------->
+          <div class="bc-bg uppercase" *ngIf="!school_child_list.child.staticDpImg">{{school_child_list.child.firstName | slice:0:1}}{{ school_child_list.child.lastName | slice:0:1}}</div>
+          <!-----------------------user name text  end----------------------->
+        </a>
+        <div class="cont-right">
+          <h4 class="header-name">{{school_child_list.child.firstName ? school_child_list.child.firstName : '' }} {{school_child_list.child.lastName ? school_child_list.child.lastName : '' }}</h4>
+        </div>
+      </div>
+  </div>
+</div>
+

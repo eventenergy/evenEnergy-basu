@@ -1,0 +1,225 @@
+<div class="dashboard-responsive-margin">
+    <div class="container">
+        <!-- invite family start -->
+        <div class="row margin-bt">
+                <div class="col-sm-12">
+                    <h3> Family </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+                    <a (click)="showInviteFamilyModal()" title="Invite family">
+                        <div class="col-sm-12 create-card">
+                            <div class="invite-box"> 
+                                +
+                            </div>
+                            Invite family
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" style="display:none;">
+                    <div class="col-sm-12 border-box">
+                        <span  style="cursor: pointer;" title="profile">
+                        <!------------------user image upload --------------------->
+                        <!-- <div><img src="" class="card-profile-image" alt="class"></div> -->
+                        <!------------------user image upload end--------------------->
+                        <!-----------------------user name text  ----------------------->
+                        <div class="bc-bg"> lk </div>
+                        <!-----------------------user name text  end----------------------->
+                        </span>
+                        <div class="cont-right">
+                            <div id="textbox">
+                            <span class="header-name"> pending family </span>
+                                <br>
+                                <!-- <span class="dropdown">
+                                <a style="cursor:pointer;" data-toggle="dropdown" class="dropdown-toggle"><b class="caret" style="border-width:8px;"></b></a>
+                                <ul class="dropdown-menu dropdown-menu-right" style="margin-top:-10px;cursor:pointer;">
+                                <li><a [routerLink]="['admin/school/class-room']" [queryParams]="{ type: 'edit', id: class.id  }" >Edit</a></li>
+                                <li><a>Remove class room</a></li>
+                                </ul>   
+                                </span> -->
+                            </div>
+                            <span class="header-email"> basu@gmail.com </span>
+                        </div>
+                        <!-----------------email pending -------------------------->
+                        <div class="pending-email-verify">
+                            <div class="flex-content">
+                                <div class="hover-color">
+                                    Pending...
+                                </div>
+                                <div class="hover-color" style="cursor:pointer;float:right">
+                                    <span>Resend</span>
+                                </div> 
+                            </div>
+                        </div>
+                        <!-----------------email pending -------------------------->
+                    </div>
+                </div>
+            </div>
+            <!-- invite family end -->
+        <div *ngIf="child_request_details?.length>0">
+            <div class="row margin-bt">
+                <div class="col-sm-12">
+                    <h3> Pending child invites </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12" *ngFor="let child of child_request_details;">
+                    <div class="col-sm-12 border-box">
+                        <!------------------usetr image upload --------------------->
+                        <span *ngIf="child.staticDpImg"><img [src]="child.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"> </span>
+                        <!------------------user image upload end--------------------->
+                        
+                        <!-----------------------user name text  ----------------------->
+                        <div class="bc-bg" *ngIf="!child.staticDpImg">{{child.firstName | slice:0:1}}{{child.lastName | slice:0:1}}</div>
+                        <!-----------------------user name text  end----------------------->
+                        <div class="cont-right">
+                            <div id="textbox">
+                                <span class="header-name">{{child.firstName + " " +child.lastName}}</span>
+                            </div>
+                            <span class="card-content">{{child.Dob ? "DOB:"+child.Dob : ''}}</span>
+                            <br>
+                            <span class="card-content">{{child.male ? "Gender:"+(child.male ? "Male" : "") : "Gender:"+(child.male ? "" : "Female")}}</span>
+                            <br>
+                            <h3 class="header-name"> School Details: </h3>
+                                {{child.school_name ? child.school_name : ''}}
+                                {{child.school_website ? child.school_website : ''}}
+                        </div>
+                        <div class="accept-buttons">
+                            <button (click)="acceptChild(child.id)" class="btn btn-primary pull-left"> Accept </button>
+                            <button (click)="rejectChild(child.id)" class="btn btn-danger pull-right"> Reject </button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        <br>
+        <div *ngIf="school_teacher_request_details?.length>0">
+            <div class="row margin-bt">
+                <div class="col-sm-12">
+                    <h3> Pending Teacher invites </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12" *ngFor="let school of school_teacher_request_details;">
+                    <div class="col-sm-12 border-box">
+                        <!------------------usetr image upload --------------------->
+                        <span *ngIf="school.staticSchoolDpImg"><img [src]="school.staticSchoolDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"> </span>
+                        <!------------------user image upload end--------------------->
+                        
+                        <!-----------------------user name text  ----------------------->
+                        <div class="bc-bg" *ngIf="!school.staticSchoolDpImg">{{school.school_name | slice:0:1}}</div>
+                        <!-----------------------user name text  end----------------------->
+                        <div class="cont-right">
+                            <div id="textbox">
+                                <span class="header-name">{{school.school_name | slice:0:30}}</span>
+                            </div>
+                            <span class="card-content">{{school.school_website ? school.school_website : ''}}</span>
+                            <h3 *ngIf="school.registrationMessage" class="header-name"> Message:</h3>{{school.registrationMessage ? (school.registrationMessage | slice:0:40) : ''}}<br>
+                        </div>
+                        <div class="accept-buttons">
+                            <button (click)="acceptTeacherInvite(school.id)" class="btn btn-primary pull-left"> Accept </button>
+                            <button (click)="rejectTeacherInvite(school.id)" class="btn btn-danger pull-right"> Reject </button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+        <!-- <div class="row" *ngIf="child_request_details?.length==0 && school_teacher_request_details?.length==0">
+            <div class="col-sm-12">
+                <div style="text-align: center;">
+                    <h3 style="color:#fe9200;"> No invites found </h3>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <br><br>
+</div>
+
+<!----------------------------------- Invite Family Pop-up start ----------------------->
+<div class="modal fade" id="invite_family_modal" role="dialog">
+    <form #familyInvite="ngForm" id="family_invite_form">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Invite your family </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label class="heading"> Email </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input [(ngModel)]="family_invite_email" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"  placeholder="Enter your Email Address" type="email" required id="email" name="email" #useremail="ngModel">
+                            <div class="error-mez"  *ngIf="useremail.touched && useremail.invalid">
+                                <div *ngIf="useremail?.errors?.required">
+                                Email is required
+                                </div>
+                                <div *ngIf="useremail?.errors?.pattern">
+                                Email is invalid
+                                </div>
+                            </div>
+                            <div class="error-mez" *ngIf="family_invite_email_error_status && !useremail.touched">{{family_invite_email_error_message ? family_invite_email_error_message : ''}}</div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label class="heading"> Message </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <textarea class="text-area-mez" placeholder="Include an optional message in your question" style="height:100px;" [(ngModel)]="family_invite_message" name="family_invite_message"></textarea>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- <label class="heading"> Invite to: </label> -->
+                            <div class="school-list-card">
+                                <ul class="people-list-grid" style="padding: 0;">
+                                    <li *ngFor="let child of user_total_child_array;" (click)="selectChild(child.id)" [ngStyle]="{'background-color': child.isChecked ? '#337ab7' : '' }" title="{{child.isChecked ? 'Remove child' : 'Select child'}}">
+                                        <span class="media-left" style="float:left;">
+                                            <span class="media-object media-text uppercase" *ngIf="!child.staticDpImg">{{child.firstName | slice:0:1}}{{child.lastName | slice:0:1}}</span>
+                                            <span *ngIf="child.staticDpImg"><img class="media-object media-image" [src]="child.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+                                        </span>
+                                        <span style="line-height: 25px;font-weight: 600;">{{child.firstName ? child.firstName : '' }} {{child.lastName ? child.lastName : '' }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom-btn-close" data-dismiss="modal"> Close </button>
+                    <button type="button" class="btn custom-btn" (click)="sendInviteToFamily()"> Send invite </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!------------------------------------- create Story Pop-up end---------------------------->
+
+
+<!-- User Popup to restrict to create story start -->
+<div class="modal fade bd-example-modal-sm" id="user_invite_family_popup_to_restrict" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span aria-hidden="true">INFO</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please add child and register to school to invite family members
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn custom-btn-close" data-dismiss="modal">Close</button>
+                <button (click)="routeToAddChild()" type="button" class="btn custom-btn">Add Child</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- User Popup to restrict to create story end -->

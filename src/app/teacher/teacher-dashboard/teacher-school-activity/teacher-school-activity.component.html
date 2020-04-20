@@ -1,0 +1,133 @@
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Events </h3>
+        <!-- <button type="button" (click)="debug()">debug</button> -->
+    </div>
+</div>
+<!-- <div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+       <span  class="edit-button-school" [routerLink]="['/admin/school/generate-ticket']" [queryParams]="{ eventId: 1 }" > Print Ticket </span>
+                        
+    </div>
+</div> -->
+<div class="row">
+    <!-- <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+        <a style="cursor:pointer;" title="Create Event">
+            <div class="col-sm-12 create-card">
+                <div class="image-create-custom">
+                    <img src="assets/images/story-background.svg" class="img-responsive" />
+                    <h4> Create Event </h4>
+                </div>
+            </div>
+        </a>
+    </div> -->
+    <!-----------------------------recent story card start  --------------------------------->
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngFor="let stories of mutiple_stories_array">
+        <div class="col-sm-12 well main-form draft-card-pending">
+            <div [routerLink]="('/activity/preview/')+stories.id">
+            <div *ngFor="let images of stories.image_array;let x=index;">
+                <!------------------------------------ SINGLE IMAGE GALLERY --------------------------------------->
+                <div class="img-container-activity" *ngIf="stories.image_array.length==1 && x==0">
+                    <img src="{{images.image_src}}">
+                </div>
+                <!------------------------------------ SINGLE IMAGE GALLERY END--------------------------------------->
+                <!------------------------------------ TWO IMAGE GALLERY --------------------------------------->
+                <div class="img-container2-activity" *ngIf="stories.image_array.length==2 && x==1">
+                    <div class="leftcolumn-activity">
+                        <img src="{{stories.image_array[x-1].image_src}}">
+                    </div>
+                    <div class="rightcolumn-activity">
+                        <!-- <img src="{{images.image_src}}"> -->
+                        <img src="{{stories.image_array[x].image_src}}">
+                    </div>
+                </div>
+                <!------------------------------------ TWO IMAGE GALLERY END--------------------------------------->
+                <!------------------------------------ THREE IMAGE GALLERY --------------------------------------->
+                <div class="img-container41-activity" *ngIf="stories.image_array.length==3 && x==2">
+                    <div class="left-content-images1-activity">
+                        <img src="{{stories.image_array[x-2].image_src}}">
+                    </div>
+                    <div class="right-content-images">
+                        <div class="rightcolumn1-activity">
+                            <img src="{{stories.image_array[x-1].image_src}}">
+                        </div>
+                        <div class="rightcolumn2-activity">
+                            <img src="{{stories.image_array[x].image_src}}">
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------ THREE IMAGE GALLERY END--------------------------------------->
+                <!------------------------------------ FOUR IMAGE GALLERY --------------------------------------->
+                <div class="img-container41-activity" *ngIf="stories.image_array.length>=4 && x==3">
+                    <div class="left-content-images-activity">
+                        <div class="leftcolumn1-activity">
+                            <img src="{{stories.image_array[x-3].image_src}}">
+                        </div>
+                        <div class="leftcolumn2-activity">
+                            <img src="{{stories.image_array[x-1].image_src}}">
+                        </div>
+                    </div>
+                    <div class="right-content-images-activity">
+                        <div class="rightcolumn1-activity">
+                            <img src="{{stories.image_array[x-2].image_src}}">
+                        </div>
+                        <div class="rightcolumn2-activity">
+                            <img src="{{stories.image_array[x].image_src}}">
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------ FOUR IMAGE GALLERY END--------------------------------------->
+            </div>
+            <!------------------------------------ video GALLERY --------------------------------------->
+            <div *ngIf="stories.image_array?.length==0">
+                <div *ngFor="let video of stories.video_array;let x=index;">
+                    <div class="img-container-activity" *ngIf="x==0">
+                        <video controls><source src="{{video.video_src}}" type="video/mp4"></video>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------ video GALLERY END--------------------------------------->
+            <!------------------------------------ video GALLERY --------------------------------------->
+            <div *ngIf="stories.image_array?.length==0 && stories.video_array?.length==0">
+                <div *ngFor="let pdf of stories.pdf_array;let x=index;">
+                    <div class="img-container-activity" *ngIf="x==0">
+                        <h1 style="text-align: center;">PDF DOCUMENT</h1>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------ video GALLERY END--------------------------------------->
+            <div class="form-padding-title">
+                <h4>
+                <span class="story-header-org-activity" [innerHTML]="stories?.caption_plain" style="word-break: break-all;"> </span>
+                </h4>
+                <div class="info">
+                    <span style="font-size:12px;"> <i class="fa fa-calendar-o"></i> </span>&nbsp;&nbsp;
+                    {{stories?.durations[0].utcStart | date:'fullDate'}}
+                    <span style="float:right;"> 
+                        {{stories.public == true ? 'Public' : 'private'}}
+                        <!-- <img src="assets/images/events/public.png"> -->
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-padding-bottom">
+            <span class="capitalize" class="capitalize" *ngIf="stories?.veneus?.length >0" style="float:right;"> {{ stories?.veneus[0].city| slice:0:70}} </span>
+        </div>
+        </div>
+    </div>
+    <!-----------------------------recent story card end --------------------------------->
+</div>
+<div class="row" *ngIf="mutiple_stories_array?.length == 0">
+    <div class="col-sm-12 text-center">
+        <h3> No Events Created  </h3>
+    </div>
+</div>
+<div class="row" *ngIf="mutiple_stories_array?.length > 0 && !hasStoriesToload">
+    <div class="no-more-stories-msg text-center" style="margin-bottom:10px;">
+        <div> - - - </div>
+        Reached the end of the list
+      </div>
+</div>
+    
+<div #story_content style="display:none" aria-hidden="true"></div>
+<div #story_header_content id="story_header_content" style="display:none"></div>

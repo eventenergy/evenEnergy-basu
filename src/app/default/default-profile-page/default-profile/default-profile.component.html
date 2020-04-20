@@ -1,0 +1,62 @@
+<div class="dashboard-box dashboard-school-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <a  style="text-decoration:none;cursor: pointer;" (click)="goBack()">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          &nbsp;&nbsp; Go Back
+        </a>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-2">
+              <!----------------- profile image --------------------->
+              <!-- <div *ngIf="default_details && !default_details.staticDpImg" class="profile-text" style="text-transform: uppercase" >{{  default_details.imgName ? default_details.imgName : ''}} </div> -->
+              <div *ngIf="default_details && !default_details.staticDpImg" class="profile-text" style="text-transform: uppercase" >{{ profileName ? (profileName | slice:0:1) : '' }} </div>
+              <div *ngIf="default_details && default_details.staticDpImg"><img [src]="default_details.staticDpImg" (error)="updateDefaultImageUrl($event)" class="dashboard-profile-image"/></div> 
+              <!----------------- profile image --------------------->
+            </div>
+            <div class="col-sm-9 col-md-9 col-lg-10">
+              <!-- <h2 class="school-name-header">{{default_details && default_details.name ? default_details.name : '' }}<span  class="edit-button-school" *ngIf="default_details && default_details.editPermission" (click)="editProfile(default_details.route_url ? default_details.route_url : '')"> Edit </span></h2> -->
+              <h2 class="school-name-header">{{ profileName }}<span  class="edit-button-school" *ngIf="default_details && default_details.editPermission" (click)="editProfile(default_details.route_url ? default_details.route_url : '')"> Edit </span></h2>
+              <span *ngIf="default_details && default_details.dob"><i class="fa fa-gift"></i>&nbsp;&nbsp; {{default_details.dob ? (default_details.dob | date:'dd MMM yyyy') : '' }}</span>
+               <div class="pull-right" *ngIf="school_name">
+                  <span title="School name" style="font-size:16px;"> {{school_name}} <i class="fa fa-graduation-cap"></i></span>
+              </div> 
+            </div> 
+          </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row" >
+      <div class="col-sm-12">
+        <div class="flex-content-navbar">
+          <ng-container *ngFor="let component of component_array">
+            <div class="flex-menu" title="{{component.name}}" (click)="showRespectiveComponent(component.id)" [ngClass]="{'active-color': component.active}">
+              <span> {{component.name}} </span>
+              <div *ngIf="component.active" class="sp-active-bar"></div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dashboard-box-response">
+  <div class="container">
+    <!-- <router-outlet></router-outlet> -->
+    <ng-container *ngFor="let component of component_array">
+      <app-class-room-teacher [class_id]="default_id" [school_id]="school_id" *ngIf="component.id=='classroom_teacher' && component.active"></app-class-room-teacher>
+      <app-class-room-student [class_id]="default_id" [school_id]="school_id" *ngIf="component.id=='classroom_student' && component.active"></app-class-room-student>
+      <app-teacher-undertaking-class [school_id]="school_id" [teacher_req_id]="teacher_req_id" *ngIf="component.id=='teacher_class' && component.active"></app-teacher-undertaking-class>
+      <app-default-user-about [school_id]="school_id" [user_id]="default_id" *ngIf="component.name=='About' && component.active && component.id == 'admin_about'"></app-default-user-about>
+      <app-student-parent [school_id]="school_id" [child_id]="default_id" *ngIf="component.id=='child_parent' && component.active"></app-student-parent>
+      <app-student-class [school_id]="school_id" [child_id]="default_id" *ngIf="component.id=='child_class' && component.active"></app-student-class>
+      <app-default-school-about [school_id]="default_id" *ngIf="component.name=='About' && component.active && component.id == 'school_about'"></app-default-school-about>
+    </ng-container>
+  </div>
+</div>
+<br><br><br>

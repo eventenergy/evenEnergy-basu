@@ -1,0 +1,1225 @@
+<div class="flex-content top-navbar navbar-fixed-top">
+  <div class="demo-class">
+    <!-- <a routerLink="/" style="text-decoration: none;" title="Home"> <span class="logo-menu-preview"> EventEnergies </span> </a> -->
+  </div>
+  <div class="desktop" style="color:#fff;font-size: 20px;font-weight:600;"> Add Event Details </div>
+  <ul class="nav-links">
+    <li *ngFor="let links of nav_links" (click)=this[links.click](links.click_params)>
+      <a [ngClass]="{'nav-heighlight-publish':links.text == 'Publish'}">
+        <span class="font-icon" *ngIf="links.font_icon" [innerHTML]="links.font_icon"></span>
+        {{links.text}} <span class="additional-text">{{links.additional_text}}</span> </a>
+    </li>
+  </ul>
+</div>
+<app-menu-sidebar></app-menu-sidebar>
+<!----------------------mobile responsive peopele list  start-------->
+<!-- <div class="row mobile-show-popup-people-list"
+  [ngClass]="{'none-selected': !tagged_people_class_status,'selected-people': tagged_people_class_status}"
+  (click)="showPeopleTaggedList()" style="z-index:2;position:fixed;top:60px;left:0;right:0">
+  <div class="col-sm-12">
+    <div class="flex-content">
+      <span> Select Performers of the Event </span>
+      <span style="margin-top:5px;"><i class="fa fa-caret-down"></i> </span>
+    </div>
+  </div>
+</div> -->
+<!----------------------mobile responsive peopele list  end------------>
+
+<!-------------------------------All Content start-------------------------------------------------->
+
+<div #completeForm class="none-dashboard">
+  <!-------------------------------Left Side content start--------------------------->
+  <div class="col-sm-7 col-md-6 col-lg-6 col-xs-12 left-edit-box">
+    <div #focusDiv></div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <!--------------------Default Title start--------------------------------->
+        <div class="box-show-edit-card"
+          [ngStyle]="{'background': story_background_color ? story_background_color : '#ffffff'}">
+
+          <div class="box-control">
+            <a class="btr" title="Background color" (click)="openColorPicker()" id="open_background_color_picker">
+              <i class="fa fa-adjust sp-u-text--grey-70"></i>
+            </a>
+            <a style="font-size:18px;font-weight: 600;text-decoration: none;">
+              Design your event
+            </a>
+            <!-- <button (click)="debug()">debug</button> -->
+          </div>
+
+          <!------------------ box-color-popup -------------->
+          <div class="bck-content" style="display:none;" id="picker_background_color">
+            <ul class="picker-color-list" style="padding: 0;">
+              <li>
+                <a class="pull-left white" style="background-color: #FFFFFF;" (click)="pickColor('#FFFFFF')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #EEFFF2;" (click)="pickColor('#EEFFF2')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #E3F8FE;" (click)="pickColor('#E3F8FE')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #E2F3FF;" (click)="pickColor('#E2F3FF')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #D2E6F8;" (click)="pickColor('#D2E6F8')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #FFF6E2;" (click)="pickColor('#FFF6E2')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #FFF0DF;" (click)="pickColor('#FFF0DF')"></a>
+              </li>
+              <li>
+                <a class="pull-left white" style="background-color: #FCE9E5;" (click)="pickColor('#FCE9E5')"></a>
+              </li>
+            </ul>
+          </div>
+          <!------------------ box-color-popup end-------->
+          <!-- <div class="row">
+                <div class="col-sm-12" style="padding:10px 12%;">
+                  <input maxlength="70" placeholder="Title (optional)" [(ngModel)]="story_caption" name="story_caption" size="160" type="text" name="" id="" class="editor-stories-input">
+                </div>
+              </div> -->
+          <!-- <div class="row"> -->
+          <div>
+            <!-- <div *ngIf="!
+              default_text" id="default_hide" title="Edit title"><span (click)="openDefaultTextField()"
+                class="title-edit-story"> Title</span>
+            </div> -->
+
+            <!-- <h1 id="story-title" class="highlightEnabled" (click="setEditorFocus()" #story_title
+                [innerHTML]="default_text_content.value? this.sanitizer.bypassSecurityTrustHtml(default_text_content.value) : '<h1>Event Title</h1>'"
+                [style.color]="default_text_content.invalid && default_text_content.touched? 'red' : ''"
+                [class.ng-invalid]="default_text_content.invalid">
+              </h1>
+              <div id="story-title-editor" *ngIf="showStoryTitleEditor" appOutsideClick
+                (clickedOutside)="cancelEditorFocus($event)">
+                <editor [init]="storyTitleEditorSettings" [formControl]="default_text_content"> </editor>
+              </div> [ngClass]="default_text_content.invalid && default_text_content.touched? 'red-text': ''"-->
+            <!-- (focus)="eventTitle.classList.add('red-text')" (blur)="default_text_content.invalid && default_text_content.touched? eventTitle.classList.add('red-text'): eventTitle.classList.remove('red-text')" -->
+            <div *ngIf="default_text_content" id="story-title"
+              [ngClass]="{'red-text': default_text_content.invalid && default_text_content.touched, 'ng-invalid': default_text_content.invalid}">
+              <div (focusout)="default_text_content.markAsTouched()" appTinymceEditor
+                (newText)="default_text_content.patchValue($event)"
+                [initialContent]="default_text_content.value? default_text_content.value: 'Your event title'"
+                [isPlaceholder]="default_text_content.invalid" [isTitle]="true"></div>
+            </div>
+            <!-- <div *ngFor="let description of eventDescriptionArray.controls; let x = index">
+              <div class="description-container" [formGroup]="description">
+                <div class="description-title" [ngClass]="description.get('title').invalid && description.get('title').touched? 'red-text': ''">
+                  <i class="fa fa-close desc-close-icon" *ngIf="x > 0" (click)="eventDescriptionArray.removeAt(x)"></i>
+                  <div appTinymceEditor (focusout)="description.get('title').markAsTouched()" (newText)="description.get('title').patchValue($event)" [initialContent]="description.get('title').value? description.get('title').value: 'Section title'" [isPlaceholder]="description.get('title').invalid" [isTitle]="true"></div>
+                </div>
+                <div class="description-content" [ngClass]="description.get('content').invalid && description.get('content').touched? 'red-text': ''">
+                  <div appTinymceEditor (focusout)="description.get('content').markAsTouched()" (newText)="description.get('content').patchValue($event)" [initialContent]="description.get('content').value? description.get('content').value: 'Section content'" [isPlaceholder]="description.get('content').invalid" [isTitle]="false"></div>
+                </div>
+                <small
+                  *ngIf="description.get('title').touched && description.get('content').touched && description.invalid "
+                  class="error-text">This description is not
+                  complete</small>
+              </div>
+            </div> -->
+            <div class="txt_area" style="display:none;" id="default_textfield_div">
+              <textarea class="text_area_plugin" id="default_text_area" aria-hidden="true"></textarea>
+              <div style="float:right"><button class="cus_btn" (click)="cancelDefaultText()"
+                  style="float:left">Cancel</button><button (click)="saveDefaultText()" class="cus_btn"
+                  style="float:left">Done</button></div>
+              <span id="default_text_area_error" style="color:red"></span>
+            </div>
+          </div>
+          <!-- </div> -->
+          <!--------------------Default Title end--------------------------------->
+          <!------------------------------Displaying Multiple items start------------------------------------------------>
+          <div *ngFor="let type_items of multiple_file_array;let x=index;">
+            <!--------------------Mutiple Panel button start--------------------------------->
+            <div class="row">
+              <div class="col-sm-12" style="padding:0 5%">
+                <div class="box2 sb12" (click)="addPanel(x);" id="{{x}}">+</div>
+                <div class="text_controler" id="panel_{{x}}" style="display:none;">
+                  <ul class="edt_clr">
+                    <li (click)="addEventDescription(null, null,x)" title="Add text"><i class="fa fa-pencil"
+                        aria-hidden="true"></i><div class="icon-text">Description</div></li>
+                    <li (click)="uploadPanelDocType(x,'image')" title="Add images"><i class="fa fa-picture-o"
+                        aria-hidden="true"></i><div class="icon-text">Image</div></li>
+                    <li (click)="uploadPanelDocType(x, 'video')" title="Add video"><i class="fa fa-video-camera"
+                        aria-hidden="true"></i><div class="icon-text">Video</div></li>
+                    <li (click)="uploadPanelDocType(x, 'pdf')" title="Add pdf"><i class="fa fa-file-pdf-o"
+                        aria-hidden="true"></i><div class="icon-text">PDF</div></li>
+                    <li (click)="openCameraModal(x,'camera')" title="Open Camera"><i class="fa fa-camera"
+                        aria-hidden="true"></i><div class="icon-text">Camera</div></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!--------------------Mutiple Panel button end--------------------------------->
+
+            <!--------------------Mutiple panels list start--------------------------------->
+            <div class="row">
+              <div class="col-sm-12" style="padding:0 12%">
+                <!--------------------Multiple Panel text content start-------------------->
+                <div class="animated-pop" *ngIf="type_items.type == 'text_file'">
+                  <div class="description-container" [formGroup]="type_items.description">
+                    <div class="description-title"
+                      [ngClass]="type_items.description.get('title').invalid && type_items.description.get('title').touched? 'red-text ng-invalid': ''">
+                      <i class="fa fa-close desc-close-icon" *ngIf="x > 0"
+                        (click)="openDeleteConfirmationPopup(x,'text')"></i>
+                      <!-- <i class="fa fa-close desc-close-icon" *ngIf="x > 0" (click)="eventDescriptionArray.removeAt(x)"></i> -->
+                      <div appTinymceEditor (focusout)="type_items.description.get('title').markAsTouched()"
+                        (newText)="type_items.description.get('title').patchValue($event)"
+                        [initialContent]="type_items.description.get('title').value ? type_items.description.get('title').value : 'Section title'"
+                        [isPlaceholder]="type_items.description.get('title').invalid" [isTitle]="true"></div>
+                    </div>
+                    <div class="description-content"
+                      [ngClass]="type_items.description.get('content').invalid && type_items.description.get('content').touched? 'red-text ng-invalid': ''">
+                      <div appTinymceEditor (focusout)="type_items.description.get('content').markAsTouched()"
+                        (newText)="type_items.description.get('content').patchValue($event)"
+                        [initialContent]="type_items.description.get('content').value ? type_items.description.get('content').value : 'Section content'"
+                        [isPlaceholder]="type_items.description.get('content').invalid" [isTitle]="false"></div>
+                    </div>
+                    <small
+                      *ngIf="type_items.description.get('title').touched && type_items.description.get('content').touched && type_items.description.invalid "
+                      class="error-text">Please complete this description</small>
+                  </div>
+                </div>
+
+
+                <!-- <div class="row">
+                  <div class="col-sm-12">
+                    <div *ngIf="type_items.type == 'text_file'">
+                      <div class="text_et" id="textfield_{{x}}_showtext_div" *ngIf="type_items.text_data!=''">
+                        <div id="textfield_{{x}}_showtext_append" class="text_edit_content_btn"
+                          [innerHtml]="type_items.text_data"></div>
+                        <div class="block-control-editor">
+                          <a class="text-danger pull-right js-delete-block" title="Remove"
+                            (click)="openDeleteConfirmationPopup(x,'text')"><i class="fa fa-close"></i></a>
+                          <a class="text-info pull-right js-edit-block" (click)="editText(x,'edit')"
+                            style="text-decoration: none;">Edit</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="txt_area" id="textfield_{{x}}" style="display:none;">
+                      <textarea class="text_area_plugin" id="text_area_element_{{x}}" aria-hidden="true"></textarea>
+                      <div style="float:right;"><button class="cus_btn" style="float:left"
+                          (click)="cancelOpenTextEditor(x)">Cancel</button><button id="button_save_text_{{x}}"
+                          class="cus_btn" style="float:left">Done</button></div>
+                      <span id="text_area_element_{{x}}_error" style="color:red"></span>
+                    </div>
+                  </div>
+                </div> -->
+                <!--------------------Multiple Panel text content end-------------------->
+
+                <!--------------------Multiple Panel Image content start-------------------->
+
+                <div class="row" *ngIf="type_items.type == 'image_file'">
+                  <div class="col-sm-12">
+                    <div id="image_div_{{x}}">
+                      <div class="block-controls" *ngIf="type_items.upload_type && type_items.relative_path">
+                        <a class="text-danger pull-right js-delete-block"
+                          (click)="openDeleteConfirmationPopup(x,'snap',type_items.relative_path)" title="Remove"><i
+                            class="fa fa-close"></i></a>
+                        <a class="text-info pull-right js-edit-block"
+                          (click)="showImageRotateModalPopup('image_'+x+'_src',type_items.relative_path)"
+                          style="text-decoration: none;">Edit</a>
+                      </div>
+                      <img id="image_{{x}}_src" src="{{type_items.image_src}}" class="img-responsive center-block" />
+                      <!--------------------- progress bar image upload ------------->
+                      <ng-container *ngFor="let progress_value of aws_upload_progress_array">
+                        <div class="progress"
+                          *ngIf="!type_items.upload_type && type_items.count == progress_value.count"
+                          style="border-radius:0;position:absolute;bottom:0;z-index: 99999;left:0;right:0;margin:0 15px;">
+                          <div class="progress-bar " role="progressbar"
+                            [ngStyle]="{'width': progress_value.percentage+'%'}"
+                            attr.aria-valuenow="{{progress_value.percentage}}" aria-valuemin="0" aria-valuemax="100">
+                            {{progress_value.percentage}} %</div>
+                        </div>
+                      </ng-container>
+                      <!--------------------- progress bar image upload end ------------->
+                    </div>
+                  </div>
+                </div>
+                <!--------------------Multiple Panel Image content end-------------------->
+                <!--------------------Multiple Panel Video content start-------------------->
+                <div class="row" *ngIf="type_items.type == 'video_file'" id="video_div_{{x}}">
+                  <div class="col-sm-12">
+                    <div class="photo1">
+                      <span style="cursor:pointer" *ngIf="type_items.upload_type && type_items.relative_path"
+                        (click)="openDeleteConfirmationPopup(x,'snap',type_items.relative_path)"><span
+                          class="upper-right" title="Remove"> <i class="fa fa-2x fa-close"></i> </span></span>
+                      <video class="img-responsive" style="height:300px; margin: 0 auto;" controls>
+                        <source src="{{type_items.video_src}}" type="video/mp4">
+                      </video>
+                      <!--------------------- progress bar image upload ------------->
+                      <ng-container *ngFor="let progress_value of aws_upload_progress_array">
+                        <div class="progress"
+                          *ngIf="!type_items.upload_type && type_items.count == progress_value.count"
+                          style="border-radius:0;position:absolute;bottom:0;z-index: 99999;left:0;right:0;margin:0 15px;">
+                          <div class="progress-bar " role="progressbar"
+                            [ngStyle]="{'width': progress_value.percentage+'%'}"
+                            attr.aria-valuenow="{{progress_value.percentage}}" aria-valuemin="0" aria-valuemax="100">
+                            {{progress_value.percentage}} %</div>
+                        </div>
+                      </ng-container>
+                      <!--------------------- progress bar image upload end ------------->
+                    </div>
+                  </div>
+                </div>
+                <!--------------------Multiple Panel Video content end-------------------->
+
+                <!--------------------Multiple Panel PDF content start-------------------->
+                <div class="row" *ngIf="type_items.type == 'pdf_file'" id="pdf_display_{{x}}_div">
+                  <div class="col-sm-12">
+                    <span style="cursor:pointer" id="pdf_close_icon_{{x}}"
+                      *ngIf="type_items.upload_type && type_items.relative_path"
+                      (click)="openDeleteConfirmationPopup(x,'snap',type_items.relative_path)"><span
+                        class="upper-right-pdf" id="pdf_close_icon_img_{{x}}" title="Remove"> <i
+                          class="fa fa-2x fa-close"></i> </span></span>
+                    <embed [src]="type_items.pdf_src" type="application/pdf" width="100%" height="500px">
+                    <!--------------------- progress bar image upload ------------->
+                    <ng-container *ngFor="let progress_value of aws_upload_progress_array">
+                      <div class="progress" *ngIf="!type_items.upload_type && type_items.count == progress_value.count"
+                        style="border-radius:0;position:absolute;bottom:0;z-index: 99999;left:0;right:0;margin:0 15px;">
+                        <div class="progress-bar " role="progressbar"
+                          [ngStyle]="{'width': progress_value.percentage+'%'}"
+                          attr.aria-valuenow="{{progress_value.percentage}}" aria-valuemin="0" aria-valuemax="100">
+                          {{progress_value.percentage}} %</div>
+                      </div>
+                    </ng-container>
+                    <!--------------------- progress bar image upload end ------------->
+                  </div>
+                </div>
+                <!--------------------Multiple Panel PDF content end-------------------->
+              </div>
+            </div>
+            <!--------------------Mutiple panels list end--------------------------------->
+          </div>
+
+
+
+          <!------------------------------Displaying Multiple itmes end------------------------------------------------>
+
+
+          <!--------------------Starting Default Panel button start--------------------------------->
+          <div class="row">
+            <div class="col-sm-12" style="padding:0 5%">
+              <div class="box2 sb12" (click)="addPanel('first');" id="first">+</div>
+              <div class="text_controler" id="panel_first" #panel_first>
+                <ul class="edt_clr">
+                  <li (click)="addEventDescription(null, null,'first'); panel_first.style.display = 'none'"
+                    title="Add text"><i class="fa fa-pencil" aria-hidden="true"></i><div class="icon-text">Description</div></li>
+                  <li (click)="uploadPanelDocType('first','image'); panel_first.style.display = 'none'"
+                    title="Add images"><i class="fa fa-picture-o" aria-hidden="true"></i><div class="icon-text">Image</div></li>
+                  <li (click)="uploadPanelDocType('first','video'); panel_first.style.display = 'none'"
+                    title="Add video"><i class="fa fa-video-camera" aria-hidden="true"></i><div class="icon-text">Video</div></li>
+                  <li (click)="uploadPanelDocType('first','pdf'); panel_first.style.display = 'none'" title="Add pdf"><i
+                      class="fa fa-file-pdf-o" aria-hidden="true"></i><div class="icon-text">PDF</div></li>
+                  <li (click)="openCameraModal('first','camera'); panel_first.style.display = 'none'"
+                    title="Open Camera"><i class="fa fa-camera" aria-hidden="true"></i><div class="icon-text">Camera</div></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-------------------- Starting Default Panel button end--------------------------------->
+
+          <!--------------------Default Panel text content start-------------------->
+          <div class="row">
+            <div class="col-sm-12" style="padding:0 12%">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="txt_area" id="textfield_first" style="display:none;">
+                    <textarea class="text_area_plugin" id="text_area_element_first" aria-hidden="true"></textarea>
+                    <div style="float:right;"><button class="cus_btn" style="float:left"
+                        (click)="cancelOpenTextEditor('first')">Cancel</button><button id="button_save_text_first"
+                        class="cus_btn" style="float:left">Done</button></div>
+                    <span id="text_area_element_first_error" style="color:red"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--------------------Default Panel text content end-------------------->
+
+          <!-----------------------------Page Required content start------------------------------>
+          <canvas id="canvas" style="position: relative;display:none;" #canvas [width]="canvas_width"
+            [height]="canvas_height"></canvas>
+          <input type="file" style="display:none;" multiple id="main_file" accept=".jpg,.png,.jpeg"
+            (change)="fileChanged($event)" #fileInput />
+          <div #story_content style="display:none" aria-hidden="true"></div>
+          <!-------------------------------Page Required content start--------------------------->
+          <br><br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-------------------------------Left Side content end--------------------------->
+
+  <!-------------------------------Right Side content start--------------------------->
+  <div class="col-sm-5 col-md-6 col-lg-6 col-xs-12 right-edit-box" style="background:#fbfbfb;">
+    <div class="row">
+      <!-------------------------------Learning activities content start------------------------------------------------->
+      <div class="col-sm-12">
+        <!-- <div class="row desktop-show-popup-people-list"
+          [ngClass]="{'none-selected': !tagged_people_class_status,'selected-people': tagged_people_class_status}"
+          (click)="showPeopleTaggedList()">
+          <div class="col-sm-12">
+            <div class="flex-content" style="font-size:16px;">
+              <span><em> Select Performers of the Event </em> </span>
+              <span> <i class="fa fa-caret-down"></i> </span>
+            </div>
+          </div>
+        </div> -->
+        <!-------------------------------- Default images uploads -------------------------->
+        <div id="focus-back"></div>
+        <div class="row common-padding">
+          <div class="col-sm-12">
+            <div class="common-header"> Don't have any image to upload? </div>
+            <div class="sub-common-header"> Select picture from our library to match your theme. </div>
+            <ul class="defalut-image-grid" style="padding: 0;">
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_1')" title="Activity"> <img
+                    id="default_image_1" src="assets/images/banner/group-activity.jpg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_2')" title="Camups"> <img
+                    id="default_image_2" src="assets/images/banner/campus-banner.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_3')" title="Sports"> <img
+                    id="default_image_3" src="assets/images/banner/Sports.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_4')" title="Entertainment"> <img
+                    id="default_image_4" src="assets/images/banner/Entertainment.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_5')" title="Professional"> <img
+                    id="default_image_5" src="assets/images/banner/Professional.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_6')" title="Spiritual"> <img
+                    id="default_image_6" src="assets/images/banner/Spiritual.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_7')" title="TradeShows"> <img
+                    id="default_image_7" src="assets/images/banner/TradeShows.jpeg" /> </a>
+              </li>
+              <li>
+                <a class="pull-left" (click)="addDefaultImageToStory('default_image_8')" title="Training"> <img id="default_image_8"
+                    src="assets/images/banner/training-banner.jpeg" /> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--------------------------------- Defalut images end ----------------------------->
+        <!--------------------------------- Public Or Private Start ----------------------------->
+        <!--------------------------------- Public Or Private End ----------------------------->
+        <div class="row common-padding">
+          <div class="col-sm-12">
+            <div class="common-header"> Select event type </div>
+            <div class="row">
+              <div class="col-sm-5">
+                <label class="radio-inline" style="font-size: 16px; line-height: 1.6">
+                  <input type="radio" style="margin-top: 0.3em; width: 1em; height: 1em;" name="eventType"
+                    value="public" [checked]="event_type=='public'" (click)="event_type='public'"> Public
+                  <a data-toggle="collapse" href="#help-public" role="button" aria-expanded="false"
+                    aria-controls="help-public" tabindex="2000" title="help"
+                    style="font-size:1em; color:#337ab7; z-index:100;">
+                    <i class="fa fa-question-circle-o"></i>
+                  </a>
+                </label>
+                <div class="collapse" id="help-public">
+                  <div class="card card-body alert-info" style="padding: 10px;">
+                    Event visibile to all when hosted
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <label class="radio-inline" style="font-size: 16px; line-height: 1.6">
+                  <input type="radio" style="margin-top: 0.3em; width: 1em; height: 1em;" name="eventType"
+                    value="private" [checked]="event_type=='private'" (click)="event_type='private'"> Private
+                  <a data-toggle="collapse" href="#help-private" role="button" aria-expanded="false"
+                    aria-controls="help-private" tabindex="2000" title="help"
+                    style="font-size:1em; color:#337ab7; z-index:100;">
+                    <i class="fa fa-question-circle-o"></i>
+                  </a>
+                </label>
+                <div class="collapse" id="help-private">
+                  <div class="card card-body alert-info" style="padding: 10px;">
+                    Event visible only to Super admin and Organization
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <h3 class="right-header-content" style="margin-right: 10px"> Select Event Type </h3>
+            <input type="radio" name="eventType" value="public" [checked]="event_type=='public'"
+              (click)="event_type='public'" /> Public &nbsp; &nbsp;
+            <input type="radio" name="eventType" value="private" [checked]="event_type=='private'"
+              (click)="event_type='private'" /> Private -->
+          </div>
+        </div>
+        <!----------------------------------- select categories ----------------------------->
+        <div #category class="row common-padding" style="padding-top: 5px;padding-bottom: 10px;">
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+            <div class="common-header"> Select category </div>
+            <div class="dropdown">
+              <div class="select-dropdown dropdown-toggle highlightEnabled" id="category"
+                style="background-color: #fff; cursor: pointer;" data-toggle="dropdown"
+                [ngClass]="{'ng-valid': selectedCategory, 'ng-invalid': !selectedCategory}"
+                (click)="category.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' }); getCategoryDetails()">
+                {{selectedCategory? selectedCategory : 'Select one from list'}}
+              </div>
+              <div class="dropdown-menu custom-dropdown-menu">
+                <div #categoryLoader style="display: none;" class="simple-loader "></div>
+              </div>
+              <ul class="dropdown-menu custom-dropdown-menu" *ngIf="categories?.length>0">
+                <li><a *ngFor="let category of categories" (click)="onSelectCategory(category.name)">
+                    <!-- <i class="fa fa-black-tie categoryInput" style="color:#3B5998;"></i> -->
+                    <i [ngClass]="category.icon"></i>
+                    <span style="padding-left:20px;">{{category.name}}</span>
+                  </a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+            <div class="common-header"> Sub categories </div>
+            <div class="dropdown" id="subcatDropdown">
+              <div (click)="handleSubCat(selectedCategory)" class="select-dropdown dropdown-toggle highlightEnabled"
+                id="subcategory" style="white-space: nowrap;
+              cursor: pointer;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              background-color: white;cursor:pointer" data-toggle="dropdown" [class.ng-invalid]="!selectedSubCategory">
+                {{selectedSubCategory? selectedSubCategory : 'Select one from list'}}
+              </div>
+              <div class="dropdown-menu custom-dropdown-menu">
+                <div #categoryLoader style="display: none;" class="simple-loader "></div>
+              </div>
+              <ul class="dropdown-menu custom-dropdown-menu2" *ngIf="subCategories?.length>0">
+                <li><a *ngFor="let subCategory of subCategories"
+                    (click)="onSelectSubcat(subCategory.subName,subCategory.id)">
+                    <span> {{subCategory.subName}} </span>
+                  </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!----------------------------------- select categories end ------------------------->
+        <!---------------------------- when date start --------------------------->
+        <div #timing class="row common-padding" style="border-top: 1px solid #ccc;">
+          <div class="col-sm-12">
+            <div class="common-header"> When </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+            <h5> Start date </h5>
+            <input #eventStartDate type="text" class="popup-input-text highlightEnabled" readonly required
+              placement="auto" [minDate]="today_date" bsDatepicker [bsConfig]="datepickerConfig"
+              [(ngModel)]="event_start_date" (ngModelChange)="onChangeDatePickerEventStartDate($event)"
+              [maxDate]="event_end_date? event_end_date: null" name="event_start_date" />
+          </div>
+          <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+            <h5> Start time </h5>
+            <input (click)="showElement(eventStartTime)" class="popup-input-text highlightEnabled" readonly
+              [disabled]="!event_start_date" placement="bottom"
+              [value]="event_start_date? datePipe.transform(event_start_date, 'h:mm a'): ''"
+              [ngClass]="eventStartDate.classList" />
+            <div #eventStartTime appOutsideClick (clickedOutside)="eventStartTime.style.display='none'"
+              class="timepicker-popup">
+              <timepicker [(ngModel)]="event_start_date" [showMeridian]="true" [minuteStep]="10"
+                name="event_start_time">
+              </timepicker>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+            <h5> End date </h5>
+            <input #eventEndDate type="text" class="popup-input-text highlightEnabled" readonly required
+              placement="auto" [minDate]="event_start_date? event_start_date : today_date"
+              (ngModelChange)="onChangeDatePickerEventEndDate($event)" bsDatepicker [bsConfig]="datepickerConfig"
+              [(ngModel)]="event_end_date" name="event_end_date" />
+          </div>
+          <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+            <h5> End time </h5>
+            <input class="popup-input-text focus-endtime highlightEnabled" (click)="showElement(eventEndTime)" readonly required placement="bottom"
+              [disabled]="!event_end_date" value="{{ event_end_date | date: 'h:mm a' }}"
+              [ngClass]="eventEndDate.classList" id="endtime_focus"/>
+            <div #eventEndTime appOutsideClick (clickedOutside)="eventEndTime.style.display='none'"
+              class="timepicker-popup">
+              <timepicker [(ngModel)]="event_end_date" [showMeridian]="true" [minuteStep]="10" name="event_end_time">
+              </timepicker>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+            <h5> Time zone </h5>
+            <select class="customise-select color-time-zone" [(ngModel)]="selectedTimeZoneId"
+              (ngModelChange)="onChangeSelectTimeZone($event)" name="selectedTimeZoneId">
+              <option [value]="zone.id" *ngFor="let zone of timezone_array" [disabled]="zone.name!='IST'" [class.highlight]="zone.name!='IST'">{{ zone.name }}</option>
+            </select>   
+          </div>
+        </div>
+    
+        <!----------------------------  when date end ---------------------------->
+        <!----------------------------------- Address ---------------------------->
+        <div #venue class="row common-padding">
+          <div class="col-sm-12">
+            <div class="common-header"> Venue </div>
+          </div>
+          <div class="col-sm-12 mrg-btm">
+            <input type="text" class="popup-input-text highlightEnabled" #venue_address="ngModel"
+              [(ngModel)]="address_venue" required placeholder="Enter a location" ngx-google-places-autocomplete
+              [options]='address_options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)" />
+          </div>
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-12 mrg-btm">
+                <h5> Address line 1 </h5>
+                <input type="text" class="popup-input-text" [(ngModel)]="address_line_1" required/>
+              </div>
+              <div class="col-sm-12 mrg-btm">
+                <h5> Address line 2 </h5>
+                <input type="text" class="popup-input-text" [(ngModel)]="address_line_2"/>
+              </div>
+              <div class="col-sm-6 mrg-btm">
+                <h5> City </h5>
+                <input type="text" class="popup-input-text highlightEnabled" placeholder="City"
+                  [(ngModel)]="address_city" required />
+              </div>
+              <div class="col-sm-6 mrg-btm">
+                <h5> State </h5>
+                <input type="text" class="popup-input-text highlightEnabled" placeholder="State"
+                  [(ngModel)]="address_state" required />
+              </div>
+              <div class="col-sm-6 mrg-btm">
+                <h5> Country </h5>
+                <input type="text" class="popup-input-text highlightEnabled" placeholder="Country"
+                  [(ngModel)]="address_country" required />
+              </div>
+              <div class="col-sm-6 mrg-btm">
+                <h5> Pincode </h5>
+                <input type="text" class="popup-input-text highlightEnabled" placeholder="Pincode"
+                  [(ngModel)]="address_pincode" required />
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!----------------------------------- Address end---------------------------->
+        <form [formGroup]="ticketFormMain">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="common-header" style="margin-bottom: -5px;"> Tickets </div>
+              <div formArrayName="ticketFormArray"
+                *ngFor="let ticketForm of ticketFormMain.get('ticketFormArray')['controls'] as FromControl; let i = index">
+                <div [formGroupName]="i">
+                  <!---------------------------- routing tickets -------------------------->
+                  <!-- ewrgfbewiufew -->
+                  <div class="row" style="padding-bottom:10px;">
+                    <div class="col-sm-12">
+                      <div class="row">
+                        <div class="col-lg-3 col-sm-12 col-md-12 col-xs-12">
+                          <h5> Ticket type </h5>
+                          <select class="customise-select" formControlName="ticketType"
+                            [id]="is_published? 'disabled-select': ''" (change)="ticketPriceValidationRefresh(i)">
+                            <option value="PAID" style="color:#000"> Paid </option>
+                            <option value="DONATION" style="color:#000"> Donation </option>
+                            <option value="FREE" disabled="disabled" style="color:#ccc"> Free </option>
+                          </select>
+
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                          <h5> Ticket name </h5>
+                          <input type="text" class="popup-input-text highlightEnabled" formControlName="ticketName" />
+                        </div>
+                        <!--------------------------- PayMENT GST select ----------------------->
+                        <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12"
+                          *ngIf="this.ticketFormMain.controls.ticketFormArray.value[i].ticketType!='FREE'">
+                          <h5> Tax and Payment gateway </h5>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <select class="customise-select highlightEnabled" formControlName="ticketServiceTax"
+                                (click)="getServiceTaxDetails()">
+                                <option value="0" selected>Please select</option>
+                                <option [value]="service_tax.id" *ngFor="let service_tax of service_tax_details_array">
+                                  {{ service_tax.name }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <!--------------------------- PayMENT GST select END ----------------------->
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                          <h5> Quantity </h5>
+                          <input type="number" (change)="ticketForm.get('ticketMaxQty').updateValueAndValidity()"
+                            class="popup-input-text highlightEnabled" formControlName="ticketQty" required />
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                          <h5> Min qty </h5>
+                          <input type="number" class="popup-input-text highlightEnabled" formControlName="ticketMinQty"
+                            readonly required />
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                          <h5> Max qty </h5>
+                          <input type="number" class="popup-input-text highlightEnabled" formControlName="ticketMaxQty"
+                            required />
+                          <small style="color: red; font-size: 13px;"
+                            *ngIf="ticketForm.get('ticketMaxQty').touched && ticketForm.get('ticketMaxQty').errors?.largerThanQuantity">*Max
+                            qty cannot exceed total ticket quantity
+                          </small>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-11"
+                          *ngIf="this.ticketFormMain.controls.ticketFormArray.value[i].ticketType!='FREE'">
+                          <h5> Price </h5>
+                          <input type="number" class="popup-input-text highlightEnabled"
+                            formControlName="ticketPrice" />
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-11"
+                          *ngIf="this.ticketFormMain.controls.ticketFormArray.value[i].ticketType!='FREE'">
+                          <h5> Currency </h5>
+                          <select class="customise-select">
+                            <option style="color:#000"> INR </option>
+                            <option disabled="disabled" style="color:#ccc"> USD </option>
+                            <option disabled="disabled" style="color:#ccc"> EUR </option>
+                            <option disabled="disabled" style="color:#ccc"> SGD </option>
+                            <option disabled="disabled" style="color:#ccc"> MYR </option>
+                            <option disabled="disabled" style="color:#ccc"> AED </option>
+                            <option disabled="disabled" style="color:#ccc"> GBP </option>
+                            <option disabled="disabled" style="color:#ccc"> LKR </option>
+                            <option disabled="disabled" style="color:#ccc"> AUD </option>
+                          </select>
+                        </div>
+                        <div class="col-lg-1 col-md-6 col-sm-6 col-xs-1 ticket-icons">
+                          <!-- <button style="margin-top: 33px;" class="col-sm-1" type="button" (click)="removeTicket(i)" class="btn btn-primary btn-xs"></button> -->
+                          <i class="fa fa-cog" (click)="toggleTicketSettings(i)"
+                            style="padding-right: 5px;cursor:pointer;"></i>
+                          <i class="fa fa-times" *ngIf="i>0" (click)="removeTicket(i)" style="cursor:pointer;"
+                            title="Remove"></i>
+                        </div>
+                      </div>
+                      <!-- default ticket setting end -->
+                      <!-- newly added begins-->
+
+                      <div class="col-sm-12" *ngIf="ticketDisplay[i]"
+                        style="border:1px solid #e0e0e0;padding-bottom: 10px;border-radius: 5px;">
+                        <div class="row">
+                          <div class="has-default">
+                            <h3 class="common-header"> Ticket settings </h3>
+                            <h3 class="inline-header"> Timing </h3>
+                            <span> Pick parent event timings </span>
+                            <input type="checkbox" (change)="makeDefault($event.target.checked, i, 'timings')"
+                              [checked]="ticketForm.get('ticketStartDate').disabled">
+                          </div>
+                          <div
+                            *ngIf="ticketFormMain.controls.ticketFormArray.controls[i].controls.ticketStartDate.enabled">
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+                              <h5> Start date </h5>
+                              <input type="text" class="popup-input-text highlightEnabled"
+                                (ngModelChange)="onChangeDatePickerTicketEventStartdDate($event,i)" readonly required
+                                bsDatepicker [bsConfig]="datepickerConfig" name="ticket_start_date" placement="auto"
+                                formControlName="ticketStartDate"
+                                [minDate]="event_start_date? event_start_date : today_date"
+                                [maxDate]="ticketForm.get('ticketEndDate').value? ticketForm.get('ticketEndDate').value : (event_end_date? event_end_date: null)" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+                              <h5> Start time </h5>
+                              <input #timeStartInput class="popup-input-text highlightEnabled" readonly
+                                (focusout)="timeStartInput.classList.add('ng-touched')"
+                                (click)="showElement(ticketStartTime)" placement="bottom"
+                                [disabled]="ticketForm.get('ticketStartDate').invalid"
+                                value="{{ this.ticketFormMain.controls.ticketFormArray.value[i].ticketStartTime | date: 'h:mm a' }}"
+                                [ngClass]="ticketStartTime.querySelector('timepicker').classList" />
+                              <!--<div #ticketStartTime appOutsideClick
+                                (clickedOutside)="ticketStartTime.style.display='none'" class="timepicker-popup"> -->
+                              <div #ticketStartTime appOutsideClick
+                                (clickedOutside)="ticketStartTime.style.display='none'" class="timepicker-popup">
+                                <timepicker formControlName="ticketStartTime" [showMeridian]="true" [minuteStep]="1"
+                                  name="ticket_start_time">
+                                </timepicker>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+                              <h5> End date </h5>
+                              <input type="text" class="popup-input-text highlightEnabled" readonly required
+                                bsDatepicker (ngModelChange)="onChangeDatePickerTicketEventEnddDate($event,i)"
+                                placement="auto" [bsConfig]="datepickerConfig" name="ticket_end_date"
+                                formControlName="ticketEndDate"
+                                [minDate]="ticketForm.get('ticketStartDate').value? ticketForm.get('ticketStartDate').value : (event_start_date? event_start_date: today_date)"
+                                [maxDate]="event_end_date? event_end_date: null" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+                              <h5> End time </h5>
+                              <!-- <ng-template #ticketPopTemplate1>
+                            <timepicker [showMeridian]="true" [minuteStep]="1" formControlName="ticketEndTime"
+                              name="ticket_end_time"></timepicker>
+                          </ng-template> //ofInput [popover]="ticketPopTemplate1" [outsideClick]="true" -->
+                              <input #timeEndInput class="popup-input-text focus-endtime highlightEnabled" readonly placement="bottom"
+                                (click)="showElement(ticketEndTime)"
+                                value="{{ this.ticketFormMain.controls.ticketFormArray.value[i].ticketEndTime | date: 'h:mm a' }}"
+                                (focusout)="timeEndInput.classList.add('ng-touched')"
+                                [ngClass]="ticketEndTime.querySelector('timepicker').classList"
+                                [disabled]="ticketForm.get('ticketEndDate').invalid" />
+                              <!-- <div #ticketEndTime appOutsideClick (clickedOutside)="ticketEndTime.style.display='none'" -->
+                              <div #ticketEndTime class="timepicker-popup" appOutsideClick
+                                (clickedOutside)="ticketEndTime.style.display='none'">
+                                <timepicker formControlName="ticketEndTime" [showMeridian]="true" [minuteStep]="1"
+                                  name="ticket_end_time">
+                                </timepicker>
+                              </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-xs-12 col-lg-3">
+                              <h5> Time zone </h5>
+                              <select class="customise-select" formControlName="ticketTimeZone" required>
+                                <option [value]="zone.id" *ngFor="let zone of timezone_array">{{zone.name}}</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div
+                            *ngIf="ticketFormMain.controls.ticketFormArray.controls[i].controls.ticketStartDate.disabled"
+                            class="col-sm-12">
+                            <p class="default-set-msg"><i class="fa fa-check"></i>Timing set same as the main event
+                              timing
+                            </p>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="has-default">
+                                <h3 class="inline-header"> Ticket purchase timing </h3>
+                                <span for="enable-custom-purchase-timing"> Set timing window </span>
+                                <input #customPurchaseTiming
+                                  (click)="setPurchaseTiming(i, customPurchaseTiming.checked)" type="checkbox"
+                                  id="enable-custom-purchase-timing"
+                                  [checked]="ticketForm.get('ticketPurchaseStartDate').enabled">
+                              </div>
+                              <div *ngIf="ticketForm.get('ticketPurchaseStartDate').enabled">
+                                <div class="col-sm-12 col-md-6 col-xs-12 col-lg-6">
+                                  <h4 class="header-4"> Issue tickets from </h4>
+                                  <div>
+                                    <h5>Date</h5>
+                                    <input type="text" class="popup-input-text highlightEnabled" readonly required
+                                      bsDatepicker [bsConfig]="datepickerConfig" name="ticket_purchase_start_date"
+                                      placement="auto" formControlName="ticketPurchaseStartDate" [minDate]="today_date"
+                                      [maxDate]="ticketForm.get('ticketEndDate').enabled && ticketForm.get('ticketEndDate').value? ticketForm.get('ticketEndDate').value : (event_end_date? event_end_date: null)" />
+                                  </div>
+                                  <div>
+                                    <h5>Time</h5>
+                                    <input #purTimeStartInput class="popup-input-text highlightEnabled" readonly
+                                      (focusout)="purTimeStartInput.classList.add('ng-touched')"
+                                      (click)="showElement(ticketPurStartTime)" placement="bottom"
+                                      value="{{ this.ticketFormMain.controls.ticketFormArray.value[i].ticketPurchaseStartTime | date: 'h:mm a' }}"
+                                      [ngClass]="ticketPurStartTime.querySelector('timepicker').classList" />
+                                    <!--<div #ticketStartTime appOutsideClick
+                                              (clickedOutside)="ticketStartTime.style.display='none'" class="timepicker-popup"> -->
+                                    <div #ticketPurStartTime appOutsideClick
+                                      (clickedOutside)="ticketPurStartTime.style.display='none'" class="timepicker-popup">
+                                      <timepicker formControlName="ticketPurchaseStartTime" [showMeridian]="true"
+                                        [minuteStep]="1" name="ticket_purchase_start_time">
+                                      </timepicker>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6 col-xs-12 col-lg-6">
+                                  <h4 class="header-4"> Issue tickets till </h4>
+                                  <div>
+                                    <h5>Date</h5>
+                                    <input type="text" class="popup-input-text highlightEnabled" readonly required
+                                      bsDatepicker [bsConfig]="datepickerConfig" name="ticket_end_date" placement="auto"
+                                      formControlName="ticketPurchaseEndDate" [minDate]="today_date"
+                                      [maxDate]="event_end_date? event_end_date: null" />
+                                  </div>
+                                  <div>
+                                    <h5>Time</h5>
+                                    <input #purTimeEndInput class="popup-input-text highlightEnabled" readonly
+                                      placement="bottom" (click)="showElement(ticketPurEndTime)"
+                                      value="{{ this.ticketFormMain.controls.ticketFormArray.value[i].ticketPurchaseEndTime | date: 'h:mm a' }}"
+                                      (focusout)="purTimeEndInput.classList.add('ng-touched')"
+                                      [ngClass]="ticketPurStartTime.querySelector('timepicker').classList" />
+                                    <div #ticketPurEndTime class="timepicker-popup" appOutsideClick
+                                      (clickedOutside)="ticketPurEndTime.style.display='none'">
+                                      <timepicker formControlName="ticketPurchaseEndTime" [showMeridian]="true"
+                                        [minuteStep]="1" name="ticket_end_time">
+                                      </timepicker>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="has-default col-sm-12">
+                            <h3 class="inline-header"> Venue </h3>
+                            <span>Pick parent event venue</span>
+                            <input type="checkbox" [checked]="ticketForm.get('ticketAddressLine1').disabled"
+                              (change)="makeDefault($event.target.checked, i,'venue')">
+                          </div>
+                          <div class="ticket-venue" *ngIf="ticketForm.get('ticketAddressLine1').enabled">
+                            <div class="col-sm-12 mrg-btm">
+                              <input type="text" class="popup-input-text highlightEnabled"
+                                placeholder="Enter a location" formControlName="ticketAddressVenue" />
+                            </div>
+                            <div class="col-sm-12 mrg-btm">
+                              <h5> Address line 1 </h5>
+                              <input (change)="resetGeoCord()" formControlName="ticketAddressLine1" type="text"
+                                class="popup-input-text highlightEnabled" />
+                            </div>
+                            <div class="col-sm-12 mrg-btm">
+                              <h5> Address line 2 </h5>
+                              <input formControlName="ticketAddressLine2" type="text"
+                                class="popup-input-text highlightEnabled" />
+                            </div>
+                            <div class="col-sm-6 mrg-btm">
+                              <h5> Country </h5>
+                              <input formControlName="ticketAddressCountry" type="text"
+                                class="popup-input-text highlightEnabled" placeholder="Country" />
+                            </div>
+                            <div class="col-sm-6 mrg-btm">
+                              <h5> State </h5>
+                              <input formControlName="ticketAddressState" type="text"
+                                class="popup-input-text highlightEnabled" placeholder="State" />
+                            </div>
+                            <div class="col-sm-6 mrg-btm">
+                              <h5> City </h5>
+                              <input formControlName="ticketAddressCity" type="text"
+                                class="popup-input-text highlightEnabled" placeholder="City" />
+                            </div>
+                            <div class="col-sm-6 mrg-btm">
+                              <h5> Pincode </h5>
+                              <input formControlName="ticketAddressPincode" type="text"
+                                class="popup-input-text highlightEnabled" placeholder="Pincode" />
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <p class="default-set-msg" *ngIf="ticketForm.get('ticketAddressLine1').disabled"><i
+                                class="fa fa-check"></i>Ticket venue
+                              is set same as the main event venue</p>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- newly added ends -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-customise" (click)="addNewTicket()" style="margin: 20px 0px 20px 0px"> Add
+                tickets
+              </button>
+            </div>
+          </div>
+        </form>
+       
+        <!-------------------------------Create Learning tag start------------------------------------------------->
+        <div class="row learning-tags">
+          <div class="col-sm-12">
+            <div class="flex-content" style="margin-bottom: 10px;">
+              <h3 class="common-header" style="padding-top: 10px;"> Key tags in event </h3>
+              <h3 (click)="openCreateLearningTagPopup()" title="Add key tags"
+                class="btn btn-primary"> Create new tag </h3>
+            </div>
+            <div class="null-tags" *ngIf="!learning_tags_selected_status">
+              <i> No key tags selected for this event. </i>
+            </div>
+            <ul class="learning-tags-list" style="padding: 0;">
+              <span *ngFor="let tags of learning_tags;">
+                <li *ngIf="tags.tagged_status" title="{{tags.description}}">{{tags.tag}} <span
+                    (click)="removeSelectedTagName(tags.id)"><i class="fa fa-close"></i></span></li>
+              </span>
+            </ul>
+          </div>
+        </div>
+        <div class="row learning-tags">
+          <div class="col-sm-12">
+            <div class="common-header"> Select key tag </div>
+          </div>
+          <div class="col-sm-12" *ngIf="learning_tags_search?.length==0">
+            <ul class="learning-tags-list" style="padding:0;">
+              <li (click)="selectLearningTags(tags.id)" *ngFor="let tags of learning_tags;"
+                title="Add key tag to event"
+                [ngClass]="{'disabled_full': tags.tagged_status,'':!tags.tagged_status}">{{tags.tag}} <span style="border-left:1px solid #337ab7;padding-left: 5px;"
+                title="Delete" *ngIf="role_name=='ADMIN' || role_name=='TEACHER'" (click)="deleteCreatedLearningTag(tags.id)"><i
+                    class="fa fa-close"></i></span></li>
+            </ul>
+          </div>
+          <div class="col-sm-12" *ngIf="learning_tags_search?.length>0">
+            <ul class="learning-tags-list" style="padding:0;">
+              <li *ngFor="let tags of learning_tags_search;" (click)="selectLearningTags(tags.id)"
+                title="Add learning tag to story"
+                [ngClass]="{'disabled_full': tags.tagged_status,'':!tags.tagged_status}">{{tags.tag}} <span style="border-left:1px solid #337ab7;padding-left: 5px;"
+                title="Delete" *ngIf="role_name=='ADMIN' || role_name=='TEACHER'" (click)="deleteCreatedLearningTag(tags.id)"><i
+                    class="fa fa-close"></i></span></li>
+            </ul>
+          </div>
+        </div>
+        <!-------------------------------Create Learning tag end--------------------------------------------------->
+      </div>
+    </div>
+    <br><br><br>
+    <!-------------------------------Learning activities content end------------------------------------------------->
+  </div>
+  <!-------------------------------Right Side content end--------------------------->
+
+</div>
+<!-------------------------------All Content End-------------------------------------------------->
+
+
+<!--------------------------------Select who's in the story start---------------------------------->
+<div class="grid-people-page-pophover" id="people_list_tag" style="display: none;">
+  <!---------------------------------- nav bars topdebug() strat ------------------------------------->
+  <div class="popup-nav-bar">
+    <span style="text-align: center;"> Select Performers of the Event </span>
+  </div>
+  <div class="popup-container-navbar">
+    <span class="pull-left">
+      <div class="dropdown">
+        <select [(ngModel)]="selectedPeopleType" (ngModelChange)="onChangeSelectPeopleType($event)"
+          name="select_people_type" class="form-control">
+          <option value="">Choose...</option>
+          <option *ngFor="let people_type of school_people_type_array" [value]="people_type.type">{{people_type.type}}
+          </option>
+        </select>
+      </div>
+    </span>
+    <div class="pull-right button-customs-right">
+      <!-- <a class="btn btn-default mobile-display" data-action="clear-all" > Clear all </a>
+      <a class="btn btn-default mobile-display" data-action="select-all" > Select all </a> -->
+      <a class="btn custom-btn" data-action="close-selector" (click)="savePeopleTaggedList()">Done</a>
+    </div>
+  </div>
+  <!---------------------------------- nav bars top strat end------------------------------------->
+  <!---------------------------------- body people list start ------------------------------------->
+  <div class="people-list">
+    <ng-template #yourChildrenBlock>
+      <ul class="people-list-grid" style="padding: 0;">
+        <li *ngFor="let parent_children of parent_children_array"
+          (click)="tagPeoples(parent_children.id, parent_children.type)"
+          [ngStyle]="{'background-color': parent_children.tagged_status ? '#337ab7' : '','color': parent_children.tagged_status ? '#ffffff' : ''}"
+          title="{{ parent_children.tagged_status ? 'Remove children' : 'Select children'}}">
+          <ng-container *ngIf="parent_children.type=='parent_children'">
+            <span class="media-left">
+              <span *ngIf="!parent_children.staticDpImg"
+                class="media-object profile-name uppercase">{{parent_children.firstName | slice:0:1 }}{{parent_children.lastName | slice:0:1}}</span>
+              <span *ngIf="parent_children.staticDpImg"><img class="media-object profile-image"
+                  [src]="parent_children.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+            </span>
+            <span style="line-height:25px;">{{parent_children.firstName +" "+parent_children.lastName}}</span>
+          </ng-container>
+        </li>
+      </ul>
+    </ng-template>
+    <ng-template #schoolChildrenBlock>
+      <ul class="people-list-grid" style="padding: 0;">
+        <li *ngFor="let school_children of school_children_array"
+          (click)="tagPeoples(school_children.id, school_children.type)"
+          [ngStyle]="{'background-color': school_children.tagged_status ? '#337ab7' : '','color': school_children.tagged_status ? '#ffffff' : ''}"
+          title="{{ school_children.tagged_status ? 'Remove children' : 'Select children'}}">
+          <ng-container *ngIf="school_children.type=='school_children'">
+            <span class="media-left">
+              <span *ngIf="!school_children.staticDpImg"
+                class="media-object profile-name uppercase">{{school_children.firstName | slice:0:1 }}{{school_children.lastName | slice:0:1}}</span>
+              <span *ngIf="school_children.staticDpImg"><img class="media-object profile-image"
+                  [src]="school_children.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+            </span>
+            <span style="line-height:25px;">{{school_children.firstName +" "+school_children.lastName}}</span>
+          </ng-container>
+        </li>
+      </ul>
+    </ng-template>
+    <ng-template #teacherBlock>
+      <ul class="people-list-grid" style="padding: 0;">
+        <li *ngFor="let school_teacher of school_teacher_array"
+          (click)="tagPeoples(school_teacher.id, school_teacher.type)"
+          [ngStyle]="{'background-color': school_teacher.tagged_status ? '#337ab7' : '','color': school_teacher.tagged_status ? '#ffffff' : ''}"
+          title="{{ school_teacher.tagged_status ? 'Remove School Staff' : 'Select School staff'}}">
+          <span class="media-left">
+            <span *ngIf="!school_teacher.staticDpImg"
+              class="media-object profile-name uppercase">{{school_teacher.firstName | slice:0:1 }}{{school_teacher.lastName | slice:0:1}}</span>
+            <span *ngIf="school_teacher.staticDpImg"><img class="media-object profile-image"
+                [src]="school_teacher.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+          </span>
+          <span style="line-height:25px;">{{school_teacher.firstName +" "+school_teacher.lastName}}</span>
+        </li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock></ng-template>
+    <!-- <div *ngIf="selectedPeopleType=='Your Children'; then yourChildrenBlock else elseBlock"></div> -->
+    <div *ngIf="selectedPeopleType=='Select Performers'; then schoolChildrenBlock else elseBlock"></div>
+    <!-- <div *ngIf="selectedPeopleType=='School Staff'; then teacherBlock else elseBlock"></div> -->
+  </div>
+  <!---------------------------------- body people list end ------------------------------------->
+</div>
+<!--------------------------------Select who's in the story end---------------------------------->
+
+<!------------------------------Learning tag create popup start------------------------------------------>
+<div class="modal fade" role="dialog" id="create_learning_tag_popup_div">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="heading"> Add new key tag </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <label class="heading"> Name* </label>
+          </div>
+          <div class="col-sm-7">
+            <input type="text" id="learning_tag_name" class="popup-input-text" [(ngModel)]="learning_tag_name"
+              #learningTagName="ngModel" required name="learning_tag_name" placeholder="Please enter key tag name">
+            <span id="learning_tag_name_error" style="color:red">Tag name is required</span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-4">
+            <label class="heading"> Description* </label>
+          </div>
+          <div class="col-sm-7">
+            <textarea class="description-textarea" id="learning_tag_description" [(ngModel)]="learning_tag_description"
+              #learningTagDescription="ngModel" required></textarea>
+            <span id="learning_tag_description_error" style="color:red">Tag description is required</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <span id="duplicate_learning_tag_error" style="color:red"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" value="Cancel" (click)="closeCreateLearningTagPopup()">
+        <input type="button" class="btn custom-btn" value="Save" (click)="saveLearningTags()">
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------------Learning tag create popup end------------------------------------------>
+
+<!-----------------------------------Delete Confirmation popup start-------------------------->
+<div class="modal fade" role="dialog" id="delete_multiple_items_popup_div">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Are you sure you want to remove this block? </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" value="No" (click)="closeDeletePopupElement()">
+        <input type="button" value="post" class="btn custom-btn" value="Yes"
+          (click)="deleteMultipleItems(delete_index_value,snap_type,relative_path_value)">
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------------------------Delete Confirmation popup end------------------------------->
+
+<!-----------------------------------image rotate popup start-------------------------->
+<div class="modal fade" role="dialog" id="edit_image_modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="btn-container">
+        <a class="btn" style="position: relative;" title="Flip image" id="flip_canvas" (click)="flipCanvas()">
+          <img src="assets/images/flip.png" />
+        </a>
+        <a class="btn" style="position: relative;" title="Rotate left" id="counter_clockwise"
+          (click)="counterclockwise()">
+          <img src="assets/images/left-rotate.png" />
+        </a>
+        <a class="btn" style="position: relative;" title="Rotate right" id="clockwise" (click)="clockwise()">
+          <img src="assets/images/right-rotate.png" />
+        </a>
+        <a class="btn" style="position: relative;" title="Reset image" id="reset_canvas_to_original"
+          (click)="resetCanvasToOriginal()">
+          <img src="assets/images/reset.png" />
+        </a>
+      </div>
+      <div class="edit-image-block" *ngIf="rotated_canvas_generated_image_status">
+        <!-- <div class="loader-image-block">
+              <span><img src="assets/images/small-loader.gif"><i> loading... </i></span>
+            </div> -->
+        <img id="canvas_generated_image" [src]="rotated_canvas_generated_image_src"
+          class="img-responsive center-block" />
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" value="Close" (click)="closepopupImage()">
+        <input type="button" class="btn custom-btn" value="Save image" id="save_image" (click)="saveImage()">
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------------------------image rotate popup end------------------------------->
+<div class="popup-camera" id="camera_image_modal" style="display:none;">
+  <div class="card-camera">
+    <div class="modal-content">
+      <app-camera id="camera_first" *ngIf="showCameraStatus" (closeCamera)="closeCamera($event)"
+        (pictureTaken)="captureImage($event)"></app-camera>
+    </div>
+  </div>
+</div>
+
+<!----------------------------------- Alert message popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_cancel_story">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> You have unsaved changes! If you leave, your changes will be lost.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" value="Cancel" (click)="cancelstoryalert()">
+        <input type="button" class="btn custom-btn" value="Yes" (click)="canceleditstory()">
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------- Alert message popup start popup end ------------------------------->
+
+<!----------------------------------- Alert message delete story popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_story_popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Are you sure to delete the Event. </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Yes" (click)="deleteStoryConfirmationSubmit()">
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------- Alert message delete story popup end ------------------------------->
+
+<!----------------------------------- Alert message delete story popup start -------------------------->
+<!-- <div class="modal fade" role="dialog" id="browser_back_popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Changes will be lost. Do you want to proceed </p>
+          </div>
+        </div>
+      </div>
+     <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Yes">
+      </div>
+    </div>
+  </div>
+</div> -->
+<!----------------------------------- Alert message delete story popup end ------------------------------->

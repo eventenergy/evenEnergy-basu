@@ -1,0 +1,75 @@
+.label{
+    color: #495C69;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 28px;
+    opacity: 0.8;
+  }
+  .heading{
+    color: #000;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 28px;
+    opacity: 0.9;
+  }
+
+  .pdf-content{
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 5px;
+    opacity: 0.9;
+  }
+  .pdf-content-1{
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 25px;
+    line-height: 5px;
+    opacity: 0.9;
+  }
+  .pdf-content-address{
+    color:#000;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 20px;
+    opacity: 0.9;
+    text-align: left;
+    vertical-align: top;
+  }
+  .vl {
+    border-left: 4px dashed #000;
+    height: 420px;
+  }
+  .valign-div{
+  -ms-transform:rotate(270deg); /* IE 9 */
+  -moz-transform:rotate(270deg); /* Firefox */
+  -webkit-transform:rotate(270deg); /* Safari and Chrome */
+  -o-transform:rotate(270deg); /* Opera */
+}
+  .table,.table th, .table td {
+    color: #495C69;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 28px;
+  }
+  table#fare-info th,table#fare-info td {
+    border: 1px solid black;
+   text-align: center;
+   background: rgb(236, 231, 231);
+  }
+  table#fare-info th{
+    font-weight: 500;
+  }
+  

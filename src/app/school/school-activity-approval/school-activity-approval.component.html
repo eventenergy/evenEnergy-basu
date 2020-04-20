@@ -1,0 +1,169 @@
+
+    <div class="dashboard-responsive">
+        <div class="container">
+            <h3> To be approved... </h3>
+            <div class="col-sm-12 col-md-10 col-lg-8">
+            <div class="row">
+                <div class="col-sm-12" style="margin-bottom:5px;">
+                    <!-- <div class="dropdown-display-desktop pull-right" *ngIf="sort_story_school_array?.length>0" style="margin-right:20px;">
+                        <div class="dropdown open">
+                            <button style="border:0;background: transparent;" (click)="openSortTypeDropdown()" class="btn-default dropdown-toggle" type="button" data-toggle="dropdown"> Sort latest activity by:
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" id="stories_sort_type" style="display:none;">
+                                <li class="dropdown-submenu" *ngFor="let school of sort_story_school_array;" [ngClass]="school.id==selected_school_id ? 'active-element' : ''">
+                                    <a class="test" (click)="selectSortTypeSchool(school.id, school.display_id)">{{school.name | slice:0:15}} <span style="padding-top:3px;" class="fa fa-caret-right pull-right"></span></a>
+                                    <ul class="dropdown-menu" [id]="school.display_id" style="display:none">
+                                        <li *ngFor="let sort_type of school.story_type" (click)="selectStoryType(school.id, sort_type.type, school.name)" [ngClass]="sort_type.type==story_type_display ? 'active-element' : ''"><a>{{sort_type.display}}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="row"> 
+                <!--
+                |-----------------------------------------------------------
+                |activity card start
+                |-------------------------------------------------------------
+                --> 
+                
+                <div class="dasboard-stories-card" *ngFor="let stories of mutiple_stories_array">
+                    <div class="custom-profile-image">
+                        <span *ngIf="stories.staticDpImg"><img [src]="stories.staticDpImg" (error)="updateDefaultImageUrl($event)" class="img-circle" /></span>
+                        <div class="custom-profile-image-text" *ngIf="!stories.staticDpImg">{{stories?.createrFirstName | slice:0:1}}{{stories?.createrLastName | slice:0:1}}</div>
+                    </div>
+                    <div class="stories-card">
+                        <div class="col-sm-12 well main-form">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-header-tag">
+                                            <div class="flex-content" style="margin-bottom:5px;">
+                                            <span class="sub_head"><a style="text-decoration: none;"><i class="fa fa-bookmark" aria-hidden="true"></i><span style="padding-left: 5px;"> {{stories.type ? stories.type.replace("_"," ") : stories.type}} </span></a>
+                                            <span style="padding-left:8px;font-size:15px;color:#000;font-weight:400;" *ngIf="stories.createrFirstName && stories.createrLastName"> {{"Created by " +stories?.createrFirstName+" "+stories?.createrLastName | slice:0:100}} </span></span>
+                                            <!-- <span class="dropdown" style="cursor: pointer;">
+                                                <a data-toggle="dropdown" class="dropdown-toggle"><b class="caret" style="border-width:8px;"></b></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a>Print preview</a></li>
+                                                    <li><a>Remove</a></li>
+                                                </ul>   
+                                            </span> -->
+                                        </div>
+                                        </div>
+                                        <a [routerLink]="('/admin/organization/activity/approvals/preview/')+stories.id" style="text-decoration: none;" title="Story Preview">
+                                            <div class="title-story" [innerHTML]="stories?.caption">
+                                                <!-- Storytwinkle created the story -->
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <a [routerLink]="('/admin/organization/activity/approvals/preview/')+stories.id" title="Story Preview">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div *ngFor="let images of stories.image_array;let x=index;">
+                                            <!------------------------------------ SINGLE IMAGE GALLERY --------------------------------------->
+                                            <div class="img-container" *ngIf="stories.image_array.length==1 && x==0">
+                                                <img src="{{images.image_src}}">
+                                            </div>
+                                            <!------------------------------------ SINGLE IMAGE GALLERY END--------------------------------------->
+                                            <!------------------------------------ TWO IMAGE GALLERY --------------------------------------->
+                                            <div class="img-container2" *ngIf="stories.image_array.length==2 && x==1">
+                                                <div class="leftcolumn">
+                                                    <img src="{{stories.image_array[x-1].image_src}}">
+                                                </div>
+                                                <div class="rightcolumn">
+                                                    <!-- <img src="{{images.image_src}}"> -->
+                                                    <img src="{{stories.image_array[x].image_src}}">
+                                                </div>
+                                            </div>
+                                            <!------------------------------------ TWO IMAGE GALLERY END--------------------------------------->
+                                            <!------------------------------------ THREE IMAGE GALLERY --------------------------------------->
+                                            <div class="img-container41" *ngIf="stories.image_array.length==3 && x==2">
+                                                <div class="left_content_images1">
+                                                    <img src="{{stories.image_array[x-2].image_src}}">
+                                                </div>
+                                                <div class="right_content_images">
+                                                    <div class="rightcolumn1">
+                                                        <img src="{{stories.image_array[x-1].image_src}}">
+                                                    </div>
+                                                    <div class="rightcolumn2">
+                                                        <img src="{{stories.image_array[x].image_src}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!------------------------------------ THREE IMAGE GALLERY END--------------------------------------->
+                                            <!------------------------------------ FOUR IMAGE GALLERY --------------------------------------->
+                                            <div class="img-container41" *ngIf="stories.image_array.length>=4 && x==3">
+                                                <div class="left_content_images">
+                                                    <div class="leftcolumn1">
+                                                        <img src="{{stories.image_array[x-3].image_src}}">
+                                                    </div>
+                                                    <div class="leftcolumn2">
+                                                        <img src="{{stories.image_array[x-1].image_src}}">
+                                                    </div>
+                                                </div>
+                                                <div class="right_content_images">
+                                                    <div class="rightcolumn1">
+                                                        <img src="{{stories.image_array[x-2].image_src}}">
+                                                    </div>
+                                                    <div class="rightcolumn2">
+                                                        <img src="{{stories.image_array[x].image_src}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!------------------------------------ FOUR IMAGE GALLERY END--------------------------------------->
+                                        </div>
+                                        <!------------------------------------ video GALLERY --------------------------------------->
+                                        <div *ngIf="stories.image_array?.length==0">
+                                            <div *ngFor="let video of stories.video_array;let x=index;">
+                                                <div class="img-container" *ngIf="x==0">
+                                                    <video controls><source src="{{video.video_src}}" type="video/mp4"></video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!------------------------------------ video GALLERY END--------------------------------------->
+                                    </div>
+                                </div>
+                                </a>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="story-content-paragraph">
+                                            <div *ngFor="let text of stories.text_array;let x=index;">
+                                                <p *ngIf="x==0" [innerHTML]="text?.text_data"></p>
+                                            </div>
+                                            <a style="padding:10px 10px;cursor:pointer;text-decoration: none;" [routerLink]="('/admin/school/activity/approvals/preview/')+stories.id" >Click here for more details</a>
+                                            <p style="padding:10px 10px;color:#384450;line-height: 1.5;" *ngIf="stories?.updatedAt">Posted on {{stories?.updatedAt | date:'medium'}}</p>
+                                            <br>
+                                            <!---------------------------------download link ---------------------------->
+                                            <div *ngFor="let pdf of stories.pdf_array;let x=index;">
+                                                <div class="file-pdf flex-content" *ngIf="x==0">
+                                                    <a [href]="pdf.pdf_src" target="_blank" style="text-decoration: none;" title="Preview"><span>Document.pdf</span></a><span style="cursor:pointer;" (click)="downloadFile(pdf.pdf_src)"><i class="fa fa-download" aria-hidden="true"></i></span>
+                                                </div>
+                                            </div>
+                                            <!---------------------------------download link end---------------------------->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+           
+            
+                <!--
+                |-----------------------------------------------------------
+                |activity card end
+                |-------------------------------------------------------------
+                --> 
+                <div *ngIf="mutiple_stories_array?.length==0">
+                  <div style="text-align: center;margin-top:20px;">
+                      <h2 style="color:#fe9200;"> No Event Activities to Approve </h2>
+                      <!-- <a [routerLink]="['/story/create/new']" title="Create story" style="text-decoration: none;"> <span style="color:#007bff;font-size:18px"> Create story </span> </a> -->
+                  </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    <br><br><br> 
+
+<div #story_content style="display:none" aria-hidden="true"></div>

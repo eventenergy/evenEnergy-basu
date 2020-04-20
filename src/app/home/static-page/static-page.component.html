@@ -1,0 +1,383 @@
+<section *ngIf="logged_status">
+  <!-- <div class="dropdown-filter">
+      <a (click)="openFilterDropdown()"> Filters <i class="fa fa-filter"></i></a>
+  </div>  -->
+  <app-main-navbar></app-main-navbar>
+</section>
+
+<!----------------------  main navbar --------------------------->
+<nav class="filter-category" *ngIf="!logged_status">
+  <div class="container-fluid">
+    <div class="navbar-header" style="padding-top: 5px;">
+      <ul class="nav navbar-nav padding-adjust-filter" style="padding: 0;">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- <li class="dropdown">
+            <i class="fa fa-filter" (click)="openFilterDropdown()"> </i>&nbsp;&nbsp;
+        </li>  -->
+        <li class="logo">
+          <span routerLink="/" style="color:#fff;font-weight:600;font-size:17px;cursor: pointer;">
+            <img class="logo-home" src="assets/images/events/logo.png" /> 
+            EventEnergies 
+          </span>
+        </li>
+        <li class="location"> 
+            <i class="fa fa-map-marker fa-1x"></i> India 
+        </li>
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+      <ul class="nav navbar-nav" style="margin: 0 auto;display:table;">
+        <li>
+          <a title="Register to EventEnergies" data-toggle="modal" data-target="#signUpTypeModal" ><input type="button" value="REGISTER" class="home-nav-register"/> </a>
+        </li>
+        <li>
+          <a title="Login to EventEnergies" [routerLink]="[ '/login']"> <input type="button" value="LOGIN" class="home-nav-register"/> </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br *ngIf="!logged_status">
+<!-- <div id="filter-stories" class="filter">
+  <div class="container-fluid">
+    <a style="border-bottom:1px solid #ccc;padding: 20px;">Filters <span class="btn btn-primary" (click)="closeFilterDropdown()" style="float:right;">Done</span></a>
+    <div class="filter-stories-content">
+      <div class="filter-content">
+          <app-filter-stories (filter)="applyFilter($event)"></app-filter-stories>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!---------------------- main nav bar end ----------------------->
+
+<!----------------------------------pop up add  Modal ------------------------------>
+<div class="modal fade" id="signUpTypeModal" role="dialog">
+  <div class="modal-dialog">
+      <!-------------- Modal content start -------------------->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h2 style="text-align:center;font-weight:500;"> Which best describes you? </h2>
+        </div>
+        <div class="modal-body" style="padding:0px 40px 20px 40px">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="box-part text-center" [routerLink]="[ '/signup']" [queryParams]="{type: 'Organizer'}" data-dismiss="modal" style="cursor:pointer;">
+                <img src="assets/images/events/society.jpg"  class="popup-blog-image">
+                <div class="title">
+                  <h2 style="color:#DB5A3C"> Event Organizer </h2>
+                </div>
+                <p> Signup as a Event Organizer Head. 
+                    You will have all the Privileges to Create, 
+                    Organize, Schedule, track and to do Write Up on Events. </p>
+              </div>
+            </div>	 
+            <div class="col-sm-6">
+              <div class="box-part text-center" [routerLink]="[ '/signup']" [queryParams]="{type: 'user'}" data-dismiss="modal" style="cursor:pointer;">
+                <img src="assets/images/events/user1.jpg"  class="popup-blog-image" >
+                <div class="title">
+                    <h2 style="color:#0084A5"> Event Attendee </h2>
+                </div>
+                <p> You can search hosted events, Purchase tickets for paid events.
+                    Intimate the organize for limited free events.  </p>
+              </div>
+            </div>
+          </div>   
+          <div style="text-align:center;">Choose Event Organizer if you are both of the above.</div> 
+        </div>  
+      </div>
+      <!-------------- Modal content end ---------------------->
+  </div>
+</div>
+<!---------------------------------------pop up  Modal end -------------------------------------->
+
+<!----------------------------------- Abourt us start -------------------------------------->
+<section [ngStyle]="{'display':displayAboutUs}">
+  <div class="aboutus-img">
+    <img src="assets/images/banner/Professional.jpeg" alt="" style="width:100%;">
+  </div>
+  <div class="aboutus-text">
+    <div class="container" style="padding: 50px;">
+      <!-- <h1>About Us</h1> -->
+      <p>EventEnergies is a one-stop platform for events that allows anyone to create, share, find and attend events that provides great experiences to communicate with the world. From conferences, community events, festivals, sports events, fundraisers, competitions and others. Our mission is to enhance experiences to communicate for the better world. </p>
+    </div>
+  </div>
+  <div class="aboutus-content">
+    <div class="container" style="padding: 20px;">
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+          <div class="content">
+            <p><img class="svg" src="assets/images/globe-icon.svg"></p>
+            <h3>Powered 3.9M events in 2018</h3>
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+          <div class="content">
+            <p><img class="svg" src="assets/images/event-icon.svg"></p>
+            <h3>795K event creators in 2018</h3>
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+          <div class="content">
+            <p><img class="svg" src="assets/images/ticket-icon.svg"></p>
+            <h3>Live experiences in 170 countries in 2018</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!----------------------------------- Abourt us end -------------------------------------->
+
+<!----------------------------------- FAQs start -------------------------------------->
+<section [ngStyle]="{'display':displayFaq}" style="background: #fff;padding-bottom: 50px; overflow: hidden;">
+  <div class="text-header">
+    <h2>EventEnergies <span style="color: orangered;">FAQs</span> - Updated 2020</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+  <div class="container faq-content col-lg-9 col-md-9 col-sm-12 col-xs-12" style="float: right;">
+    <h2>Common Questions</h2>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-defination" aria-expanded="false" aria-controls="event-defination">What is EventEnergies ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-defination">
+        <p>EventEnergies is a one-stop platform dedicated to ticketing of events, technology & trade fairs. EventEnergies lists comprehensive information about concerts, tours, plays, trade fairs, sporting events, seminars, conferences, training and workshops enabling event discovery and ticketing.</p>
+        <p>It connects organizers and attendees seamlessly, helping organizers list, promote and sell tickets all at one place and reach out to their target audience on an easy to use digital platform. We are a proud "Go-Green" initiative and we seek to make the entire event process paperless.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-published" aria-expanded="false" aria-controls="event-published">What events are published / listed on EventEnergies ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-published">
+        <p>EventEnergies lists information about concerts, plays, trade fairs, sports, seminars, conferences, spiritual events, corporate training, workshops, and the entire gamut of events. It is the go-to portal to be in the loop about what's happening, where and book tickets instantly.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-cost" aria-expanded="false" aria-controls="event-cost">How much does it cost to post an event ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-cost">
+        <p>The process of event listing is completely free.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-city" aria-expanded="false" aria-controls="event-city">How many cities is EventEnergies available in ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-city">
+        <p>EventEnergies lists events all over India and is aggressively working towards an international presence.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-advantages" aria-expanded="false" aria-controls="event-advantages">What are the advantages of partnering EventEnergies ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-advantages">
+        <p>EventEnergies is a unique platform dedicated entirely to events and trade-fairs industry. It covers the entire gamut of events from concerts, plays, trade fairs, seminars, conferences, training, workshops and all events happening in the city. It attracts a large number of unique visitors with high conversion rate due to effortless online ticketing; there are also innovative promotional strategies to ensure visibility on the website and across social platforms along with uniquely tailored content with embedded call to action to boost ticket sales.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-contact" aria-expanded="false" aria-controls="event-contact">How Can I Contact You ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-contact">
+        <p>Please vist Contact Us Page for all your queries and redressal of grievances.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-feedback" aria-expanded="false" aria-controls="event-feedback">How do I provide feedback ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-feedback">
+        <p>We would love to make your experience even better. Our teams are looking forward to hearing from you at Contact Us and Comments section under each event.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-support" aria-expanded="false" aria-controls="event-support">What support does EventEnergies provide ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-support">
+        <p>EventEnergies provides dedicated support via email and phone. Please vist Contact Us.</p>
+      </div>
+    </div>
+
+    <h2>Attendees Questions</h2>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-do" aria-expanded="false" aria-controls="event-do">What can EventEnergies do for an Event ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-do">
+        <p>EventEnergies allows an organizer to include all the information about an event in an easy listing. The organizer can choose from different promotional plans to enhance visibility. It also increases conversion ratio as the user audience is highly targeted and hyper-local.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-secure" aria-expanded="false" aria-controls="event-secure">How secure is the information I subscribe to on EventEnergies ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-secure">
+        <p>EventEnergies connects attendees and organizers seamlessly. All events can be accessed with one click. EventEnergies assigns a unique username and password for the attendees and organizers. Signing up, email alerts on important events are made simple and easy. Printing of ticket, Printing of event pass and subscribing to our newsletters have been simplified. Information about discounts from event organizers to attendees is accessible in one click.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-cancelled" aria-expanded="false" aria-controls="event-cancelled">What happens if an Event is cancelled ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-cancelled">
+        <p>In case of cancellation by the event organizer EventEnergies will update it on the event listing and a personal mail will be sent to you. If the event that you registered for is a paid event you will also be notified about the fee refund via email. However cancellation of registration for an event that you have registered for, will vary and depend on the Organizer's terms & conditions.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-information" aria-expanded="false" aria-controls="event-information">Where do I find information about the event organizer ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-information">
+        <p>Every event that is listed on EventEnergies is curated and verified and has all the contact information about the organizer on the event listing. The information is available on the events page below the event details. To get the e-mail ID of organizer click on the name of the organizer and all the information you require is listed.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-register" aria-expanded="false" aria-controls="event-register">Do attendees need to pay a fee to register ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-register">
+        <p>An attendee is required to pay a fee in case of a paid event. The registration fee can be paid on EventEnergies using multiple payment options including e-wallets such as RazorPay and Paytm.</p>
+      </div>
+    </div>
+
+    <h2>Organizer Questions</h2>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-organization" aria-expanded="false" aria-controls="event-organization">What does EventEnergies do for me and my organization ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-organization">
+        <p>EventEnergies allows an organizer to include all the information about an event in an easy listing. The organizer can choose from different promotional plans to enhance visibility. It also increases conversion ratio as the user audience is highly targeted and hyper-local.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-subscribe" aria-expanded="false" aria-controls="event-subscribe">How secure is the information I subscribe to on EventEnergies ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-subscribe">
+        <p>With your event listing in EventEnergies here are some of the attractive benefits that come your way.</p>
+        <p>- Reduce no-shows via RSVPs</p>
+        <p>- Attract and retain more clients through easy online ticketing</p>
+        <p>- Increase sign-ups for events using multiple promotional packages</p>
+        <p>- Encourage referrals using multiple embedded social widgets such as facebook, Twitter, Linked-in, Google+</p>
+        <p>- Reach out to a large number of unique visitors with higher conversion rates</p>
+        <p>- Create unique promotional content that is tailored to suit your event and can be reproduced and published across social media</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-posting" aria-expanded="false" aria-controls="event-posting">Do organizers need to pay for posting an event ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-posting">
+        <p>No, all registered organizers can post events on the platform for free.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-platform" aria-expanded="false" aria-controls="event-platform">As an organizer how do I register on the platform ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-platform">
+        <p>Please visit Contact Us.</p>
+      </div>
+    </div>
+    <div class="faq-details">
+      <h3 data-toggle="collapse" href="#event-submit" aria-expanded="false" aria-controls="event-submit">Is the information that I submit secure ? <i class="fa fa-chevron-down"></i></h3>
+      <div class="collapse" id="event-submit">
+        <p>EventEnergies follows the strictest industry guidelines and software practices to keep data safe. We endeavor to keep all the information that you provide secure.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!----------------------------------- FAQs end -------------------------------------->
+
+<!----------------------------------- Tutorials start -------------------------------------->
+<section [ngStyle]="{'display':displayTutorials}">
+  <div class="video-left-details">
+    <div class="container">
+      <!-- <h1>Tutorials</h1> -->
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <div class="video-container">
+              <video controls><source src="assets/images/videoplayback.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <div class="text-container">
+              <h2>Attendee Ticket Purchase</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="video-right-details">
+    <div class="container">
+      <!-- <h1>Tutorials</h1> -->
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <div class="text-container">
+              <h2>Attendee Ticket Purchase</h2>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+            <div class="video-container">
+              <video controls><source src="assets/images/videoplayback.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!----------------------------------- Tutorials end -------------------------------------->
+
+<section [ngStyle]="{'display':displayService}">
+  <h1>Service</h1>
+</section>
+
+<section [ngStyle]="{'display':displayPrivacyPolicy}">
+  <div class="container">
+    <h1>Privacy Policy</h1> <p> Storytwinkle, Inc built the Storytwinkle app as a Commercial app. This SERVICE is provided by
+                    Storytwinkle, Inc  and is intended for use as is.
+                  </p> <p>This page is used to inform visitors regarding our policies with the collection, use, and disclosure
+                    of Personal Information if anyone decided to use our Service.
+                  </p> <p>If you choose to use our Service, then you agree to the collection and use of information in
+                    relation to this policy. The Personal Information that we collect is used for providing and improving
+                    the Service. We will not use or share your information with anyone except as described
+                    in this Privacy Policy.
+                  </p> <p>The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is
+                    accessible at Storytwinkle unless otherwise defined in this Privacy Policy.
+                  </p> <p><strong>Information Collection and Use</strong></p> <p>For a better experience, while using our Service, we may require you to provide us with certain
+                    personally identifiable information, including but not limited to Videos and Images Uploaded by the User to The Server. The information that we request will be retained by us and used as described in this privacy policy.
+                  </p> <p>The app does use third party services that may collect information used to identify you.</p> <div><p>Link to privacy policy of third party service providers used by the app</p> <ul><li><a href="https://www.google.com/policies/privacy/" target="_blank">Google Play Services</a></li><!----><!----><!----><!----><!----><!----><!----><!----></ul></div> <p><strong>Log Data</strong></p> <p> We want to inform you that whenever you use our Service, in a case of
+                    an error in the app we collect data and information (through third party products) on your phone
+                    called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address,
+                    device name, operating system version, the configuration of the app when utilizing our Service,
+                    the time and date of your use of the Service, and other statistics.
+                  </p> <p><strong>Cookies</strong></p> <p>Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers.
+                    These are sent to your browser from the websites that you visit and are stored on your device's internal
+                    memory.
+                  </p> <p>This Service does not use these “cookies” explicitly. However, the app may use third party code and
+                    libraries that use “cookies” to collect information and improve their services. You have the option to
+                    either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose
+                    to refuse our cookies, you may not be able to use some portions of this Service.
+                  </p> <p><strong>Service Providers</strong></p> <p> We may employ third-party companies and individuals due to the following reasons:</p> <ul><li>To facilitate our Service;</li> <li>To provide the Service on our behalf;</li> <li>To perform Service-related services; or</li> <li>To assist us in analyzing how our Service is used.</li></ul> <p> We want to inform users of this Service that these third parties have access to
+                    your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However,
+                    they are obligated not to disclose or use the information for any other purpose.
+                  </p> <p><strong>Security</strong></p> <p> We value your trust in providing us your Personal Information, thus we are striving
+                    to use commercially acceptable means of protecting it. But remember that no method of transmission over
+                    the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee
+                    its absolute security.
+                  </p> <p><strong>Links to Other Sites</strong></p> <p>This Service may contain links to other sites. If you click on a third-party link, you will be directed
+                    to that site. Note that these external sites are not operated by us. Therefore, we strongly
+                    advise you to review the Privacy Policy of these websites. We have no control over
+                    and assume no responsibility for the content, privacy policies, or practices of any third-party sites
+                    or services.
+                  </p> <p><strong>Children’s Privacy</strong></p> <p>These Services do not address anyone under the age of 13. We do not knowingly collect
+                    personally identifiable information from children under 13. In the case we discover that a child
+                    under 13 has provided us with personal information, we immediately delete this from
+                    our servers. If you are a parent or guardian and you are aware that your child has provided us with personal
+                    information, please contact us so that we will be able to do necessary actions.
+                  </p> <p><strong>Changes to This Privacy Policy</strong></p> <p> We may update our Privacy Policy from time to time. Thus, you are advised to review
+                    this page periodically for any changes. We will notify you of any changes by posting
+                    the new Privacy Policy on this page. These changes are effective immediately after they are posted on
+                    this page.
+                  </p> <p><strong>Contact Us</strong></p> <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact
+                    us at <a href="mailto:admin@storytwinkle.com">admin@storytwinkle.com.</a>
+                  </p> <p>This privacy policy page was created at <a style="color:#3B5998;text-decoration: none;" href="https://privacypolicytemplate.net" target="_blank">privacypolicytemplate.net</a>
+                    and modified/generated by <a style="color:#3B5998;text-decoration: none;" href="https://app-privacy-policy-generator.firebaseapp.com/" target="_blank">App
+                      Privacy Policy Generator</a></p>
+                      </div>
+</section>
+
+<section [ngStyle]="{'display':displayContactUs}">
+  <h1>Contact Us</h1>
+</section>
+
+<!-- footer -->
+<app-footer></app-footer>
+<!-- footer end -->

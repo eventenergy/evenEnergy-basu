@@ -1,0 +1,36 @@
+<div class="row" style="margin-bottom:15px;">
+  <div class="col-sm-12">
+      <h3>Performers</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-4 col-sm-6 col-xs-12 col-md-6" *ngFor="let school_child_list of school_child_array;let x=index;">
+        <div class="col-sm-12 border-box" style="cursor: pointer;outline: none;" [routerLink]="['/member/organization/student-profile']" [queryParams]="{id: school_child_list.child.id, c_req_id: school_child_list.id}" >
+          <a>
+            <!------------------usetr image upload --------------------->
+            <span *ngIf="school_child_list.child.staticDpImg"><img [src]="school_child_list.child.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"> </span>
+            <!------------------user image upload end--------------------->
+            <!-----------------------user name text  ----------------------->
+            <div class="bc-bg" *ngIf="!school_child_list.child.staticDpImg">{{school_child_list.child.firstName | slice:0:1 }}{{ school_child_list.child.lastName | slice:0:1}}</div>
+            <!-----------------------user name text  end----------------------->
+          </a>
+            <div class="cont-right">
+              <div id="textbox">
+                <span class="header-name">{{school_child_list.child.firstName ? school_child_list.child.firstName : '' }} {{school_child_list.child.lastName ? school_child_list.child.lastName : '' }}</span>
+                  <br><br>
+              </div>
+              <br><br>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------empty student ------------------>
+<div class="row" *ngIf="school_child_array?.length==0">
+    <div class="col-sm-12">
+      <div style="text-align: center;">
+        <h3 style="color:#fe9200;">No Performers </h3>
+      </div>
+    </div>
+  </div>
+  <!----------------------empty student end------------------>
+

@@ -1,0 +1,150 @@
+<!-- <div class="cropper-modal">
+  <div class="cropper-modal__background"></div>
+  <div class="cropper-modal__card">
+    
+  </div>
+</div> -->
+
+<div class="dashboard-responsive-margin">
+  <div class="container">
+    <div class="col-sm-12 col-md-10 col-lg-8">
+      <div class="row">
+        <div class="col-sm-12 dasboard-stories-card">
+          <form #userProfileForm="ngForm" (ngSubmit)="saveUserDetails(userProfileForm.form)">
+          <h3>Edit your details</h3>
+          <hr style="border:1px solid #ccc;">
+          <h4>Personal settings</h4>
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="col-sm-12">
+                    <label class="heading">Name</label>
+                </div>
+                <div class="col-sm-6" style="margin-bottom:10px;">
+                  <input type="text" #firstName="ngModel" required class="form-control" [class.is-invalid]="firstName.invalid && firstName.touched" name="firstName" [(ngModel)]="userModel.firstName" placeholder="First name">
+                  <p class="text-danger" *ngIf="firstName.invalid && firstName.touched">First name is required</p>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" #lastName="ngModel" required class="form-control" [class.is-invalid]="lastName.invalid && lastName.touched" name="lastName" [(ngModel)]="userModel.lastName" placeholder="Last name">
+                    <p class="text-danger" *ngIf="lastName.invalid && lastName.touched">Last name is required</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <label class="heading"> Profile Image </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="profile-image-edit">
+                  <div class="block-controls">
+                    <a class="text-danger pull-right js-delete-block" *ngIf="image_reader || userModel.defaultSnapId"  title="Remove" (click)="deleteProfileImage()"><i class="fa fa-close"></i></a>
+                    <!-- <a class="text-info pull-right js-edit-block">Edit</a> -->
+                  </div>
+                <!----------------- profile name --------------------->
+                <div class="profile-text" style="float:left;text-transform: uppercase;" *ngIf="!userModel.defaultSnapId && !image_reader">{{userModel.firstName |  slice:0:1}}{{userModel.lastName |  slice:0:1}}</div>
+                <!----------------- profile name end--------------------->
+                <div *ngIf="image_reader"><img [src]="image_reader_url"></div>
+                <!----------------- profile image --------------------->
+                <div *ngIf="userModel.defaultSnapId && !image_reader && userStaticDpImg">
+                  <img [src]="userStaticDpImg" (error)="updateDefaultImageUrl($event)"/>
+                </div>
+                <!----------------- profile image --------------------->
+              </div>
+              <br>
+              <!-- <span (click)="fileInput.click()"  class="profile-upload-image"> Add profile pic </span> -->
+              <span (click)="fileInput2.click()"  class="profile-upload-image"> Add profile pic </span>
+              <br><br>
+              <span style="margin-left:20px;">Only jpg, png format allowed</span>
+              
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">Email</label>
+              <input type="text" readonly required disabled name="email" [(ngModel)]="userModel.email">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading"> Mobile Number </label>
+              <br>
+              <!-- [enablePlaceholder]="true" -->
+              <ngx-intl-tel-input [onlyCountries]="['au', 'us']" [preferredCountries]="['in']" [enableAutoCountrySelect]="true" [(ngModel)]="userModel.mobile" required name="mobile_number" #mobileNumber="ngModel"></ngx-intl-tel-input>
+              <!-- [preferredCountries]="['in', 'au', 'us']" -->
+              <div class="error-mez" *ngIf="mobileNumber.touched && mobileNumber.invalid">
+                  <div *ngIf="mobileNumber?.invalid && !mobileNumber?.errors.required">
+                      Mobile Number is invalid
+                  </div>
+                  <div *ngIf="mobileNumber?.errors.required">
+                      Mobile Number is required
+                  </div>
+                </div>
+            </div>
+          </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                  <div class="btn-block pull-right">
+                      <input [disabled]="userProfileForm.form.invalid" type="submit" class="btn pull-right custom-btn" value="SAVE">
+                      <input (click)="goBack()" type="button" class="btn pull-right custom-btn-close" value="CANCEL" style="margin-right:20px">
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br><br>
+<input style="display: none" id="file" type="file" (change)="onFileChanged($event)" #fileInput accept=".jpg,.png,.jpeg">
+<input style="display: none" id="file" type="file" (change)="onFileChanged2($event)" #fileInput2 accept=".jpg,.png,.jpeg">
+
+
+
+<!----------------------------------- Alert message delete user profile picture popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_profile_pic_popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Are you sure to delete Profile Pic. </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Yes" (click)="deleteProfileImageFromDB()">
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------- Alert message delete user profile picture popup end ------------------------------->
+<app-image-crop [imageFileEvent]="imageChangedEvent" (croppedImageFile)="onFileChanged($event)" (cropperClosed)="fileInput2.value = null"></app-image-crop>
+<!-- <div class="modal fade" role="dialog" id="cropper_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="cropper-content">
+          <image-cropper
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1 / 1"
+            format="png"
+            (imageLoaded)="imageLoaded()"
+            
+          ></image-cropper>
+          (loadImageFailed)="loadImageFailed()"
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Crop" (click)="cropImage()">
+      </div>      
+    </div>
+  </div>
+</div>  -->

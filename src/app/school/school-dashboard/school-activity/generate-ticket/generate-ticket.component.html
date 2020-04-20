@@ -1,0 +1,91 @@
+
+
+<div id="print-section" style="margin-top:15px; width:900px;height: 430px;background: rgb(236, 231, 231)"> 
+ 
+  <table style="border: #000 solid 1px;" class="table">
+    <tr>
+      <td style="width: 95%">
+          <div class="">
+              <div >
+                <div class="">
+                    <p class="pdf-content">CSI Chennai Presents</p>
+                </div>
+                <div class=" heading">
+                    <p class="">EVENT : EV ON THE MOVE</p>
+                </div>
+                <div class="" >
+                    <p class="pdf-content">Event Id:12345</p>
+                </div>
+                <div class="">
+                  <table>
+                    <tr>
+                      <td style="width: 50%" style="vertical-align: top;
+                      text-align: left;"> 
+                        <p class="pdf-content-address">25th Jul 2019 | 10:00 AM to 02:00 PM</p>
+                      </td>
+                      <td style="width: 50%">
+                          <p class="pdf-content-address">The Convention Center, Infosys Campus, 
+                              Electronics City, Bengaluru 560100, India</p>
+                      </td>
+                    </tr>
+                  </table>
+                   
+                </div>
+                
+              </div>
+              <div>
+                  <table id="fare-info" style="border-collapse: collapse;width: 100%;" class="table">
+                      <tr>
+                        <th >Ticket Type</th>
+                        <th >Quantity</th>
+                        <th >Amount</th>
+                      </tr>
+                      <tr>
+                         <td >Free</td>
+                         <td >2</td>
+                         <td >0.00</td>
+                       </tr>
+                    </table>
+              </div>
+              <div >
+                <div class="">
+                    <p class="pdf-content">Name: Test User</p>
+                </div>
+               
+                <div class="" >
+                    <p class="pdf-content">Registration No: 12345</p>
+                </div>
+                <div class="">
+                    <p class="pdf-content">Payment mode: Free</p>
+                </div>  
+              </div>
+              <div >
+                  <div class="">
+                      <p class="pdf-content-1">Powered by </p>
+                  </div>
+                  <div class="">
+                      <p class="pdf-content">Storytwinkle</p>
+                  </div>
+              </div>  
+          </div>
+      </td>
+      <td style="width: 1%">
+          <div style="border-left: 4px dashed #000;height: 420px;"></div>
+      </td>
+      <td  style="width: 4%">
+        <div style="margin-left: 40px;top: 0;">
+            <qrcode [qrdata]="qrCode" [size]="100" [level]="'M'"></qrcode>
+        </div>
+        <div style="padding-top: 50px">
+            <div class="valign-div" >
+                <ngx-barcode [bc-value]="qrCode" [bc-display-value]="true"></ngx-barcode>
+            </div>  
+        </div>
+       
+      </td>
+    </tr>
+  </table>
+  
+</div>
+<!-- <button (click)="printDiv('print-section')" >print</button>  -->
+<button  [useExistingCss]="true" #printbtn printSectionId="print-section" ngxPrint>print</button> 

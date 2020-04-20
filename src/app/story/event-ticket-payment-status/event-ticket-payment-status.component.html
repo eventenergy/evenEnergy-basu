@@ -1,0 +1,274 @@
+<app-main-navbar></app-main-navbar>
+<br>
+<div class="container" *ngIf="success">
+  <div class="row" *ngIf="justPurchased">
+    <div class="col-sm-12">
+      <div class="col-sm-12" style="background:#fff;">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1> Dear Customer, </h1>
+            <h3> Thanks for the booking! Your registration is complete. </h3>
+          </div>
+          <div class="col-sm-6">
+            <div class="confirm-email-info">
+              <h4> A confirmation email has been sent to <span style="color:#286090;font-weight: 500;line-height: 1.5;">
+                  <a href=""> {{user_email}} </a></span> </h4>
+              <h4 *ngIf="user_mobile_number"> A SMS has been sent to <span style="color:#286090;font-weight: 500;"><u>
+                    {{user_mobile_number}} </u></span></h4>
+              <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                  <button class="btn btn-primary m-10" (click)="sendConfirmationEmail()"> Resend Email </button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                  <button *ngIf="user_mobile_number" class="btn btn-primary pd-10 m-10"
+                    (click)="smsToNumber(user_mobile_number.slice(user_mobile_number.length-10, user_mobile_number.length))">
+                    Resend SMS </button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                  <button class="btn btn-primary pd-10 m-10" (click)="goToActivityPage(story_id)"> Go to Event </button>
+                </div>
+              </div>
+              <small>*It may take around 5 mins for the messages to reach you.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="slider-image" style="background:#efefef;">
+        <img #eventImg [src]="coverImageLink" class="img-responsive center-block">
+      </div>
+    </div>
+  </div>
+  <div id="print-section">
+    <div class="row" style="margin-bottom: 20px;">
+      <div class="col-sm-12">
+        <div class="event-title-status">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+              <div [routerLink]="['/activity/preview', story_id]" class="event-h-t"> {{story.caption}} </div>
+              <div style="font-size:16px;"> <span style="font-weight: bold;"> Event Organizer </span> :
+                {{organizerOrganization}} </div>
+              <div style="font-size:16px;"> <span style="font-weight: bold;"> <i class="fa fa-envelope-o"></i> </span> :
+                {{organizerEmail}} </div>
+              <div style="font-size:16px;"> <span style="font-weight: bold;"> <i class="fa fa-phone"></i> </span> :
+                {{organizerMobile}} </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+              <div class="event-i-d"> Event ID : {{story_id}} </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div #ticketRef class="col-sm-12">
+        <h2> Registration# {{order_id}} </h2>
+        <div class="ticket-list">
+          <!------------------ ticket looping start --------------------------->
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12" *ngFor="let ticket of ticket_details_array">
+              <div class="ticket-count">
+                <div class="row flex-content" style="margin-bottom: 10px;">
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <span style="font-size:16px;font-weight: bold;"> Ticket Name </span> <br>
+                    <span style="font-size:18px;"> {{ticket.name}} </span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <span style="font-size:16px;font-weight: bold;"> Amount </span> <br>
+                    <span class="ticket-value"> {{ticket.amount}} INR</span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <span style="font-size:16px;font-weight: bold;"> Quantity </span> <br>
+                    <span class="ticket-value"> {{ticket.reqCapacity}} </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 col-xs-6">
+                    <table style="width:100%">
+                      <tr>
+                        <td valign="top" width="30px"> <img width="20px" height="20px"
+                            src="https://www.eventenergies.com/assets/images/loc-icon.png" alt="" srcset=""></td>
+                        <td>
+                          <p class="no-bottom-margin"> {{ticket.line1}} </p>
+                          <p class="no-bottom-margin"> {{ticket.line2}} </p>
+                          <p class="no-bottom-margin"> {{ticket.line3}} </p>
+                          <p class="no-bottom-margin"> {{ticket.line4}} </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-sm-6 col-xs-6">
+                    <table style="width:100%">
+                      <tr>
+                        <td valign="top" width="30px"> <img width="20px" height="20px"
+                            src="https://www.eventenergies.com/assets/images/date-icon.png" alt="" srcset=""></td>
+                        <td>
+                          <p class="no-bottom-margin"> {{ticket.startTime | date:'MMM d, y, h:mm a'}} </p>
+                          <p class="no-bottom-margin"> To </p>
+                          <p class="no-bottom-margin"> {{ticket.endTime | date:'MMM d, y, h:mm a'}} </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="attendee-details">
+                  <div class="attendee-details__heading">
+                    <span>Attendee Details</span>
+                    <span style="float: right; font-size: 14px;" class="attendee-details__show-btn"
+                      (click)="ticket.display = !ticket.display">{{ticket.display? 'Hide' : 'Show'}}</span>
+                  </div>
+                  <ol *ngIf="ticket.display" class="attendee-details__list">
+                    <li *ngFor="let ticketDetail of ticket.ticketDetails">
+                      <div>
+                        <p [routerLink]="assetType=='order'?'/asset/ticket/'+ticketDetail.id+'/payment/status':null"
+                          class="attendee-details__name">{{ticketDetail.attandeeName}}<span class="attendee-details__cancel-btn" *ngIf="ticketDetail.status=='CANCELLED'">Cancelled</span></p>
+                        <p class="attendee-details__secondary">{{ticketDetail.email}}</p>
+                        <p class="attendee-details__secondary">{{ticketDetail.mob}}</p>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!------------------ ticket looping end --------------------------->
+          <br>
+          <div class="row">
+            <div class="col-sm-12">
+              <span style="float: left;">
+                <ngx-barcode [bc-value]="qrCode" [bc-display-value]="true" [bc-margin]="0" [bc-margin-top]="0"
+                  [bc-margin-left]="0" [bc-height]="90" [bc-width]="1.4"></ngx-barcode>
+              </span>
+              <span>
+                <qrcode [qrdata]="qrCode" [size]="90" [level]="'M'"></qrcode>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h2> Actions </h2>
+              <div class="ticket-action-container">
+                <ul class="ticket-action-list">
+                  <li class="ticket-action-list-item">
+                    <div class="action-list-card">
+                      <h2 class="action-list-card__heading">Print Ticket</h2>
+                      <button class="btn action-list-card__btn" (click)="printTicket()">Print</button>
+                    </div>
+                  </li>
+                  <li class="ticket-action-list-item">
+                    <div class="action-list-card">
+                      <h2 class="action-list-card__heading">Download Ticket</h2>
+                      <button class="btn action-list-card__btn" (click)="saveTicketPdf()">Download</button>
+                    </div>
+                  </li>
+                  <li class="ticket-action-list-item">
+                    <div class="action-list-card">
+                      <h2 class="action-list-card__heading">Share via SMS</h2>
+                      <button class="btn action-list-card__btn" (click)="showModal('share-sms-popup')">Share</button>
+                    </div>
+                  </li>
+                  <li class="ticket-action-list-item">
+                    <div class="action-list-card">
+                      <h2 class="action-list-card__heading">Share via Email</h2>
+                      <button class="btn action-list-card__btn" (click)="showModal('share-email-popup')">Share</button>
+                    </div>
+                  </li>
+                  <li class="ticket-action-list-item">
+                    <div class="action-list-card" style="border: .5px solid red">
+                      <h2 class="action-list-card__heading" style="color: red;">Cancel Ticket</h2>
+                      <button class="btn btn-danger action-list-card__btn" (click)="showModal('cancellation-popup')">Cancel</button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br>
+<section *ngIf="!success" class="ticket-fail">
+  <div class="container">
+    <div style="margin-bottom: 8%;"> <img src="assets/images/events/llogo.png" width="60px" height="60px" /><span
+        style="font-weight:600;font-size:18px;"> EventEnergies </span> </div>
+    <h3 style="color: red;">Oops!</h3>
+    <p>Unfortunately, we encontered a problem while processing your payment for event id <strong>{{story_id}}</strong>
+      bearing order id <strong>{{order_id}}</strong> of amount <strong>{{total_amount}} INR</strong> .However, we will
+      keep trying and if we are
+      able to process your payment within 3 hours, we will issue tickets to you and send you a
+      confirmation email. Otherwise, the money will be automatically refunded back to your account within 4 - 5 business
+      days.
+    </p><br>
+    <a (click)="goToActivityPage(story_id)"><i class="fa fa-angle-double-left"></i> Go back to events</a>
+  </div>
+</section>
+
+<!-- modals -->
+<div class="modal fade" role="dialog" id="share-email-popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 style="margin:10px 0 20px 0;"> Please enter reciever's email address </h3>
+            <input placeholder="Email" name="email" class="popup-input-text" type="email" [formControl]="emailControl">
+            <small style="display: block; color: red;" *ngIf="emailControl.touched && emailControl.errors"> Please enter
+              a valid email </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input value="Send" [disabled]="emailControl.invalid" class="btn btn-primary" type="button"
+            (click)="sendToEmail(emailControl.value)">
+          <input type="button" class="btn" value="Cancel" (click)="closeModal('share-email-popup')">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" role="dialog" id="share-sms-popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 style="margin:10px 0 20px 0;"> Please enter reciever's email address </h3>
+            <input name="phone" type="tel" appCreationEvent [formControl]="phoneControl" class="popup-input-text">
+            <small style="display: block; color: red;" *ngIf="phoneControl.touched && phoneControl.invalid"> Please
+              enter a valid phone </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input value="Send" [disabled]="phoneControl.invalid" class="btn btn-primary" type="button"
+            (click)="smsToNumber(phoneControl.value)">
+          <input type="button" class="btn" value="Cancel" (click)="closeModal('share-sms-popup')">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" role="dialog" id="cancellation-popup">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!-- <div class="row">
+          <div class="col-sm-12"> -->
+            <app-event-ticket-cancellation [ticketDetails]="ticket_details_array"></app-event-ticket-cancellation>
+          <!-- </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modals end-->
+<!-- footer -->
+<app-footer></app-footer>
+<!-- footer end -->
+<div #story_content id="story_content" style="display:none"></div>
+<div #story_header_content id="story_header_content" style="display:none"></div>

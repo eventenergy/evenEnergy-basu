@@ -1,0 +1,40 @@
+<div class="row" style="margin-bottom:15px;">
+  <div class="col-sm-12">
+      <h3>  School </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" *ngIf="student_school_array?.length==0">
+    <a  title="No School Found">
+      <div class="col-sm-12 create-card">
+        <div class="invite-box"> 
+            +
+        </div>
+        No School Found
+      </div>
+    </a>
+  </div>
+  <ng-container *ngFor="let school of student_school_array">
+    <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12">
+      <div class="col-sm-12 border-box">
+        <span style="cursor:pointer" title="click here view school profile">
+        <!------------------user image upload --------------------->
+        <div *ngIf="school.staticDpImg"><img [src]="school.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></div>
+        <!------------------user image upload end--------------------->
+        <!-----------------------user name text  ----------------------->
+        <div *ngIf="!school.staticDpImg && school.imgName" class="bc-bg">{{school.imgName ? school.imgName : ''}}</div>
+        <!-----------------------user name text  end----------------------->
+        </span>
+        <div class="cont-right">
+          <div id="textbox">
+            <span class="header-name" *ngIf="school.name">{{school.name}}</span>
+              <br><br>
+              <span class="header-name" *ngIf="school.email">{{school.email}}</span>
+          </div>
+          <span class="header-email" *ngIf="school.website"> {{school.website}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

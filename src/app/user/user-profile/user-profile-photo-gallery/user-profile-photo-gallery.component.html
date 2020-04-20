@@ -1,0 +1,43 @@
+<br><br>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="gallery-card">
+      <h3> Upload photos </h3>
+      <div class="choose-list-user" style="margin-bottom:5px;">
+        <ul class="people-list-grid" style="padding: 0;">
+          <li *ngFor="let user of user_child_detail_array" [ngStyle]="{'background-color': user.isChecked ? '#337ab7' : '','color': user.isChecked ? '#ffffff' : '' }" (click)="selectUser(user.id,user.user_type)">
+            <span class="media-left">
+                <span *ngIf="!user.staticDpImg" class="media-object media-text uppercase">{{user.firstName ? (user.firstName | slice:0:1) : '' }}{{user.lastName ? (user.lastName | slice:0:1) : '' }}</span>
+                <span *ngIf="user.staticDpImg"><img class="media-object media-image" [src]="user.staticDpImg" (error)="updateDefaultImageUrl($event)"></span>
+            </span>
+            <span style="line-height:30px;">{{user.firstName ? user.firstName : '' }} {{user.lastName ? user.lastName : '' }}</span>
+          </li>
+        </ul>
+      </div>
+      <hr>
+
+      <div *ngIf="selected_user_id && selected_user_type">
+          <!------------------- Default upload click box -------------------------->
+          <div class="thumbnail-list" title="Upload images" (click)="fileInput.click()">
+            <img alt="" src="assets/images/add.png">
+          </div>
+          <!------------------- Default upload click box end-------------------------->
+          <div class="thumbnail-list" *ngFor="let images of multiple_images_array" title="preview image">
+            <a class="remove-upload-icon" *ngIf="images.snap_id && images.upload_type" (click)="showGalleryImagesDropDown(images.snap_id)"><i class="fa fa-2x fa-caret-down"></i></a>
+            <img alt="" id="gallery_image_{{images.snap_id}}" [src]="images.staticDpImg" (click)="openImageModal(multiple_images_array,images.snap_id)">
+            <div class="speech">
+              <ul class="set-image-dropdown" id="gallery_image_dropdown_{{images.snap_id}}" *ngIf="images.snap_id && images.upload_type" style="padding: 0;margin-bottom: 0;display:none">
+                <li (click)="deleteSnapOrSetDefaultSnap(images.snap_id,images.relative_path,images.user_type,'set_profile')"> Set as profile pic </li>
+                <li (click)="deleteSnapOrSetDefaultSnap(images.snap_id,images.relative_path,images.user_type,'delete')"> Delete </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<input style="display: none" id="file" type="file" multiple (change)="onFileChanged($event)" #fileInput accept=".jpg,.png,.jpeg">
+<ks-modal-gallery [id]="1" [modalImages]="modal_images"></ks-modal-gallery>
+<canvas id="canvas" style="position: relative;display:none;" #canvas [width]="canvas_width" [height]="canvas_height"></canvas>

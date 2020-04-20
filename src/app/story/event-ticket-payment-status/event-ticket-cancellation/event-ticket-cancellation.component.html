@@ -1,0 +1,43 @@
+<div class="ticket-cancellation-container">
+  <h1 style="margin-bottom: 5px;">Ticket cancellation</h1>
+  <div *ngIf="!displayConfirmation" class="ticket-cancellation-checklist">
+    <p style="font-size: 16px;">Please select the tickets that you want to cancel</p>
+    <ol class="ticket-cancellation__cap-list">
+      <li *ngFor="let capacity of ticketDetails; let i = index">
+        <h3 class="ticket-cancellation__cap-name"><span style="font-size: 16px;">Ticket Name:</span>{{capacity.name}}
+        </h3>
+        <div class="ticket-cancellation__cap-info">{{capacity.startTime | date}}&nbsp;|&nbsp;Rs:{{capacity.amount}}
+        </div>
+        <table>
+          <tr style="margin-bottom: 20px;">
+            <th style="width: 30px;"></th>
+            <th style="padding: 0px 10px 10px 0px; border-bottom: 1px solid black; font-weight: normal;">Ticket Id</th> 
+            <th style="padding: 0px 10px 10px 0px; border-bottom: 1px solid black; font-weight: normal;">Attendee Name</th>
+          </tr>
+          <tr *ngFor="let ticket of capacity.ticketDetails">
+            <td><input style="display: none;" type="checkbox" [id]="'custom-checkbox-'+ticket.id"
+              (click)="addRemoveTicket($event.target.checked, ticket)">
+            <label [for]="'custom-checkbox-'+ticket.id" class="the-input-label"><span class="check-box"></span><span
+                class="check-box-inner"></span></label></td>
+            <td style="padding: 0px 10px 20px 0px; font-size: 18px;" >{{ticket.id}}</td>
+            <td style="padding: 0px 10px 20px 0px; font-size: 18px;">{{ticket.attandeeName}}</td>
+          </tr>
+          
+        </table>
+      </li>
+    </ol>
+    <div class="ticket-cancellation__buttons">
+      <button type="button" class="btn btn-default" (click)="displayConfirmation = true"
+        [disabled]="selectedTickets.length==0">Cancel Selected</button>
+    </div>
+  </div>
+
+  <div *ngIf="displayConfirmation">
+    <h3>These tickets will be cancelled</h3>
+    <ul class="cancellation-confirmation-list" *ngFor="let ticket of selectedTickets">
+        <li>{{ticket.id + ' . ' + ticket.attandeeName}}</li>
+    </ul>
+    <button (click)="cancelTicket(selectedTickets)">Yes</button>
+    <button (click)="displayConfirmation=false; selectedTickets = []">Go Back</button>
+  </div>
+</div>

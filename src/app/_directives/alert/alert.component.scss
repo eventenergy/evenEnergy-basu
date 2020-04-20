@@ -1,0 +1,117 @@
+// .alert-info {    
+//     display: table;
+//     margin: 0 auto;
+//     background:#FFFDE7;
+//     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+//     z-index:9999999;
+//     padding: 10px 15px;
+//     border-radius: 4px;
+//     font-weight:500;
+// }
+// .alert-message-popup {
+//     width:100%;
+//     position: fixed;
+//     top:50px;
+//     z-index: 99999;
+// }
+
+/* Alert bottom left */
+// .alert-bottom{
+//     position: fixed;
+//     bottom:30px;
+//     left:2%;
+//     z-index: 99999;
+//     background: #464646;
+//     color: #ECECEC;
+//     padding: 10px;
+//     display: none;
+//     border-radius:4px;
+// }
+
+
+
+
+.alert-info {    
+    display: table;
+    margin: 0 auto;
+    background:rgb(255, 245, 245);
+    z-index:9999999;
+    border-radius: 4px;
+    box-shadow: 0.3em 0.3em 2em rgba(0,0,0,0.3);
+    padding: 20px;
+    text-align: center;
+    color: red;
+}
+.alert-info i{
+    color: red;
+    font-size: 35px;
+}
+.alert-message-popup {
+    position: fixed;
+    top: 50px;
+    width:100%;
+    z-index: 99999;
+    -webkit-animation: alert 0.4s ease;
+    animation: alert 0.4s ease;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
+@-webkit-keyframes alert
+{
+    0%
+    {
+        -webkit-transform: translatey(50px);
+        transform: translatey(50px);
+    }
+    100%
+    {
+        -webkit-transform: translatey(0);
+        transform: translatey(0);
+    }
+}
+
+
+/* Alert bottom left */
+.alert-success {    
+    display: table;
+    margin: 0 auto;
+    background:rgb(234, 253, 229);
+    z-index:9999999;
+    border-radius: 4px;
+    font-weight:500;
+    box-shadow: 0.3em 0.3em 2em rgba(0,0,0,0.3);
+    padding: 20px;
+    color: rgb(102, 177, 83);
+    text-align: center;
+}
+.alert-success i{
+    color: rgb(102, 177, 83);
+    font-size: 35px;
+}
+.alert-bottom {
+    position: fixed;
+    bottom:30px;
+    left:2%;
+    z-index: 99999;
+    padding: 10px;
+    display: none;
+    border-radius:4px;    
+
+    -webkit-animation: alert1 0.4s ease;
+    animation: alert1 0.4s ease;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+}
+@-webkit-keyframes alert1
+{
+    0%
+    {
+        -webkit-transform: translatey(50px);
+        transform: translatey(50px);
+    }
+    100%
+    {
+        -webkit-transform: translatey(0);
+        transform: translatey(0);
+    }
+}

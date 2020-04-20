@@ -1,0 +1,201 @@
+.contnts{
+    height: auto;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.08);
+    border-radius:4px;
+    padding: 10px 25px;
+    background: #ffffff;
+}
+.heading{
+    color: #495C69;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    line-height: 28px;
+    opacity: 0.8;
+  }
+  input[type="text"],input[type="email"],textarea{
+    width:100%;
+    font-size:1em;
+    border:1px solid #cccccc;
+    border-radius: 4px;
+    background:#FFFFFF;
+    height:40px;
+    padding:3px;
+    color: #495C69;
+    padding-left: 10px;
+    box-shadow: none;
+}
+input[type="text"]:hover,input[type="email"]:hover,textarea:hover {
+  border:1px solid #337ab7;
+}
+input[type="text"]:focus,input[type="email"]:focus,textarea:focus {
+  border:1px solid #337ab7;
+}
+  .profile-text{
+    border:1px solid #ccc;
+    border-radius:4px;
+    width:140px;
+    height:140px;
+    text-align:center;
+    vertical-align: middle;
+    font-size:80px;
+    display:table-cell;
+    line-height: 140px;
+    background: pink;
+    color:#fff;
+  }
+  .profile-upload-image:hover{
+      color:#fff;
+      background: #0e4d92;
+  }
+  .profile-upload-image{
+      border:1px solid #0e4d92;
+      padding: 6px;
+      border-radius:4px;
+      font-size:14px;
+      font-weight:600;
+      margin-left:20px;
+      cursor:pointer;
+      color:#0e4d92;
+  }
+
+  .verify-btn{
+      height: 40px;
+  }
+//   radio
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #0e4d92;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+span.radio-custom {
+    display: inline;
+}
+.dashboard-responsive{
+    padding-top: 40px;
+}
+.profile-image-edit {
+    background-color: #ebeff4;
+    height: 140px;
+    width: 140px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float:left;
+  }
+  .profile-image-edit img {
+    max-width:140px;
+    max-height:140px;
+    border-radius:4px;
+  }
+  .pic-image{
+    width:30px;
+    height:30px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+  .block-controls{
+    background: #FFFFFF;
+    border: 1px solid #e1e6eb;
+    position: absolute;
+    -moz-box-shadow: -1px 1px 5px #ccc;
+    -webkit-box-shadow: -1px 1px 5px #ccc;
+    box-shadow: -1px 1px 5px #ccc;
+    right: 0;
+    top: 0;
+  }
+  .js-edit-block{
+    padding: 4px 8px;
+    cursor: pointer;
+    border-right: 1px solid #e1e6eb;
+  }
+  .js-delete-block{
+    padding: 4px 8px;
+    cursor: pointer;
+  }.profile-image-edit {
+    background-color: #ebeff4;
+    height: 140px;
+    width: 140px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float:left;
+  }
+  .profile-image-edit img {
+    max-width:140px;
+    max-height:140px;
+    border-radius:4px;
+  }
+  .pic-image{
+    width:30px;
+    height:30px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+  .block-controls{
+    background: #FFFFFF;
+    border: 1px solid #e1e6eb;
+    position: absolute;
+    -moz-box-shadow: -1px 1px 5px #ccc;
+    -webkit-box-shadow: -1px 1px 5px #ccc;
+    box-shadow: -1px 1px 5px #ccc;
+    right: 0;
+    top: 0;
+  }
+  .js-edit-block{
+    padding: 4px 8px;
+    cursor: pointer;
+    border-right: 1px solid #e1e6eb;
+  }
+  .js-delete-block{
+    padding: 4px 8px;
+    cursor: pointer;
+  }

@@ -1,0 +1,100 @@
+<div class="dashboard-responsive-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <form id="child_form">
+        <div class="box-card-shadow">
+          <h3> Edit Performers </h3>
+          <hr style="border:1px solid #ccc;">
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="heading"> Name </label>
+            </div>
+            <div class="col-sm-6 mg-btm">
+              <input type="text" #firstName="ngModel" required class="form-control" [class.is-invalid]="firstName.invalid && firstName.touched" name="firstName" [(ngModel)]="childModel.firstName" placeholder="Enter first name">
+              <p class="text-danger" *ngIf="(firstName.invalid && firstName.touched) || first_name_error">First Name is required</p>
+            </div>
+            <div class="col-sm-6 mg-btm">
+              <input type="text" #lastName="ngModel" required class="form-control" [class.is-invalid]="lastName.invalid && lastName.touched" name="lastName" [(ngModel)]="childModel.lastName" placeholder="Enter last name">
+              <p class="text-danger" *ngIf="(lastName.invalid && lastName.touched) || last_name_error">Last Name is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <label class="heading"> Birth Date* </label>
+              <input type="text" name="birthDate" #birthDate="ngModel" readonly required [(ngModel)]="childModel.dob" (bsValueChange)="onChangeDatePickerStart($event)"  bsDatepicker [bsConfig]="datepickerConfig"/>
+              <p class="text-danger" *ngIf="(birthDate.invalid && birthDate.touched) || dob_error">Birth Date is required</p>
+            </div>
+            <div class="col-sm-8">
+              <label class="heading"> Gender* </label> <br>
+              <label for="test1"> <input type="radio" class="rd" id="test1"  name="gender" value="male" required  [(ngModel)]="childModel.male" #male="ngModel"  [checked]="childModel.male=='male'" > <span> Boy </span></label>
+              <label for="test2" style="padding-left:20px;"> <input type="radio" class="rd" id="test2"  name="gender" value="female" required [(ngModel)]="childModel.male" #female="ngModel" [checked]="childModel.male=='female'" > <span> Girl </span></label>
+              <p class="text-danger" *ngIf="gender_error">Gender is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+                <label class="heading"> Profile Image </label>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="profile-image-edit">
+                      <div class="block-controls">
+                        <a class="text-danger pull-right js-delete-block" *ngIf="dpImg_reader_status || staticDpImg"  title="Remove" (click)="deleteProfileImage()"><i class="fa fa-close"></i></a>
+                        <!-- <a class="text-info pull-right js-edit-block" >Edit</a> -->
+                      </div>
+                    <!----------------- profile name --------------------->
+                      <div class="profile-text" style="float:left;text-transform: uppercase;" *ngIf="!staticDpImg && !dpImg_reader_status">{{childModel.firstName |  slice:0:1}}{{childModel.lastName |  slice:0:1}}</div>
+                    <!----------------- profile name end--------------------->
+                    <!---------------------- null profile image ----------->
+                    <!-- <img src="assets/images/null.png" style="border-radius:4px;width:140px;height:140px;float:left" /> -->
+                    <!------------------------null profile image end --------->
+                      <div *ngIf="!staticDpImg && dpImg_reader_status"><img [src]="dpImg_reader"/></div>
+                    <!----------------- profile image --------------------->
+                      <div *ngIf="staticDpImg"><img [src]="staticDpImg" (error)="updateDefaultImageUrl($event)" /></div>
+                    <!----------------- profile image --------------------->
+                </div>
+                <br>
+                <span (click)="fileInput.click()"  class="profile-upload-image"> Add profile pic </span>
+                <br><br>
+                <span style="margin-left:20px;">Only jpg, png format</span>
+              </div>
+          </div>
+          <br><br><br>
+          <div class="row">
+            <div class="col-sm-12">
+                <div class="btn-block pull-right">
+                    <input (click)="addChildDetails('edit')" type="button" class="btn pull-right bt-save" value="SAVE">
+                    <input (click)="goBack()" type="button" class="btn pull-right bt-cancel" value="CANCEL" style="margin-right:20px">
+                </div>
+            </div>
+          </div><br>
+        </div>
+        </form>
+      </div>
+    </div>
+    <br><br>
+  </div>
+</div>
+<input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput accept=".jpg,.png,.jpeg">
+
+<!----------------------------------- Alert message delete child profile picture popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_profile_pic_popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Are you sure to delete Performers Profile Pic. </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Yes" (click)="deleteProfileImageFromDB()">
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------- Alert message delete child profile picture popup end ------------------------------->

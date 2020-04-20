@@ -1,0 +1,46 @@
+<!---------------------------------body -------------------------------->
+<div class="dashboard-responsive">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="dashboard-header-name"> Children </h3>
+            </div>
+        </div>
+        <!----------------------School cards start ------------------>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12" *ngFor="let child of user_total_child_array">
+                <div class="col-sm-12 border-box">
+                    <a style="color: inherit;" title="click profile" [routerLink]="['/user/child/profile']" [queryParams]="{id: child.id}" >
+                        <span *ngIf="child.staticDpImg"><img [src]="child.staticDpImg" class="card-profile-image" (error)="updateDefaultImageUrl($event)"></span>
+                        <div class="bc-bg uppercase" *ngIf="!child.staticDpImg"> {{child.firstName | slice:0:1}}{{child.lastName | slice:0:1}}</div>
+                    </a>
+                    <div class="cont-right">
+                        <div class="flex-content">
+                            <span class="header-name">{{child.firstName ? child.firstName : ''}} {{child.lastName ? child.lastName : ''}}</span>
+                            <br><br>
+                            <span class="dropdown">
+                                <a style="cursor:pointer;" data-toggle="dropdown" class="dropdown-toggle"><b class="caret" style="border-width:8px;"></b></a>
+                                <ul class="dropdown-menu dropdown-menu-right" style="margin-top:-10px;cursor:pointer;">
+                                    <li><a [routerLink]="['/user/child/add']" [queryParams]="{id: child.id, type: 'edit'}" >Edit child</a></li>
+                                </ul>   
+                            </span>
+                        </div>
+                        <span class="header-birth" title="Birthdate"><i class="fa fa-birthday-cake"></i> {{child.dob ? (child.dob | date:"mediumDate") : ""}}</span>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <!----------------------School cards start ------------------>
+        <!----------------------empty teacher ------------------>
+        <div class="row" *ngIf="user_total_child_array?.length==0">
+            <div class="col-sm-12">
+                <div style="text-align: center;">
+                    <h3 style="color:#fe9200;"> No Children </h3>
+                </div>
+            </div>
+        </div>
+        <!----------------------empty teacher end------------------>
+    </div>
+</div>
+<!---------------------------------body end -------------------------------->
+  

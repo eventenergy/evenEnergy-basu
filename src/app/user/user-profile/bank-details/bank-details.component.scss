@@ -1,0 +1,30 @@
+.bank-details {
+    border: 2px dashed #ccc;
+    background: #fff;
+    padding: 20px;
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+.bank-details__item-heading{
+    font-size: 150%;
+}
+
+.create-card {
+    border-radius:4px;
+    cursor:pointer;
+    border: 2px dashed #d1d8df;
+    margin-bottom:30px;
+    height:170px;
+    text-align: center;
+    padding: 30px;
+}
+.create-card:hover{
+    background: #efefef;
+}
+.invite-box{
+    color: #d1d8df;
+    font-size: 140px;
+    line-height: 66px;
+    margin: 0 0 10px;
+}

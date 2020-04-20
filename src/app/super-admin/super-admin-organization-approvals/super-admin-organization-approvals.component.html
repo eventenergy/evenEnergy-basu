@@ -1,0 +1,39 @@
+<app-main-navbar></app-main-navbar>
+<section class="container">
+  <div class="apporval-item-container">
+    <div class="row">
+      <h1>Organizations to be Approved</h1>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12" style="padding: 20px;"
+        *ngFor="let org of unapprovedOrgs; let i = index">
+        <div class="approval-item">
+          <!-- <div style="cursor: pointer;" [routerLink]="('/activity/preview/')+story.id"> -->
+          <!-- <div class="approval-item__image-container">
+              <img class="approval-item__image" [src]="story.image" alt="" srcset="">
+            </div> -->
+          <h3 [routerLink]="'./'+org.id" class="approval-item__event-name">{{org.name}}</h3>
+          <!-- </div>  -->
+          <div class="approval-item__button-container">
+            <!-- <button class="btn btn-success approval-item__button"
+              (click)="updateEvent('PUBLISHED', i)">{{story.approved? "Published	&#10004;" : "Publish"}}</button> -->
+              <button class="btn btn-success approval-item__button" (click)="markApprovedStats(org, true)">{{org.isApproved? "Approved 	&#10004;":"Approve"}}</button>
+            <button class="btn btn-danger approval-item__button" (click)="markApprovedStats(org, false)">Disapprove</button>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-bottom: 20px" class="col-12">
+        <input type="button" (click)="fetchSchools()" *ngIf="!isLoading && hasMoreStories" class="more-button"
+        value="More Organizations" />
+        <div style="font-style: italic;" *ngIf="!hasMoreStories">
+          <div> - - - </div>
+          {{stories.length? "There are no more organizations" : "You do not have any unapproved orgnaizations"}}
+        </div>
+      </div>
+      
+    </div>
+    <div style="display: block">
+      <div class="simple-loader" *ngIf="isLoading"></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,144 @@
+<div class="dashboard-responsive-margin">
+  <div class="container">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+      <div class="row">
+        <div class="col-sm-12 dasboard-stories-card">
+          <form #userBankAccountForm="ngForm" (ngSubmit)="saveUserBankAccountDetails()">
+          <h3>Bank details</h3>
+          <hr style="border:1px solid #ccc;">
+          <!-- <h4>Personal settings</h4> -->
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">Account Holder Name<span class="text-danger">*</span> </label>
+              <input type="text" #accountHolderName="ngModel" required class="form-control" [class.is-invalid]="accountHolderName.invalid && accountHolderName.touched"  name="accountHolderName" [(ngModel)]="userBankAccountModel.accountHolderName" placeholder="Account Holder Name">
+              <p class="text-danger" *ngIf="(accountHolderName.invalid && accountHolderName.touched) || account_name_error">Account Holder Name is required</p>            
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">Account Number<span class="text-danger">*</span> </label>
+              <input type="text" #accountNumber="ngModel" required class="form-control" [class.is-invalid]="accountNumber.invalid && accountNumber.touched" 
+               name="accountNumber" [(ngModel)]="userBankAccountModel.accountNumber">
+               <p class="text-danger" *ngIf="(accountNumber.invalid && accountNumber.touched) || account_number_error">Account Number is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">Bank Name<span class="text-danger">*</span> </label>
+              <input type="text"  #bankName="ngModel" required class="form-control" [class.is-invalid]="bankName.invalid && bankName.touched" 
+               name="bankName" [(ngModel)]="userBankAccountModel.bankName">
+               <p class="text-danger" *ngIf="(bankName.invalid && bankName.touched) || bank_name_error">Bank Name is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">Branch<span class="text-danger">*</span> </label>
+              <input type="text"  #branchName="ngModel" required class="form-control" [class.is-invalid]="branchName.invalid && branchName.touched" 
+               name="branchName" [(ngModel)]="userBankAccountModel.branchName">
+               <p class="text-danger" *ngIf="(branchName.invalid && branchName.touched) || branch_error">Branch is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">IFSC Code<span class="text-danger">*</span> </label>
+              <input type="text"  #ifscCode="ngModel" required class="form-control" [class.is-invalid]="ifscCode.invalid && ifscCode.touched" 
+               name="ifscCode" [(ngModel)]="userBankAccountModel.ifscCode">
+               <p class="text-danger" *ngIf="(ifscCode.invalid && ifscCode.touched) || ifsc_error">IFSC Code is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">GST Number<span class="text-danger">*</span> </label>
+              <input type="text"  #gstNumber="ngModel" required class="form-control" [class.is-invalid]="gstNumber.invalid && gstNumber.touched" 
+              name="gstNumber" [(ngModel)]="userBankAccountModel.gstNumber">
+              <p class="text-danger" *ngIf="(gstNumber.invalid && gstNumber.touched) || gst_no_error">GST Number is required</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading">PAN Number<span class="text-danger">*</span> </label>
+              <input type="text"  #panNumber="ngModel" required class="form-control" [class.is-invalid]="panNumber.invalid && panNumber.touched" 
+               name="panNumber" [(ngModel)]="userBankAccountModel.panNumber">
+               <p class="text-danger" *ngIf="(panNumber.invalid && panNumber.touched) || pan_no_error">PAN Number is required</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading"> GST Exemption Document </label>
+            </div>
+            <div class="col-sm-9">
+              <input type="file" class="form-file" (change)="onFileChanged($event, 'gst exemption')" #fileUploadGstExemptionDocInput accept=".jpg,.png,.jpeg"/>
+              <!-- <p class="text-danger" >
+                First name is required
+              </p> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading"> Upload PAN Card </label>
+            </div>
+            <div class="col-sm-9">
+              <input type="file" class="form-file" (change)="onFileChanged($event, 'pan card')" #fileUploadPanCardInput accept=".jpg,.png,.jpeg">
+              <!-- <p class="text-danger" >
+                First name is required
+              </p> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <label class="heading"> Upload Cancellation Cheque </label>
+            </div>
+            <div class="col-sm-9">
+              <input type="file" class="form-file" (change)="onFileChanged($event, 'cancelled check')" #fileUploadCancellationChequeInput accept=".jpg,.png,.jpeg"/>
+            </div>
+          </div>
+          <!-- <div class="row">
+            <div class="col-sm-9">
+              <label class="heading"> Account Type </label>
+            </div>
+            <div class="col-sm-6">
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="0" [checked]="userBankAccountModel.accountType=='SAVINGS'" #accountType="ngModel" [(ngModel)]="userBankAccountModel.accountType">  Saving Account </label>
+              </div>
+            </div>  
+            <div class="col-sm-6">
+              <div class="radio">
+                <label><input type="radio" name="optradio"  value="1" [checked]="userBankAccountModel.accountType=='CURRENT'"  #accountType="ngModel" [(ngModel)]="userBankAccountModel.accountType">  Currrent Account </label>
+              </div>
+            </div> 
+            
+          </div> -->
+
+            <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                  <div class="btn-block pull-right">
+                      <input [disabled]="userBankAccountForm.form.invalid" type="submit" class="btn pull-right custom-btn" value="SAVE">
+                      <input (click)="goBack()" type="button" class="btn pull-right custom-btn-close" value="CANCEL" style="margin-right:20px">
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-6">
+        <label class="heading">Uploaded Documents</label>
+      <div *ngFor="let snap of snaps_array;let x=index;" style="margin-bottom:10px;">
+        
+        <p style="font-size: 30px; text-transform: capitalize; margin: 0;">{{snap.caption}}</p> 
+        <span style="position: relative" class="media-left">
+            <small class="delete-container" (click)="deleteSnap(snap)"><i class="fa fa-trash"></i></small>
+            <span *ngIf="snap.type=='IMAGE'"><img class="media-object " [src]="snap.imgPath" (error)="updateDefaultImageUrl($event)"></span>
+       
+            <span *ngIf="snap.type=='PDF'"><embed  [src]="snap.imgPath" type="application/pdf" width="100%" height="500px" /></span>
+          </span>
+       
+        </div>
+    </div>
+    
+  </div>
+</div>
+<br><br><br>

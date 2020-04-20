@@ -1,0 +1,190 @@
+<div class="dashboard-responsive">
+  <div class="container">
+    <a (click)="goBack()" style="text-decoration:none;cursor: pointer;"><i class="fa fa-arrow-left" aria-hidden="true"></i>
+      &nbsp;&nbsp; Go Back</a>
+    <br><br>
+    <form #schoolProfileForm="ngForm" (ngSubmit)="saveSchoolDetails(schoolProfileForm.form)">
+    <div class="col-lg-8 col-sm-12 col-xs-12 col-md-8 contnts">
+      <h3>Edit {{schoolModel.name ? " - "+schoolModel.name : ''}}</h3>
+      <hr style="border:1px solid #ccc;">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="heading"> Organization name </label>
+              <input type="text" class="form-input" #name="ngModel" required [class.is-invalid]="name.invalid && name.touched" name="name" [(ngModel)]="schoolModel.name">
+              <p class="text-danger" *ngIf="name.invalid && name.touched"> Organization name is required </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col-sm-12">
+            <label class="heading"> Organization Image </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="profile-image-edit">
+              <div class="block-controls">
+                  <a class="text-danger pull-right js-delete-block"*ngIf="image_reader || schoolModel.defaultSnapId"  title="Remove" (click)="deleteProfileImage()"><i class="fa fa-close"></i></a>
+                  <!-- <a class="text-info pull-right js-edit-block" >Edit</a> -->
+              </div>
+
+              <!----------------- profile name --------------------->
+              <div class="profile-text" style="float:left;text-transform: uppercase;" *ngIf="!schoolStaticDpImg && !image_reader">{{schoolModel.name |  slice:0:1}}</div>
+              <!----------------- profile name end--------------------->
+              <div *ngIf="image_reader"><img [src]="image_reader_url"></div>
+              <!----------------- profile image --------------------->
+              <div *ngIf="schoolStaticDpImg && !image_reader">
+                <img [src]="schoolStaticDpImg" (error)="updateDefaultImageUrl($event)"/>
+              </div>
+              <!----------------- profile image --------------------->
+          </div>
+          <br>
+          <span (click)="fileInput.click();" class="profile-upload-image"> Add Organization pic </span>
+          <br><br>
+          <span style="margin-left:20px;">Only jpg, png format</span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-9 bottom">
+          <label class="heading">About</label>
+            <textarea class="text-area-class" placeholder="Write a comment..." style="height:100px;" #about="ngModel" name="about" [(ngModel)]="schoolModel.about"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-9 bottom">
+          <label class="heading">Contact address</label>
+            <textarea class="text-area-class" placeholder="Write a comment..." style="height:100px;" #address="ngModel" name="address" [(ngModel)]="schoolModel.address"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-9 bottom">
+          <label class="heading">Contact number</label>
+          <br>
+          <ngx-intl-tel-input [enablePlaceholder]="true" [onlyCountries]="['au', 'us']" [preferredCountries]="['in']" [enableAutoCountrySelect]="true" [(ngModel)]="schoolModel.mobNo" name="mobile_number" #mobileNumber="ngModel"></ngx-intl-tel-input>
+              <!-- [preferredCountries]="['in', 'au', 'us']" -->
+          <div class="error-mez" *ngIf="mobileNumber.touched && mobileNumber.invalid">
+              <div *ngIf="mobileNumber?.invalid && mobileNumber?.value && mobileNumber?.value?.number">
+                  Mobile Number is invalid
+              </div>
+              <!-- <div *ngIf="mobileNumber?.errors.required">
+                  Mobile Number is required
+              </div> -->
+          </div>
+        </div>
+    </div>
+    <!--------------------------------- pincode code --------------------------------->
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Pincode </label>
+        <input class="form-input" type="number" name="" >
+        <!-- <div class="text-danger"  *ngIf="emailAddress.touched && emailAddress.invalid">
+            <div *ngIf="emailAddress?.errors?.pattern">
+                You have entered a invalid email address. Please try again
+            </div>
+        </div> -->
+      </div>
+    </div>
+    <!--------------------------------- pincode code end --------------------------------->
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Organization Contact Email </label>
+        <input class="form-input" type="email" email pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" [class.is-invalid]="emailAddress.invalid && emailAddress.touched" #emailAddress="ngModel" name="emailAddress" [(ngModel)]="schoolModel.emailAddress">
+        <div class="text-danger"  *ngIf="emailAddress.touched && emailAddress.invalid">
+            <div *ngIf="emailAddress?.errors?.pattern">
+                You have entered a invalid email address. Please try again
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading">Website</label>
+        <input type="text" class="form-input"  pattern="https?://.+" #website="ngModel" required [class.is-invalid]="website.invalid && website.touched" name="website" [(ngModel)]="schoolModel.website">
+        <div class="text-danger"  *ngIf="website.touched && website.invalid">
+          <div *ngIf="website?.errors?.pattern">
+              You have entered a invalid website address. Website should start with http:// or https://
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Location </label>
+        <input type="text" class="form-input"  >
+        <!-- <div class="text-danger"  *ngIf="website.touched && website.invalid">
+          <div *ngIf="website?.errors?.pattern">
+              You have entered a invalid website address. Website should start with http:// or https://
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <!--------------------------------- Facebook link --------------------------------->
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Facebook </label>
+        <input class="form-input" type="text" name="" >
+      </div>
+    </div>
+    <!--------------------------------- Facebook link end --------------------------------->
+    <!--------------------------------- twitter link --------------------------------->
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Twitter </label>
+        <input class="form-input" type="text" name="" >
+      </div>
+    </div>
+    <!--------------------------------- twitter link end --------------------------------->
+    <!--------------------------------- Linkedin link --------------------------------->
+    <div class="row">
+      <div class="col-sm-9 bottom">
+        <label class="heading"> Linked In </label>
+        <input class="form-input" type="text" name="" >
+      </div>
+    </div>
+    <!--------------------------------- linkedin link end --------------------------------->
+    
+      <br><br>
+      <br><br>
+      <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-block pull-right">
+                <input type="submit" class="btn pull-right custom-btn" value="SAVE">
+                <input type="button" (click)="goBack()" class="btn pull-right custom-btn-close" value="CANCEL" style="margin-right:20px">
+            </div>
+          </div>
+      </div>
+  </div>
+</form>
+  <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+
+  </div>
+  </div>
+  </div>
+  <br><br><br>
+<input style="display: none" type="file" (change)="uploadToCrop($event)" #fileInput accept=".jpg,.png,.jpeg">
+
+<!----------------------------------- Alert message delete school profile picture popup start -------------------------->
+<div class="modal fade" role="dialog" id="alert_delete_profile_pic_popup">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="font-size:16px;color:#333"> Are you sure to delete Organization Profile Pic. </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="button" class="btn custom-btn-close" data-dismiss="modal" value="Cancel">
+        <input type="button" class="btn custom-btn" value="Yes" (click)="deleteProfileImageFromDB()">
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------- Alert message delete school profile picture popup end ------------------------------->
+<app-image-crop [imageFileEvent]="fileUploadEvent" (croppedImageFile)="onFileChanged($event)" (cropperClosed)="fileInput.value = null"></app-image-crop>

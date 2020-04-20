@@ -1,0 +1,72 @@
+.ticket-cancellation-container {
+  margin-left: 5%;
+}
+
+.ticket-cancellation {
+  &__cap-name {
+    font-size: 25px;
+    margin-bottom: 2px;
+  }
+
+  &__cap-info{
+    margin-bottom: 20px;
+  }
+
+  &__check-list{
+    margin-top: 35px;
+  }
+
+  &__cap-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 35px;
+  }
+
+  &__attendees {
+    padding: 3px 0px 3px 10px;
+    border-left: .5px solid grey;
+    list-style: none;
+
+    &__li{
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+  }
+}
+
+.ticket-cancellation__buttons {
+  margin: 30px 10px 10px 0px;
+  text-align: end;
+}
+
+.the-input-label {
+  position: relative;
+  display: inline;
+}
+
+[id*="custom-checkbox-"]:checked ~ .the-input-label .check-box-inner {
+  display: inline-block;
+}
+
+.check-box {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #337ab7;
+  display: inline-block;
+}
+
+.check-box-inner {
+  width: 12px;
+  height: 12px;
+  background-color: #337ab7;
+  display: none;
+  position: absolute;
+  top: -2px;
+  left: 4px;
+}
+
+
+.cancellation-confirmation-list{
+  padding: 0px;
+  list-style-type: none;
+}

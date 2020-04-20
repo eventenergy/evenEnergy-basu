@@ -1,0 +1,45 @@
+<div class="row" style="margin-bottom:15px;">
+    <div class="col-sm-12">
+        <h3> Admin </h3> 
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-sm-12 col-md-6" *ngFor="let admin_list of school_admin_array;let x=index;">
+        <div class="col-sm-12 border-box">
+            <a style="cursor: pointer;" title="click here to view admin profile" [routerLink]="['/admin/organization/admin-profile']" [queryParams]="{id: admin_list.user.id}">
+                <!------------------user image upload --------------------->
+                <span *ngIf="admin_list.user.userProfile.staticDpImg"><img [src]="admin_list.user.userProfile.staticDpImg" (error)="updateDefaultImageUrl($event)" class="card-profile-image"></span>
+                <!------------------user image upload end--------------------->
+                <!-----------------------user name text  ----------------------->
+                <div class="bc-bg uppercase" *ngIf="!admin_list.user.userProfile.staticDpImg"> {{admin_list.user.userProfile.firstName | slice:0:1 }} </div>
+                <!-----------------------user name text  end----------------------->
+            </a>
+            <div class="cont-right">
+                <h4 class="header-name"> {{admin_list.user.userProfile.firstName ? admin_list.user.userProfile.firstName : ''}}&nbsp;{{admin_list.user.userProfile.lastName ? admin_list.user.userProfile.lastName : ''}} </h4>
+                <span class="header-email">{{admin_list.user.email ? admin_list.user.email : '' }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12 col-md-6" *ngFor="let pending_list of pending_admin_array;let x=index;">
+        <div class="col-sm-12 border-box">
+            <!------------------user image upload --------------------->
+            <span *ngIf="pending_list.user.userProfile.staticDpImg"><img [src]="pending_list.user.userProfile.staticDpImg" class="card-profile-image"></span>
+            <!------------------user image upload end--------------------->
+            <!-----------------------user name text  ----------------------->
+            <div class="bc-bg uppercase" *ngIf="!pending_list.user.userProfile.staticDpImg">{{pending_list.user.userProfile.firstName | slice:0:1 }}{{ pending_list.user.userProfile.lastName | slice:0:1}}</div>
+            <!-----------------------user name text  end----------------------->
+            <div class="cont-right">
+                <h4 class="header-name">{{pending_list.user.userProfile.firstName ? pending_list.user.userProfile.firstName : ''}}&nbsp;{{ pending_list.user.userProfile.lastName ? pending_list.user.userProfile.lastName : ''}}</h4>
+                <span class="header-email">{{pending_list.user.email ? pending_list.user.email : '' }}</span>
+            </div>
+            <div class="accept-buttons">
+                <input type="button" class="btn btn-primary pull-left" (click)="approveadminRequest(pending_list.user.id,pending_list.school.id,x)" value="Accept" />
+                <input type="button" class="btn btn-danger pull-right" (click)="rejectadminRequest(pending_list.user.id,pending_list.school.id,x)" value="Reject" />
+            </div>
+        </div>
+    </div>
+</div>   
+
+    
+ 
+   
